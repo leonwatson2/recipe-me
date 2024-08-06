@@ -3,9 +3,9 @@ import { SearchBar } from "./SearchBar";
 
 export function MainNav () {
     return (
-
-        <header className="mx-auto center w-auto bg-primary">
-            <nav className="container mx-auto max-h-16">
+        <>
+        <header className="mx-auto center w-auto bg-primary sticky top-0">
+            <nav className="container mx-auto max-w-7xl max-h-16">
                 <ul className="flex text-xl">
                     <li className="logo-container border-x-grey pt-2">
                         <SVG title="the-logo" height={100} width={195} className="absolute"/>
@@ -18,7 +18,8 @@ export function MainNav () {
                     </li>
                 </ul>
             </nav>
-            <nav className="h-12 bg-lbrown"></nav>
         </header>
+        <nav className="h-12 bg-lbrown"></nav>
+        </>
     )
 }
