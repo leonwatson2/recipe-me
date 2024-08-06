@@ -12,7 +12,11 @@ export default {
       brown: "#a77158",
       lbrown: "#C29986"
     },
-    extend: {},
+    extend: {
+      spacing: {
+        '128': '32rem',
+      }
+    },
   },
   plugins: [],
 }

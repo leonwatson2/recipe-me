@@ -3,11 +3,18 @@
   --max-width-nav: 75rem;
   margin: 0 auto;
   width: 100%;
-  text-align: center;
 }
 
 
 .logo-container {
   width: 215px;
   height: 100%;
+}
+
+.preparation ol>li {
+  counter-increment: step-counter;
+  
+}
+.preparation ol>li::before {
+  content: counter(step-counter);
 }

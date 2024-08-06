@@ -10,13 +10,14 @@ export type Recipe = {
   id: any;
   name: string;
   cookTime: number;
-  dateAdded: Date;
+  dateAdded: { seconds:number };
   foodTypes: Array<string>;
   ingredients: Array<string>;
   instructions: Array<string>;
   timeTypes: Array<string>;
   intro: string;
   photoUrls: Array<string>;
+  videoUrls: Array<string>;
   prepTime: number;
   servingSize: string;
   notes: string;
