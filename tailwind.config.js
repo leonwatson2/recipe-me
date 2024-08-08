@@ -10,7 +10,9 @@ export default {
       black: "#332B27",
       grey:"#524A46",
       brown: "#a77158",
-      lbrown: "#C29986"
+      lbrown: "#C29986",
+      white: "#fgfgfg",
+      transparent: "transparent"
     },
     extend: {
       spacing: {

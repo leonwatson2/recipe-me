@@ -4,7 +4,7 @@ import { SearchBar } from "./SearchBar";
 export function MainNav () {
     return (
         <>
-        <header className="mx-auto center w-auto bg-primary sticky top-0">
+        <header className="mx-auto center w-auto bg-primary sticky top-0 z-10">
             <nav className="container mx-auto max-w-7xl max-h-16">
                 <ul className="flex text-xl">
                     <li className="logo-container border-x-grey pt-2">
