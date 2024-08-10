@@ -36,7 +36,8 @@ export const useEditingRecipe = (recipe?: Recipe) => {
         }
         return {
           ...oldR,
-          [property]: value.replace("\n", ""),
+          [property]:
+            typeof value === "string" ? value.replace("\n", "") : value,
         };
       });
     },

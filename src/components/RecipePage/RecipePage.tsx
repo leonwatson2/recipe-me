@@ -56,6 +56,8 @@ export const RecipePage: FC<RecipePageProps> = () => {
         <RecipeTime
           cookTime={recipe?.cookTime || 0}
           prepTime={recipe?.prepTime || 0}
+          editedCookTime={editedRecipe?.cookTime || 0}
+          editedPrepTime={editedRecipe?.prepTime || 0}
         />
         <main className="flex w-full content-start mt-7 min-w-96">
           <RecipeIngredients
