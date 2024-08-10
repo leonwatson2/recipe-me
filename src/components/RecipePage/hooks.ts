@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import { useLog, useToggle } from "../../utils";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useToggle } from "../../utils";
 import { ModifyListItemFunction, Recipe } from "../../types";
+import { deepEqual } from "../utils";
 
 export type UpdateRecipeType = <T extends keyof Recipe, K extends Recipe[T]>(
   property: T,
@@ -17,6 +18,10 @@ export const useEditingRecipe = (recipe?: Recipe) => {
       setEditedRecipe(recipe);
     }
   }, [editing]);
+
+  const updated = useMemo(() => {
+    return !isSameRecipe(recipe, editedRecipe);
+  }, [editedRecipe, recipe]);
 
   const updateEditedRecipe: UpdateRecipeType = useCallback(
     (property, value, index) => {
@@ -110,6 +115,7 @@ export const useEditingRecipe = (recipe?: Recipe) => {
 
   return {
     editing,
+    updated,
     editedRecipe,
     setEditedRecipe,
     toggleEditing,
@@ -119,4 +125,9 @@ export const useEditingRecipe = (recipe?: Recipe) => {
     removeIngredient,
     removeInstruction,
   };
+};
+
+const isSameRecipe = (recipe1?: Recipe, recipe2?: Recipe) => {
+  if (recipe1 === undefined || recipe2 === undefined) return false;
+  return deepEqual(recipe1, recipe2);
 };
