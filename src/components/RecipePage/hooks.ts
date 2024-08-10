@@ -117,7 +117,6 @@ export const useEditingRecipe = (recipe?: Recipe) => {
     editing,
     updated,
     editedRecipe,
-    setEditedRecipe,
     toggleEditing,
     addInstruction,
     addIngredient,

@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import "../../firebase/config";
-import { getAllRecipes } from "../../firebase/actions";
+import { getAllRecipes, updateRecipe } from "../../firebase/actions";
 import { RecipeTime } from "./RecipeTime";
 import { RecipeHeader } from "./RecipeHeader";
 import { RecipeIngredients } from "./RecipeIngredients";
@@ -16,24 +16,35 @@ type RecipePageProps = {};
 export const RecipePage: FC<RecipePageProps> = () => {
   const [recipe, setRecipe] = useState<Recipe>();
 
-  useEffect(() => {
+  const fetchRecipes = useCallback(() => {
     getAllRecipes().then((recipes) => {
       setRecipe(recipes[0]);
-      setEditedRecipe(recipe);
     });
+  }, []);
+
+  useEffect(() => {
+    fetchRecipes();
   }, []);
 
   const {
     editing,
+    updated,
     editedRecipe,
     toggleEditing,
-    setEditedRecipe,
     addInstruction,
     addIngredient,
     removeIngredient,
     removeInstruction,
     updateEditedRecipe,
   } = useEditingRecipe(recipe);
+
+  const onConfirmUpdate = useCallback(() => {
+    if (editedRecipe && recipe) {
+      updateRecipe(editedRecipe).then(() => {
+        fetchRecipes();
+      });
+    }
+  }, [editedRecipe, recipe]);
 
   return (
     <UpdateRecipeContext.Provider
@@ -47,7 +58,12 @@ export const RecipePage: FC<RecipePageProps> = () => {
         className="group recipe-page mx-auto max-w-7xl relative"
       >
         <EditingBar />
-        <EditingButton toggleEditing={toggleEditing} />
+        <EditingButton
+          toggleEditing={toggleEditing}
+          editing={editing}
+          updated={updated}
+          onConfirmUpdate={onConfirmUpdate}
+        />
         <RecipeHeader
           dateAdded={recipe?.dateAdded}
           intro={recipe?.intro}
@@ -85,10 +101,52 @@ const EditingBar = () => {
   );
 };
 
-const EditingButton = ({ toggleEditing }: { toggleEditing: () => void }) => {
+const EditingButton = ({
+  toggleEditing,
+  editing,
+  updated,
+  onConfirmUpdate,
+}: {
+  toggleEditing: () => void;
+  editing: boolean;
+  updated: boolean;
+  onConfirmUpdate: () => void;
+}) => {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const onCancelClick = () => {
+    if (editing && updated) {
+      dialogRef.current?.showModal();
+    } else {
+      toggleEditing();
+    }
+  };
+  const onConfirmClick = async () => {
+    await dialogRef.current?.close();
+    toggleEditing();
+    onConfirmUpdate();
+  };
   return (
-    <button className="absolute top-10 right-0" onClick={toggleEditing}>
-      <SVG title="swap" height={40} width={40}></SVG>
-    </button>
+    <>
+      <button className="absolute top-10 right-0" onClick={onCancelClick}>
+        <SVG title="swap" height={40} width={40}></SVG>
+      </button>
+      <dialog ref={dialogRef} className="w-full max-w-7xl bg-brown text-white">
+        <div className="w-full h-full grid grid-cols-2 gap-2 p-7">
+          <p className="col-span-2 text-3xl py-6 text-center">Save Changes</p>
+          <button
+            className="bg-black h-16 uppercase"
+            onClick={() => {
+              toggleEditing();
+              dialogRef.current?.close();
+            }}
+          >
+            Cancel
+          </button>
+          <button className="bg-black h-16 uppercase" onClick={onConfirmClick}>
+            Confirm
+          </button>
+        </div>
+      </dialog>
+    </>
   );
 };
