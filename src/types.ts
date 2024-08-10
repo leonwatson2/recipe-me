@@ -10,7 +10,7 @@ export type Recipe = {
   id: any;
   name: string;
   cookTime: number;
-  dateAdded: { seconds:number };
+  dateAdded: { seconds: number };
   foodTypes: Array<string>;
   ingredients: Array<string>;
   instructions: Array<string>;
@@ -22,3 +22,5 @@ export type Recipe = {
   servingSize: string;
   notes: string;
 };
+
+export type ModifyListItemFunction = (index: number, force?: boolean) => void;
