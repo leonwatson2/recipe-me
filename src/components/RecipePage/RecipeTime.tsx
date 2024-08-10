@@ -35,7 +35,7 @@ export const RecipeTime: FC<RecipeTimeProps> = ({
             className={"w-12"}
             editing={editing}
             element="i"
-            value={editedPrepTime}
+            value={editing ? editedPrepTime : prepTime}
             onChange={(e) => {
               updateEditedRecipe("prepTime", +e.currentTarget.value);
             }}
@@ -50,7 +50,7 @@ export const RecipeTime: FC<RecipeTimeProps> = ({
             className={"w-12"}
             editing={editing}
             element="i"
-            value={editedCookTime}
+            value={editing ? editedCookTime : cookTime}
             onChange={(e) => {
               updateEditedRecipe("cookTime", +e.currentTarget.value);
             }}
