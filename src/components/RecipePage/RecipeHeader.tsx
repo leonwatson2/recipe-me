@@ -20,6 +20,9 @@ export const RecipeHeader: FC<RecipeHeaderProps> = ({
         value={name}
         editing={editing}
         className="text-7xl mb-12"
+        onChange={(e: React.FormEvent<HTMLTextAreaElement>) => {
+          updateEditedRecipe("intro", e.currentTarget.value);
+        }}
       />
 
       <Editable
