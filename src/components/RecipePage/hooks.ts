@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useToggle } from "../../utils";
+import { useLog, useToggle } from "../../utils";
 import { ModifyListItemFunction, Recipe } from "../../types";
 
 export type UpdateRecipeType = <T extends keyof Recipe, K extends Recipe[T]>(
@@ -53,7 +53,6 @@ export const useEditingRecipe = (recipe?: Recipe) => {
           newInstructions.splice(i, 1);
         if (newInstructions[i] === "") foundEmpty = true;
       }
-      // newInstructions = Array.from(new Set(newInstructions));
 
       return {
         ...oldR,
@@ -71,14 +70,13 @@ export const useEditingRecipe = (recipe?: Recipe) => {
       let newIngredients = [...(oldR?.ingredients || [])];
       if (newIngredients[index + 1] === "") return oldR;
       newIngredients.splice(index + 1, 0, "");
-      // if (!force) {
-      //   for (let i = 0, foundEmpty = false; i < newIngredients.length; i++) {
-      //     if (foundEmpty && newIngredients[i] === "")
-      //       newIngredients.splice(i, 1);
-      //     if (newIngredients[i] === "") foundEmpty = true;
-      //   }
-      // }
-      if (!force) newIngredients = Array.from(new Set(newIngredients));
+      if (!force) {
+        for (let i = 0, foundEmpty = false; i < newIngredients.length; i++) {
+          if (foundEmpty && newIngredients[i] === "")
+            newIngredients.splice(i, 1);
+          if (newIngredients[i] === "") foundEmpty = true;
+        }
+      }
 
       return {
         ...oldR,
