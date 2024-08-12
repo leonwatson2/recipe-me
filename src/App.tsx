@@ -3,17 +3,16 @@ import "./index.css";
 
 import { MainNav } from "./components/Navigation";
 import { SvgElements } from "./assets/SvgElements.tsx";
-import { RecipePage } from "./components/RecipePage";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes.tsx";
 
 function App() {
   return (
     <>
-    <MainNav />
+      <MainNav />
       <SvgElements />
-      <RecipePage />
-      <footer className={'h-128 bg-black mt-60'}>
-
-      </footer>
+      <RouterProvider router={router} />
+      <footer className={"h-128 bg-black mt-60"}></footer>
     </>
   );
 }
