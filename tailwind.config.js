@@ -17,6 +17,7 @@ export default {
       },
       gridTemplateColumns: {
         orderedList: "0px 1fr",
+        listEditing: "1fr 40px 40px",
       },
     },
   },
