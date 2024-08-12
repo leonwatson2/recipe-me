@@ -19,14 +19,14 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/new",
-        element: <RecipePage isNew={true} />,
-      },
-      {
         path: "/:slug",
         element: <RecipePage />,
         loader: recipeLoader,
       },
     ],
+  },
+  {
+    path: "new",
+    element: <RecipePage isNew={true} />,
   },
 ]);
