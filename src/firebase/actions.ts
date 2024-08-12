@@ -8,6 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import { Recipe } from "../types";
+import "../firebase/config.ts";
 
 const db = getFirestore();
 
