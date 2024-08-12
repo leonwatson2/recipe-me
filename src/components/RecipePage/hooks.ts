@@ -101,6 +101,7 @@ export const useEditingRecipe = ({
       if (oldR === undefined) return undefined;
       let newIngredients = [...(oldR?.ingredients || [])];
       newIngredients.splice(index, 1);
+      if (newIngredients.length === 0) return oldR;
       return {
         ...oldR,
         ingredients: newIngredients,
@@ -112,6 +113,7 @@ export const useEditingRecipe = ({
       if (oldR === undefined) return undefined;
       let newInstructions = [...(oldR?.instructions || [])];
       newInstructions.splice(index, 1);
+      if (newInstructions.length === 0) return oldR;
       return {
         ...oldR,
         instructions: newInstructions,
