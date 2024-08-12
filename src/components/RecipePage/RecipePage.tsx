@@ -9,17 +9,20 @@ import { UpdateRecipeContext } from "./context";
 import { RecipeVideo } from "./RecipeVideo";
 import { useEditingRecipe } from "./hooks";
 import { SVG } from "../../assets/SvgElements";
-import { Recipe } from "../../types";
+import { createEmptyRecipe, Recipe } from "../../types";
 
-type RecipePageProps = {};
+type RecipePageProps = {
+  isNew?: boolean;
+};
 
-export const RecipePage: FC<RecipePageProps> = () => {
-  const [recipe, setRecipe] = useState<Recipe>();
+export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
+  const [recipe, setRecipe] = useState<Recipe>(createEmptyRecipe());
 
   const fetchRecipes = useCallback(() => {
-    getAllRecipes().then((recipes) => {
-      setRecipe(recipes[0]);
-    });
+    if (!isNew)
+      getAllRecipes().then((recipes) => {
+        setRecipe(recipes[0]);
+      });
   }, []);
 
   useEffect(() => {
@@ -36,7 +39,7 @@ export const RecipePage: FC<RecipePageProps> = () => {
     removeIngredient,
     removeInstruction,
     updateEditedRecipe,
-  } = useEditingRecipe(recipe);
+  } = useEditingRecipe({ recipe, isNew });
 
   const onConfirmUpdate = useCallback(() => {
     if (editedRecipe && recipe) {

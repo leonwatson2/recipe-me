@@ -9,8 +9,14 @@ export type UpdateRecipeType = <T extends keyof Recipe, K extends Recipe[T]>(
   index?: number,
 ) => void;
 
-export const useEditingRecipe = (recipe?: Recipe) => {
-  const [editing, toggleEditing] = useToggle();
+export const useEditingRecipe = ({
+  recipe,
+  isNew = false,
+}: {
+  recipe?: Recipe;
+  isNew?: boolean;
+}) => {
+  const [editing, toggleEditing] = useToggle(isNew);
   const [editedRecipe, setEditedRecipe] = useState<Recipe>();
 
   useEffect(() => {
