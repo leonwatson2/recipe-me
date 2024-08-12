@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { ModifyListItemFunction, Recipe } from "../../types";
-import { Editable } from "../utils";
+import { Editable, PlusMinusButtons } from "../utils";
 import { useUpdateRecipeContext } from "./context";
-import { handleListRemove } from "./RecipeIngredients";
 
 type RecipeInstructionsProps = {
   instructions?: Recipe["instructions"];
@@ -45,8 +44,13 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
                     index,
                   );
                 }}
-                onKeyUp={handleListRemove(removeInstruction, index)}
                 placeholder="Then you put the lime in the coconut"
+              />
+              <PlusMinusButtons
+                addFn={addInstruction}
+                removeFn={removeInstruction}
+                editing={editing}
+                index={index}
               />
             </li>
           );

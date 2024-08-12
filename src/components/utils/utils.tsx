@@ -1,4 +1,5 @@
 import { createElement, FC, useEffect, useState } from "react";
+import { SVG } from "../../assets/SvgElements";
 
 type EditableProps = {
   element: keyof React.ReactHTML;
@@ -35,6 +36,43 @@ export const Editable: FC<EditableProps> = ({
     );
   }
   return createElement(element, props, value);
+};
+
+export const PlusMinusButtons: FC<{
+  addFn: (index: number, force?: boolean) => void;
+  removeFn: (index: number, force?: boolean) => void;
+  index: number;
+  editing: boolean;
+}> = ({ addFn, removeFn, index, editing }) => {
+  if (!editing) return null;
+  return (
+    <>
+      <SVG
+        title="plus"
+        className="w-16 h-10 cursor-pointer"
+        svgClassName="fill-primary hover:fill-grey  transition-colors "
+        tabIndex={0}
+        onClick={(e) => {
+          addFn(index, true);
+
+          const parent = e.currentTarget.parentElement;
+          setTimeout(
+            () => (parent?.nextSibling?.firstChild as HTMLElement).focus(),
+            50,
+          );
+        }}
+      />
+      <SVG
+        title="minus"
+        className="w-16 h-10 cursor-pointer"
+        svgClassName="fill-primary hover:fill-grey  transition-colors"
+        tabIndex={0}
+        onClick={() => {
+          removeFn(index);
+        }}
+      />
+    </>
+  );
 };
 
 function isObject(value: unknown): value is Record<string, any> {

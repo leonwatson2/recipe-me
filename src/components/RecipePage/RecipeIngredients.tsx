@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { ModifyListItemFunction, Recipe } from "../../types";
 import { useUpdateRecipeContext } from "./context";
-import { Editable } from "../utils";
+import { Editable, PlusMinusButtons } from "../utils";
 
 type RecipeIngredientsProps = {
   editedIngredients?: Recipe["ingredients"];
@@ -22,8 +22,8 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
       <ul className="mt-6">
         {(editing ? editedIngredients : ingredients).map((ing, index) => (
           <li
-            key={`${ing}`}
-            className="text-xl mt-3"
+            key={`${editing ? index : ing}`}
+            className='text-xl mt-3 group-data-[editing="true"]:grid grid-cols-listEditing group-data-[editing="true"]:gap-2'
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
@@ -43,8 +43,13 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
                   index,
                 );
               }}
-              onKeyUp={handleListRemove(removeIngredient, index)}
               placeholder={"Some more cowbell"}
+            />
+            <PlusMinusButtons
+              addFn={addIngredient}
+              removeFn={removeIngredient}
+              index={index}
+              editing={editing}
             />
           </li>
         ))}
@@ -52,21 +57,3 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
     </section>
   );
 };
-
-export const handleListRemove =
-  (removeFunction: ModifyListItemFunction, index: number) =>
-  (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.currentTarget.value === "") {
-      if (e.key === "Delete") {
-        e.preventDefault();
-        (
-          e.currentTarget.parentNode?.previousSibling?.firstChild as HTMLElement
-        )?.focus();
-        removeFunction(index);
-      }
-    } else if (e.key === "Enter") {
-      (
-        e.currentTarget.parentNode?.nextSibling?.firstChild as HTMLElement
-      )?.focus();
-    }
-  };
