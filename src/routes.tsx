@@ -3,6 +3,7 @@ import { getAllRecipes, getRecipeBySlug } from "./firebase/actions";
 import { RecipePage } from "./components/RecipePage";
 import ErrorPage from "./components/ErrorPage";
 import { Root } from "./components/Root";
+import { RecipeList } from "./components/RecipeList";
 
 export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
   params,
@@ -21,10 +22,10 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <RecipePage />,
+        element: <RecipeList />,
         loader: async () => {
           const recipes = await getAllRecipes();
-          return { recipe: recipes[0] };
+          return recipes;
         },
       },
       {
