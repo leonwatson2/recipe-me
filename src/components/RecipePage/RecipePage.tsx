@@ -38,7 +38,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
   const onConfirmUpdate = useCallback(() => {
     if (isNew && editedRecipe) {
       addRecipe(editedRecipe).then((slug) => {
-        navigate(`/${slug}`);
+        navigate(`/recipe/${slug}`);
       });
     } else if (editedRecipe && recipe) {
       updateRecipe(editedRecipe).then(() => {
