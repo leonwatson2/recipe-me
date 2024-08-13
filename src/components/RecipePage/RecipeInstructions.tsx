@@ -44,6 +44,13 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
                     index,
                   );
                 }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const instructions = e.clipboardData
+                    .getData("text")
+                    .split("\n");
+                  addInstruction(index, instructions);
+                }}
                 placeholder="Then you put the lime in the coconut"
               />
               <PlusMinusButtons

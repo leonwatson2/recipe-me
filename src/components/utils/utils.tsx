@@ -1,5 +1,6 @@
 import { createElement, FC, useEffect, useState } from "react";
 import { SVG } from "../../assets/SvgElements";
+import { ModifyListItemFunction } from "../../types";
 
 type EditableProps = {
   element: keyof React.ReactHTML;
@@ -12,7 +13,8 @@ export const Editable: FC<EditableProps> = ({
   value,
   ...props
 }) => {
-  const { className, onChange, onKeyUp, maxLength, placeholder } = props;
+  const { className, onChange, onKeyUp, maxLength, placeholder, onPaste } =
+    props;
   const [innerValue, setInnerValue] = useState<string | number>("Nothing");
   useEffect(() => {
     setInnerValue(value);
@@ -24,7 +26,7 @@ export const Editable: FC<EditableProps> = ({
         value={innerValue}
         onChange={(e) => setInnerValue(e.currentTarget.value.replace("\n", ""))}
         onBlur={onChange}
-        rows={Math.ceil(innerValue.toString().length / 40)}
+        rows={Math.ceil((innerValue.toString().length + 1) / 40)}
         maxLength={maxLength}
         className={
           className + " w-full bg-transparent cursor-pointer overflow-hidden"
@@ -32,6 +34,7 @@ export const Editable: FC<EditableProps> = ({
         onKeyUp={onKeyUp}
         placeholder={placeholder}
         autoFocus={innerValue === ""}
+        onPaste={onPaste}
       />
     );
   }
@@ -39,8 +42,8 @@ export const Editable: FC<EditableProps> = ({
 };
 
 export const PlusMinusButtons: FC<{
-  addFn: (index: number, force?: boolean) => void;
-  removeFn: (index: number, force?: boolean) => void;
+  addFn: ModifyListItemFunction;
+  removeFn: ModifyListItemFunction;
   index: number;
   editing: boolean;
 }> = ({ addFn, removeFn, index, editing }) => {
@@ -53,7 +56,7 @@ export const PlusMinusButtons: FC<{
         svgClassName="fill-primary hover:fill-grey  transition-colors "
         tabIndex={0}
         onClick={(e) => {
-          addFn(index, true);
+          addFn(index);
 
           const parent = e.currentTarget.parentElement;
           setTimeout(

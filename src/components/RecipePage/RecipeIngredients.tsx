@@ -43,6 +43,11 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
                   index,
                 );
               }}
+              onPaste={(e) => {
+                e.preventDefault();
+                const ingredients = e.clipboardData.getData("text").split("\n");
+                addIngredient(index, ingredients);
+              }}
               placeholder={"Some more cowbell"}
             />
             <PlusMinusButtons

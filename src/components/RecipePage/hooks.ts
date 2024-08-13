@@ -86,6 +86,14 @@ export const useEditingRecipe = ({
       if (oldR === undefined) return undefined;
       let newIngredients = [...(oldR?.ingredients || [])];
       if (newIngredients[index + 1] === "") return oldR;
+      if (items && items?.length > 0) {
+        newIngredients[index] = items[0];
+        items.shift();
+        return {
+          ...oldR,
+          ingredients: newIngredients.concat(items),
+        };
+      }
       newIngredients.splice(index + 1, 0, "");
 
       for (let i = 0, foundEmpty = false; i < newIngredients.length; i++) {
