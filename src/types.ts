@@ -29,7 +29,10 @@ export type Recipe = {
 
 export type NewRecipe = Recipe;
 
-export type ModifyListItemFunction = (index: number, force?: boolean) => void;
+export type ModifyListItemFunction = (
+  index: number,
+  values?: Array<string>,
+) => void;
 
 export const createEmptyRecipe: () => NewRecipe = () => {
   return {
@@ -50,3 +53,15 @@ export const createEmptyRecipe: () => NewRecipe = () => {
     notes: "",
   };
 };
+
+export function isRecipe(value: unknown): value is Recipe {
+  const possibleRecipe = value as Recipe;
+  return (
+    possibleRecipe !== undefined &&
+    possibleRecipe.name !== undefined &&
+    possibleRecipe.slug !== undefined &&
+    possibleRecipe.id !== undefined &&
+    Array.isArray(possibleRecipe.ingredients) &&
+    Array.isArray(possibleRecipe.instructions)
+  );
+}

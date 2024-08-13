@@ -13,6 +13,6 @@ export const useToggle = (
 
 export const useLog = <T>(loggedValue: T, deps?: React.DependencyList) => {
   useEffect(() => {
-    console.log(loggedValue);
+    if (import.meta.env.DEV) console.log(loggedValue);
   }, deps);
 };

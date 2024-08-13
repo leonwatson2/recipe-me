@@ -55,10 +55,18 @@ export const useEditingRecipe = ({
     [editedRecipe],
   );
 
-  const addInstruction = (index: number) => {
+  const addInstruction: ModifyListItemFunction = (index: number, items) => {
     setEditedRecipe((oldR) => {
       if (oldR === undefined) return undefined;
       let newInstructions = [...(oldR?.instructions || [])];
+      if (items && items?.length > 0) {
+        newInstructions[index] = items[0];
+        items.shift();
+        return {
+          ...oldR,
+          instructions: newInstructions.concat(items),
+        };
+      }
       newInstructions.splice(index + 1, 0, "");
       for (let i = 0, foundEmpty = false; i < newInstructions.length; i++) {
         if (foundEmpty && newInstructions[i] === "")
@@ -73,21 +81,16 @@ export const useEditingRecipe = ({
     });
   };
 
-  const addIngredient: ModifyListItemFunction = (
-    index: number,
-    force: boolean = false,
-  ) => {
+  const addIngredient: ModifyListItemFunction = (index: number, items = []) => {
     setEditedRecipe((oldR) => {
       if (oldR === undefined) return undefined;
       let newIngredients = [...(oldR?.ingredients || [])];
       if (newIngredients[index + 1] === "") return oldR;
       newIngredients.splice(index + 1, 0, "");
-      if (!force) {
-        for (let i = 0, foundEmpty = false; i < newIngredients.length; i++) {
-          if (foundEmpty && newIngredients[i] === "")
-            newIngredients.splice(i, 1);
-          if (newIngredients[i] === "") foundEmpty = true;
-        }
+
+      for (let i = 0, foundEmpty = false; i < newIngredients.length; i++) {
+        if (foundEmpty && newIngredients[i] === "") newIngredients.splice(i, 1);
+        if (newIngredients[i] === "") foundEmpty = true;
       }
 
       return {

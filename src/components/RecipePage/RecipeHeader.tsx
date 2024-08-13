@@ -19,7 +19,7 @@ export const RecipeHeader: FC<RecipeHeaderProps> = ({
         element="h1"
         value={name}
         editing={editing}
-        className="text-7xl mb-12"
+        className="text-7xl mb-12 pt-7"
         placeholder="My dope recipe"
         onChange={(e: React.FormEvent<HTMLTextAreaElement>) => {
           updateEditedRecipe("name", e.currentTarget.value);

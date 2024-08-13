@@ -6,6 +6,7 @@ import {
   doc,
   query,
   where,
+  addDoc,
 } from "firebase/firestore";
 import { Recipe } from "../types";
 import "../firebase/config.ts";
@@ -34,6 +35,17 @@ export const updateRecipe = async (updatedRecipe: Recipe): Promise<void> => {
     console.log("updated", snapshot);
   } catch {
     throw Error("Something went wrong updating recipe");
+  }
+};
+
+export const addRecipe = async (newRecipe: Recipe): Promise<string> => {
+  try {
+    const recipeCol = collection(db, `recipes`);
+    newRecipe.slug = newRecipe.name.toLowerCase().trim().replaceAll(" ", "-");
+    await addDoc(recipeCol, newRecipe);
+    return newRecipe.slug;
+  } catch {
+    throw Error("Something went adding recipe");
   }
 };
 

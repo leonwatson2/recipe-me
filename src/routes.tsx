@@ -1,5 +1,5 @@
 import { createBrowserRouter, LoaderFunction } from "react-router-dom";
-import { getRecipeBySlug } from "./firebase/actions";
+import { getAllRecipes, getRecipeBySlug } from "./firebase/actions";
 import { RecipePage } from "./components/RecipePage";
 import ErrorPage from "./components/ErrorPage";
 
@@ -8,22 +8,29 @@ export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
 }) => {
   if (params.slug) {
     const recipe = await getRecipeBySlug(params.slug);
-
     return { recipe };
   }
 };
+
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RecipePage />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "/:slug",
-        element: <RecipePage />,
-        loader: recipeLoader,
-      },
-    ],
+    loader: async () => {
+      const recipes = await getAllRecipes();
+      return { recipe: recipes[0] };
+    },
+  },
+  {
+    path: "recipe/:slug",
+    element: <RecipePage />,
+    loader: async ({ params }) => {
+      if (params.slug) {
+        const recipe = await getRecipeBySlug(params.slug);
+        return { recipe };
+      }
+    },
   },
   {
     path: "new",
