@@ -1,24 +1,22 @@
-
 #root {
   --max-width-nav: 75rem;
   margin: 0 auto;
   width: 100%;
 }
 
-
 .logo-container {
   width: 215px;
   height: 100%;
 }
 
-.preparation ol>li {
+.preparation ol > li {
   counter-increment: step-counter;
-  
 }
-.preparation ol>li::before {
+.preparation ol > li::before {
   content: counter(step-counter);
 }
-.video-container{
-  box-shadow: -10px -10px 10px white,
-                12px 12px 12px theme(colors.grey);
+.video-container {
+  box-shadow:
+    -3px -3px 3px white,
+    12px 12px 12px theme(colors.grey);
 }
