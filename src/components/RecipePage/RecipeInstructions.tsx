@@ -17,7 +17,7 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
 }) => {
   const { updateEditedRecipe, editing } = useUpdateRecipeContext();
   return (
-    <section className="preparation min-w-96 max-w-128">
+    <section className="preparation mt-7  md:ml-4 md:mt-0">
       <header className="font-bold text-4xl">Preparation</header>
       <ol className="instructions mt-6 ml-6 list-outside">
         {(editing ? editedInstruction : instructions).map((ing, index) => {
@@ -30,7 +30,7 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
                   addInstruction(index);
                 }
               }}
-              className="grid grid-flow-col grid-cols-orderedList justify-start items-start text-xl mt-3 -ml-6 before:w-6 before:font-extrabold before:inline-block before:text-grey before:-ml-6 "
+              className="grid grid-flow-col grid-cols-orderedList justify-start items-start text-xl mt-3 before:w-6 before:font-extrabold before:inline-block before:text-grey before:-ml-6 "
             >
               <Editable
                 editing={editing}

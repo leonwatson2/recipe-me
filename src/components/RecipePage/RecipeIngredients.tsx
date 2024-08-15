@@ -17,7 +17,7 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
 }) => {
   const { editing, updateEditedRecipe } = useUpdateRecipeContext();
   return (
-    <section className="ingredients min-w-96 max-w-128 mr-10">
+    <section className="ingredients">
       <header className="font-bold text-4xl">Ingredients</header>
       <ul className="mt-6">
         {(editing ? editedIngredients : ingredients).map((ing, index) => (
@@ -36,6 +36,7 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
               element="div"
               value={ing}
               className="inline-block"
+              wrap="wrap"
               onChange={(e: React.FormEvent<HTMLTextAreaElement>) => {
                 updateEditedRecipe(
                   "ingredients",

@@ -13,8 +13,15 @@ export const Editable: FC<EditableProps> = ({
   value,
   ...props
 }) => {
-  const { className, onChange, onKeyUp, maxLength, placeholder, onPaste } =
-    props;
+  const {
+    className,
+    onChange,
+    onKeyUp,
+    maxLength,
+    placeholder,
+    onPaste,
+    wrap,
+  } = props;
   const [innerValue, setInnerValue] = useState<string | number>("Nothing");
   useEffect(() => {
     setInnerValue(value);
@@ -23,10 +30,15 @@ export const Editable: FC<EditableProps> = ({
   if (editing) {
     return (
       <textarea
+        wrap={wrap}
         value={innerValue}
         onChange={(e) => setInnerValue(e.currentTarget.value.replace("\n", ""))}
         onBlur={onChange}
-        rows={Math.ceil((innerValue.toString().length + 1) / 40)}
+        rows={
+          wrap !== "wrap"
+            ? Math.ceil((innerValue.toString().length + 1) / 40)
+            : 2
+        }
         maxLength={maxLength}
         className={
           className + " w-full bg-transparent cursor-pointer overflow-hidden"
@@ -52,7 +64,7 @@ export const PlusMinusButtons: FC<{
     <>
       <SVG
         title="plus"
-        className="w-16 h-10 cursor-pointer"
+        className="w-16 max-w-fit h-10 cursor-pointer"
         svgClassName="fill-primary hover:fill-grey  transition-colors "
         tabIndex={0}
         onClick={(e) => {
@@ -67,7 +79,7 @@ export const PlusMinusButtons: FC<{
       />
       <SVG
         title="minus"
-        className="w-16 h-10 cursor-pointer"
+        className="w-16 max-w-fit h-10 cursor-pointer"
         svgClassName="fill-primary hover:fill-grey  transition-colors"
         tabIndex={0}
         onClick={() => {
