@@ -4,6 +4,7 @@ import { RecipePage } from "./components/RecipePage";
 import ErrorPage from "./components/ErrorPage";
 import { Root } from "./components/Root";
 import { RecipeList } from "./components/RecipeList";
+import { PrivacyPolicy } from "./components/PrivacyPolicy";
 
 export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
   params,
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: "new",
         element: <RecipePage isNew={true} />,
+      },
+      {
+        path: "privacy",
+        element: <PrivacyPolicy />,
       },
     ],
   },
