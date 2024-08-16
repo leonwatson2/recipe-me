@@ -137,7 +137,11 @@ const EditingButton = ({
   };
   return (
     <>
-      <button className="absolute top-10 right-0" onClick={editButtonClick}>
+      <button
+        className="absolute top-10 right-0"
+        tabIndex={1}
+        onClick={editButtonClick}
+      >
         {isNew && (
           <SVG
             title="checkmark"
@@ -145,6 +149,7 @@ const EditingButton = ({
               "transition-opacity duration-300 " +
               (updated ? "opacity-100" : "opacity-0 cursor-default")
             }
+            tabIndex={updated ? 0 : -1}
             height={40}
             width={40}
           ></SVG>
@@ -154,6 +159,7 @@ const EditingButton = ({
             className={`absolute right-10 transition-opacity duration-300 
             ${editing ? "opacity-100" : "opacity-0 cursor-default"}`}
             title="checkmark"
+            tabIndex={editing ? 0 : -1}
             height={40}
             width={40}
           ></SVG>
@@ -164,6 +170,7 @@ const EditingButton = ({
           svgClassName="fill-brown"
           className={`absolute right-10 transition-opacity duration-300 
             ${editing ? "opacity-0 cursor-default" : "opacity-100"}`}
+          tabIndex={editing ? -1 : 0}
           height={40}
           width={40}
         ></SVG>

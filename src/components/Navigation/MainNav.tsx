@@ -21,6 +21,9 @@ export function MainNav() {
             <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
               <Link to={"/"}>Recipes</Link>
             </li>
+            <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
+              <Link to={"/new"}>New Recipe</Link>
+            </li>
             <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
               <SearchBar />
             </li>
@@ -54,7 +57,7 @@ export function MainNav() {
                       className="w-full h-full flex items-center"
                       to={"/new"}
                     >
-                      Add Recipe
+                      New Recipe
                     </Link>
                   </li>
                   <li
