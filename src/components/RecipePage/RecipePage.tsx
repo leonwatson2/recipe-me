@@ -140,29 +140,33 @@ const EditingButton = ({
       <button className="absolute top-10 right-0" onClick={editButtonClick}>
         {isNew && (
           <SVG
-            hidden={!updated}
             title="checkmark"
-            className={"transition"}
+            className={
+              "transition-opacity duration-300 " +
+              (updated ? "opacity-100" : "opacity-0 cursor-default")
+            }
             height={40}
             width={40}
           ></SVG>
         )}
-        {editing && !isNew && (
+        {!isNew && (
           <SVG
+            className={`absolute right-10 transition-opacity duration-300 
+            ${editing ? "opacity-100" : "opacity-0 cursor-default"}`}
             title="checkmark"
-            className={"transition"}
             height={40}
             width={40}
           ></SVG>
         )}
-        {!editing && (
-          <SVG
-            title="arrow-down"
-            svgClassName="fill-brown"
-            height={40}
-            width={40}
-          ></SVG>
-        )}
+
+        <SVG
+          title="arrow-down"
+          svgClassName="fill-brown"
+          className={`absolute right-10 transition-opacity duration-300 
+            ${editing ? "opacity-0 cursor-default" : "opacity-100"}`}
+          height={40}
+          width={40}
+        ></SVG>
       </button>
       <dialog ref={dialogRef} className="w-full max-w-7xl bg-brown text-white">
         <div className="w-full h-full grid grid-cols-2 gap-2 p-7">
