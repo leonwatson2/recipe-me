@@ -19,7 +19,7 @@ export function MainNav() {
               />
             </li>
             <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
-              Recipes
+              <Link to={"/"}>Recipes</Link>
             </li>
             <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
               <SearchBar />
@@ -39,7 +39,7 @@ export function MainNav() {
                 className="peer hidden"
               />
               <div
-                className="absolute top-0 right-0 translate-x-full bg-grey w-full md:hidden peer-checked:translate-x-0 transition"
+                className="absolute top-0 right-0 -translate-y-full bg-grey w-full md:hidden peer-checked:translate-y-0 transition overflow-hidden"
                 autoFocus
                 onBlur={() => {
                   if (hamMenuRef.current) hamMenuRef.current.checked = false;

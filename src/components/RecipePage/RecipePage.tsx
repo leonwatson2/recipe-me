@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef } from "react";
+import { FC, useCallback, useMemo, useRef } from "react";
 import "../../firebase/config";
 import { addRecipe, updateRecipe } from "../../firebase/actions";
 import { RecipeTime } from "./RecipeTime";
@@ -19,7 +19,11 @@ type RecipePageProps = {
 export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
   const data = useLoaderData() as { recipe: unknown };
   const revalidator = useRevalidator();
-  const recipe = isRecipe(data?.recipe) ? data.recipe : createEmptyRecipe();
+  const recipe = useMemo(
+    () =>
+      isRecipe(data?.recipe) && !isNew ? data.recipe : createEmptyRecipe(),
+    [isNew],
+  );
 
   const navigate = useNavigate();
 
@@ -63,6 +67,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
           toggleEditing={toggleEditing}
           editing={editing}
           updated={updated}
+          isNew={isNew}
           onConfirmUpdate={onConfirmUpdate}
         />
         <RecipeHeader
@@ -102,19 +107,23 @@ const EditingBar = () => {
   );
 };
 
-const EditingButton = ({
-  toggleEditing,
-  editing,
-  updated,
-  onConfirmUpdate,
-}: {
+type EditingButtonProps = {
   toggleEditing: () => void;
   editing: boolean;
   updated: boolean;
+  isNew: boolean;
   onConfirmUpdate: () => void;
-}) => {
+};
+const EditingButton = ({
+  isNew,
+  editing,
+  updated,
+  toggleEditing,
+  onConfirmUpdate,
+}: EditingButtonProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const onCancelClick = () => {
+  const editButtonClick = () => {
+    if (isNew && !updated) return;
     if (editing && updated) {
       dialogRef.current?.showModal();
     } else {
@@ -128,8 +137,32 @@ const EditingButton = ({
   };
   return (
     <>
-      <button className="absolute top-10 right-0" onClick={onCancelClick}>
-        <SVG title="swap" height={40} width={40}></SVG>
+      <button className="absolute top-10 right-0" onClick={editButtonClick}>
+        {isNew && (
+          <SVG
+            hidden={!updated}
+            title="checkmark"
+            className={"transition"}
+            height={40}
+            width={40}
+          ></SVG>
+        )}
+        {editing && !isNew && (
+          <SVG
+            title="checkmark"
+            className={"transition"}
+            height={40}
+            width={40}
+          ></SVG>
+        )}
+        {!editing && (
+          <SVG
+            title="arrow-down"
+            svgClassName="fill-brown"
+            height={40}
+            width={40}
+          ></SVG>
+        )}
       </button>
       <dialog ref={dialogRef} className="w-full max-w-7xl bg-brown text-white">
         <div className="w-full h-full grid grid-cols-2 gap-2 p-7">
@@ -137,7 +170,7 @@ const EditingButton = ({
           <button
             className="bg-black h-16 uppercase"
             onClick={() => {
-              toggleEditing();
+              if (!isNew) toggleEditing();
               dialogRef.current?.close();
             }}
           >
