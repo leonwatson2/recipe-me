@@ -14,6 +14,7 @@ const firebaseConfig = {
   messagingSenderId: ENV.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: ENV.VITE_FIREBASE_APP_ID,
 };
+export const GOOGLE_AUTH_CLIENT_ID = ENV.VITE_GOOGLE_AUTH_CLIENT_ID
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
