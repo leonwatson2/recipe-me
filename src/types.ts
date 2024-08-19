@@ -7,10 +7,11 @@ export type VITE_ENV = {
   VITE_FIREBASE_STORAGE_BUCKET: string;
   VITE_FIREBASE_MESSAGING_SENDER_ID: string;
   VITE_FIREBASE_APP_ID: string;
+  VITE_GOOGLE_AUTH_CLIENT_ID: string;
 };
 
 export type Recipe = {
-  id: any;
+  id: string;
   slug: string;
   name: string;
   cookTime: number;
