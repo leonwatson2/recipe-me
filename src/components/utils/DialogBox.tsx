@@ -9,7 +9,7 @@ export const DialogBox = forwardRef<HTMLDialogElement, DialogBoxProps>(
     return (
       <dialog
         ref={dialogRef}
-        className="absolute mt-auto w-full top-96 max-w-7xl max-h-none bg-brown text-white"
+        className="absolute mt-auto w-full top-96 max-w-7xl max-h-none bg-brown text-white drop-shadow-lg"
       >
         <div className={"w-full h-full " + className}>
           <h2 className="col-span-full text-3xl py-6 text-center">{title}</h2>
