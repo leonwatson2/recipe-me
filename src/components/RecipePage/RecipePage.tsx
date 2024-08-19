@@ -11,6 +11,7 @@ import { useEditingRecipe } from "./hooks";
 import { SVG } from "../../assets/SvgElements";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { createEmptyRecipe, isRecipe } from "../../types";
+import { DialogBox } from "../utils/DialogBox";
 
 type RecipePageProps = {
   isNew?: boolean;
@@ -22,7 +23,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
   const recipe = useMemo(
     () =>
       isRecipe(data?.recipe) && !isNew ? data.recipe : createEmptyRecipe(),
-    [isNew],
+    [isNew, data],
   );
 
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
         revalidator.revalidate();
       });
     }
-  }, [editedRecipe, recipe]);
+  }, [editedRecipe, recipe, isNew, navigate, revalidator]);
 
   return (
     <UpdateRecipeContext.Provider
@@ -175,23 +176,24 @@ const EditingButton = ({
           width={40}
         ></SVG>
       </button>
-      <dialog ref={dialogRef} className="w-full max-w-7xl bg-brown text-white">
-        <div className="w-full h-full grid grid-cols-2 gap-2 p-7">
-          <p className="col-span-2 text-3xl py-6 text-center">Save Changes</p>
-          <button
-            className="bg-black h-16 uppercase"
-            onClick={() => {
-              if (!isNew) toggleEditing();
-              dialogRef.current?.close();
-            }}
-          >
-            Cancel
-          </button>
-          <button className="bg-black h-16 uppercase" onClick={onConfirmClick}>
-            Confirm
-          </button>
-        </div>
-      </dialog>
+      <DialogBox
+        title={"Save Changes"}
+        className="grid grid-cols-2 gap-2 p-7"
+        ref={dialogRef}
+      >
+        <button
+          className="bg-black h-16 uppercase"
+          onClick={() => {
+            if (!isNew) toggleEditing();
+            dialogRef.current?.close();
+          }}
+        >
+          Cancel
+        </button>
+        <button className="bg-black h-16 uppercase" onClick={onConfirmClick}>
+          Confirm
+        </button>
+      </DialogBox>
     </>
   );
 };

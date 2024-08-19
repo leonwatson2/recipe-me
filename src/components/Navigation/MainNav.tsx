@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { SVG } from "../../assets/SvgElements";
 import { SearchBar } from "./SearchBar";
 import { useEffect, useRef } from "react";
+import { ProfileButton } from "./ProfileButton";
+import { GoogleLoginDialog } from "../auth";
 
 export function MainNav() {
+  const profileDialogRef = useRef<HTMLDialogElement>(null);
   const { hamMenuRef, headerRef, closeMenu } = useMenuClick();
   return (
     <>
@@ -27,6 +30,10 @@ export function MainNav() {
             <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
               <SearchBar />
             </li>
+            <li className="w-16 flex justify-center items-center">
+              <ProfileButton dialogRef={profileDialogRef} />
+              <GoogleLoginDialog ref={profileDialogRef} />
+            </li>
             <label htmlFor="menu" className="right-2 top-2 md:hidden">
               <SVG
                 className="absolute right-2 top-2 md:hidden"
@@ -34,6 +41,7 @@ export function MainNav() {
                 width={40}
                 height={40}
               />
+
               <input
                 ref={hamMenuRef}
                 type="checkbox"
