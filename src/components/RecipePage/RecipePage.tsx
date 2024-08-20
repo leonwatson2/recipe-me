@@ -12,7 +12,8 @@ import { SVG } from "../../assets/SvgElements";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { createEmptyRecipe, isRecipe } from "../../types";
 import { DialogBox } from "../utils/DialogBox";
-import { useUserContext } from "../auth";
+import { useProtectedRoute, useUserContext } from "../auth";
+import { Button } from "../utils";
 
 type RecipePageProps = {
   isNew?: boolean;
@@ -21,12 +22,13 @@ type RecipePageProps = {
 export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
   const data = useLoaderData() as { recipe: unknown };
   const revalidator = useRevalidator();
+  const { user } = useUserContext()
   const recipe = useMemo(
     () =>
       isRecipe(data?.recipe) && !isNew ? data.recipe : createEmptyRecipe(),
     [isNew, data],
   );
-
+  useProtectedRoute(isNew && !!user?.isAdmin)
   const navigate = useNavigate();
 
   const {
@@ -40,7 +42,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
     removeInstruction,
     updateEditedRecipe,
   } = useEditingRecipe({ recipe, isNew });
-
+  
   const onConfirmUpdate = useCallback(() => {
     if (isNew && editedRecipe) {
       addRecipe(editedRecipe).then((slug) => {
@@ -181,21 +183,20 @@ const EditingButton = ({
       </button>
       <DialogBox
         title={"Save Changes"}
-        className="grid grid-cols-2 gap-2 p-7"
+        className="grid grid-cols-2 gap-2"
         ref={dialogRef}
       >
-        <button
-          className="bg-black h-16 uppercase"
+      <Button 
           onClick={() => {
             if (!isNew) toggleEditing();
             dialogRef.current?.close();
           }}
         >
           Cancel
-        </button>
-        <button className="bg-black h-16 uppercase" onClick={onConfirmClick}>
+        </Button>
+        <Button onClick={onConfirmClick}>
           Confirm
-        </button>
+        </Button>
       </DialogBox>
     </>
   );
