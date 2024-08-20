@@ -14,6 +14,7 @@ export type GoogleUser = {
 export type User = {
   favorites: Array<string>;
   isAdmin: boolean;
+  email: string;
 }
 
 export function isUser(user:User): user is User {
