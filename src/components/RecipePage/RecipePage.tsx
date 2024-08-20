@@ -12,6 +12,7 @@ import { SVG } from "../../assets/SvgElements";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { createEmptyRecipe, isRecipe } from "../../types";
 import { DialogBox } from "../utils/DialogBox";
+import { useUserContext } from "../auth";
 
 type RecipePageProps = {
   isNew?: boolean;
@@ -123,6 +124,7 @@ const EditingButton = ({
   onConfirmUpdate,
 }: EditingButtonProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const { loggedIn } = useUserContext()
   const editButtonClick = () => {
     if (isNew && !updated) return;
     if (editing && updated) {
@@ -131,11 +133,12 @@ const EditingButton = ({
       toggleEditing();
     }
   };
-  const onConfirmClick = async () => {
-    await dialogRef.current?.close();
+  const onConfirmClick = () => {
+    dialogRef.current?.close();
     toggleEditing();
     onConfirmUpdate();
   };
+  if(!loggedIn) return <></>;
   return (
     <>
       <button
