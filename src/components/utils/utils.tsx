@@ -112,4 +112,10 @@ export function deepEqual<T>(x: T, y: T): boolean {
   }
 
   return true;
+
+}
+
+export function isArray(value: any): value is Array<any> {
+  if (Array.isArray(value)) return true;
+  return false;
 }
