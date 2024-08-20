@@ -28,7 +28,6 @@ export const useUser: () => UserContextType = () => {
   const [googleUser, setGoogleUser] = useState<GoogleUser>()
   const [loggedIn, setLoggedIn] = useState(false)
   const login = useCallback((googleUser: GoogleUser) => {
-    console.log(googleUser)
     setLoggedIn(true)
     setGoogleUser(googleUser)
   }, [setGoogleUser, setLoggedIn])
