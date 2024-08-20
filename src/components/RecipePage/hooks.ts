@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useToggle } from "../../utils";
 import { ModifyListItemFunction, Recipe } from "../../types";
-import { deepEqual } from "../utils";
+import { deepEqual, isArray } from "../utils";
 
 export type UpdateRecipeType = <T extends keyof Recipe, K extends Recipe[T]>(
   property: T,
-  value: K,
+  value: [K] | K,
   index?: number,
 ) => void;
 
@@ -20,10 +20,18 @@ export const useEditingRecipe = ({
   const [editedRecipe, setEditedRecipe] = useState<Recipe>();
 
   useEffect(() => {
+    if (isNew) {
+      toggleEditing(true);
+    } else {
+      toggleEditing(false);
+    }
+  }, [isNew, toggleEditing]);
+
+  useEffect(() => {
     if (editing) {
       setEditedRecipe(recipe);
     }
-  }, [editing]);
+  }, [editing, setEditedRecipe, recipe]);
 
   const updated = useMemo(() => {
     return !isSameRecipe(recipe, editedRecipe);
@@ -33,12 +41,12 @@ export const useEditingRecipe = ({
     (property, value, index) => {
       setEditedRecipe((oldR) => {
         if (oldR === undefined) return oldR;
-        if (Array.isArray(oldR[property])) {
+        if (isArray(oldR[property]) && isArray(value)) {
           if (index === undefined)
             throw new Error(
               "No index was passed for array property: " + property,
             );
-          let newArray = [...oldR[property]];
+          const newArray = [...oldR[property]];
           newArray[index] = value[0];
           return {
             ...oldR,
