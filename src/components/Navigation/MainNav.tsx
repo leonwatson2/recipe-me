@@ -3,11 +3,12 @@ import { SVG } from "../../assets/SvgElements";
 import { SearchBar } from "./SearchBar";
 import { useEffect, useRef } from "react";
 import { ProfileButton } from "./ProfileButton";
-import { GoogleLoginDialog } from "../auth";
+import { GoogleLoginDialog, useUserContext } from "../auth";
 
 export function MainNav() {
   const profileDialogRef = useRef<HTMLDialogElement>(null);
   const { hamMenuRef, headerRef, closeMenu } = useMenuClick();
+  const { user, loggedIn } = useUserContext()
   return (
     <>
       <header className="mx-auto center w-auto bg-primary sticky top-0 z-10">
@@ -24,10 +25,13 @@ export function MainNav() {
             <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
               <Link to={"/"}>Recipes</Link>
             </li>
-            <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
-              <Link to={"/new"}>New Recipe</Link>
-            </li>
-            <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
+                { user?.isAdmin && loggedIn && 
+                  <li
+                    className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
+                    <Link to={"/new"}>New Recipe</Link>
+                  </li>
+                }
+                <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
               <SearchBar />
             </li>
             <li className="w-16 flex justify-center items-center">
@@ -59,7 +63,7 @@ export function MainNav() {
                 }}
               >
                 <ul className="w-full" ref={headerRef}>
-                  <li
+                { user?.isAdmin && loggedIn && <li
                     className="h-20 text-center text-2xl border"
                     onClick={closeMenu}
                   >
@@ -70,6 +74,7 @@ export function MainNav() {
                       New Recipe
                     </Link>
                   </li>
+                }
                   <li
                     className="h-20 text-center text-2xl border"
                     onClick={closeMenu}
@@ -89,7 +94,7 @@ export function MainNav() {
   );
 }
 
-function useMenuClick() {
+export function useMenuClick() {
   const headerRef = useRef<HTMLUListElement>(null);
   const hamMenuRef = useRef<HTMLInputElement>(null);
 
