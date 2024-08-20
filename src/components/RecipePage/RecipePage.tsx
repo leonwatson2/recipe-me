@@ -28,7 +28,14 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
       isRecipe(data?.recipe) && !isNew ? data.recipe : createEmptyRecipe(),
     [isNew, data],
   );
-  useProtectedRoute(isNew && !!user?.isAdmin)
+  const canSeePage = useMemo(()=>{
+    if(!isNew)
+      return true
+    if(isNew && !!user?.isAdmin)
+      return true
+    return false
+  }, [user, isNew])
+  useProtectedRoute(canSeePage)
   const navigate = useNavigate();
 
   const {
