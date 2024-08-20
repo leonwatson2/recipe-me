@@ -32,7 +32,9 @@ export function MainNav() {
             </li>
             <li className="w-16 flex justify-center items-center">
               <ProfileButton dialogRef={profileDialogRef} />
-              <GoogleLoginDialog ref={profileDialogRef} />
+              <GoogleLoginDialog
+                ref={profileDialogRef}
+              />
             </li>
             <label htmlFor="menu" className="right-2 top-2 md:hidden">
               <SVG
