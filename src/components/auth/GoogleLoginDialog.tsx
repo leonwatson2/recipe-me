@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import { DialogBox } from "../utils/DialogBox";
 import { GoogleLogin } from "@react-oauth/google";
 import { getGoogleUserData } from "./actions";
-import { useUserContext } from "./context";
+import { updateUserLocalStorage, useUserContext } from "./context";
 import { Button } from "../utils";
 
 type GoogleLoginDialog = {
@@ -39,14 +39,12 @@ export const GoogleLoginDialog = forwardRef<
       ) : (
         <div className="grid justify-center m-0">
           <GoogleLogin
-            onSuccess={async (crendentialResponse) => {
-              await getGoogleUserData(crendentialResponse)
-                .then((googleUser) => {
-                  login(googleUser);
-                  innerRef?.current?.close();
-                  onSuccess && onSuccess();
-                })
-                .catch((e) => console.log(e));
+            onSuccess={(crendentialResponse) => {
+               const googleUser = getGoogleUserData(crendentialResponse?.credential || '') 
+               login(googleUser);
+               innerRef?.current?.close();
+               updateUserLocalStorage(crendentialResponse.credential || '')
+               onSuccess && onSuccess();
             }}
             onError={() => {
               console.log("Error while logging in");

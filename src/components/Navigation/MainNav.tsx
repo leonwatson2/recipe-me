@@ -25,13 +25,13 @@ export function MainNav() {
             <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
               <Link to={"/"}>Recipes</Link>
             </li>
-                { user?.isAdmin && loggedIn && 
-                  <li
-                    className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
-                    <Link to={"/new"}>New Recipe</Link>
-                  </li>
-                }
-                <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
+            {user?.isAdmin && loggedIn &&
+              <li
+                className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
+                <Link to={"/new"}>New Recipe</Link>
+              </li>
+            }
+            <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
               <SearchBar />
             </li>
             <li className="w-16 flex justify-center items-center">
@@ -63,7 +63,7 @@ export function MainNav() {
                 }}
               >
                 <ul className="w-full" ref={headerRef}>
-                { user?.isAdmin && loggedIn && <li
+                  {user?.isAdmin && loggedIn && <li
                     className="h-20 text-center text-2xl border"
                     onClick={closeMenu}
                   >
@@ -74,7 +74,7 @@ export function MainNav() {
                       New Recipe
                     </Link>
                   </li>
-                }
+                  }
                   <li
                     className="h-20 text-center text-2xl border"
                     onClick={closeMenu}

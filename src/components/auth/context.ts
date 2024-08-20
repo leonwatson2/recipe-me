@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 import { GoogleUser, User } from "./types";
 import { loginUser } from "../../firebase/actions";
 import { useNavigate } from "react-router-dom";
+import { getGoogleUserData } from "./actions";
 
 export type UserContextType = {
   googleUser?: GoogleUser;
@@ -36,13 +37,14 @@ export const useProtectedRoute = (isAllowed: boolean, redirect?: string) => {
 }
 
 const LS_CREDS = 'ga-creds'
-const LS_EXPIRE = 'rs-exipre'
+const LS_EXPIRE = 'rs-expire'
 const EXPIRE_DURATION_DAYS = 2
 
-const updateUserLocalStorage = (email:string) => {
+export const updateUserLocalStorage = (credential:string) => {
+  if(credential.length === 0) return
   const expireDate = new Date()
-  expireDate.setSeconds(expireDate.getDay()+EXPIRE_DURATION_DAYS)
-  localStorage.setItem(LS_CREDS, email)
+  expireDate.setDate(expireDate.getDate()+EXPIRE_DURATION_DAYS)
+  localStorage.setItem(LS_CREDS, credential)
   localStorage.setItem(LS_EXPIRE, expireDate.toJSON())
 }
 const clearUserLocalStorage = () => {
@@ -52,10 +54,10 @@ const clearUserLocalStorage = () => {
 const hasValidUserStorage = () => {
 
  if (localStorage.getItem(LS_CREDS)) {
-      const expireDateJSON = localStorage.getItem(LS_EXPIRE) as string
-      const expireDate = new Date(expireDateJSON)
+    const expireDateJSON = localStorage.getItem(LS_EXPIRE) as string
+    const expireDate = new Date(expireDateJSON)
     const currentTime = new Date()
-      if(expireDate.valueOf() > currentTime.valueOf()){ 
+    if(expireDate.valueOf() > currentTime.valueOf()){ 
       return true;
     }
   }
@@ -69,11 +71,11 @@ export const useUser: () => UserContextType = () => {
 
   useEffect(() => {
     if (loggedIn && user) {
-      updateUserLocalStorage(user.email)
+      return
     } else if (hasValidUserStorage()) {
-      const email = localStorage.getItem(LS_CREDS) as string
-      updateUserLocalStorage(email)
-      loginUser(email).then((userRes) => {
+      const credential = localStorage.getItem(LS_CREDS) as string
+      updateUserLocalStorage(credential)
+      loginUser(getGoogleUserData(credential).email).then((userRes) => {
         setUser(userRes);
         setLoggedIn(true)
 
