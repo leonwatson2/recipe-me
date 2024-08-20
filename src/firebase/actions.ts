@@ -7,9 +7,11 @@ import {
   query,
   where,
   addDoc,
+  getDoc,
 } from "firebase/firestore";
 import { isRecipe, Recipe } from "../types";
 import "../firebase/config.ts";
+import { User } from "../components/auth/types.ts";
 
 const db = getFirestore();
 
@@ -70,3 +72,40 @@ export const getRecipeBySlug = async (slug: string): Promise<Recipe> => {
     throw Error(`Something went wrong finding recipe with slug '${slug}'`);
   }
 };
+
+export const getUserById = async (id:string):Promise<User> => {
+  const docRef = doc(db, 'users', id)
+  const docSnap = await getDoc(docRef)
+  if(docSnap.exists()){
+    return docSnap.data() as User
+  } else {
+    throw Error("Couldn't find user with id")
+  }
+ 
+}
+
+export const addUser = async (email:string, isAdmin = false) => {
+  const newUserNoId = {
+    email,
+    isAdmin,
+    favorites: []
+  }
+  const userCol = collection(db, `users`);
+  const snapshot = await addDoc(userCol, newUserNoId);
+  if(snapshot.id){
+    return snapshot.id
+  }
+  throw Error("Failed making user")
+}
+export const loginUser = async (email:string):Promise<User> => {
+  
+  const q = query(collection(db, "users"), where("email", "==", email)); 
+  const snapshot = await getDocs(q)
+  if(snapshot.docs[0]){
+    return snapshot.docs[0].data() as User 
+  } else {
+    const id = await addUser(email)
+    return getUserById(id)
+  }
+
+}
