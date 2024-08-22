@@ -10,10 +10,11 @@ export function Root() {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_AUTH_CLIENT_ID}>
       <UserContext.Provider value={userContext} >
-
+        <div className="dark">
         <MainNav />
         <SvgElements />
         <Outlet />
+        </div>
       </UserContext.Provider>
     </GoogleOAuthProvider>
   );
