@@ -25,7 +25,7 @@ export const useEditingRecipe = ({
     } else {
       toggleEditing(false);
     }
-  }, [isNew, toggleEditing]);
+  }, [isNew]);
 
   useEffect(() => {
     if (editing) {
