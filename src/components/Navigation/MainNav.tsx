@@ -12,8 +12,8 @@ export function MainNav() {
   return (
     <>
       <header className="mx-auto center w-auto bg-primary sticky top-0 z-10">
-        <nav className="container mx-auto max-w-7xl max-h-16 min-h-16">
-          <ul className="flex text-xl">
+        <nav className="container mx-auto max-w-7xl h-16">
+          <ul className="flex text-xl h-16">
             <li className="logo-container border-x-grey pt-2">
               <SVG
                 title="the-logo"
@@ -34,7 +34,7 @@ export function MainNav() {
             <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
               <SearchBar />
             </li>
-            <li className="w-16 flex justify-center items-center">
+            <li className="w-16 flex justify-center items-center h-full">
               <ProfileButton dialogRef={profileDialogRef} />
               <GoogleLoginDialog
                 ref={profileDialogRef}

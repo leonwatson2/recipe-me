@@ -3,7 +3,7 @@ import { DialogBox } from "../utils/DialogBox";
 import { GoogleLogin } from "@react-oauth/google";
 import { getGoogleUserData } from "./actions";
 import { updateUserLocalStorage, useUserContext } from "./context";
-import { Button } from "../utils";
+import { Button } from "../utils/Buttons";
 
 type GoogleLoginDialog = {
   onSuccess?: () => void;

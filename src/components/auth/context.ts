@@ -75,9 +75,11 @@ export const useUser: () => UserContextType = () => {
     } else if (hasValidUserStorage()) {
       const credential = localStorage.getItem(LS_CREDS) as string
       updateUserLocalStorage(credential)
+      const gUser = getGoogleUserData(credential)
       loginUser(getGoogleUserData(credential).email).then((userRes) => {
         setUser(userRes);
-        setLoggedIn(true)
+        setLoggedIn(true);
+        setGoogleUser(gUser);
 
       }).catch(e => console.log(e))
     } else {
