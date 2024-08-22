@@ -32,7 +32,11 @@ export const GoogleLoginDialog = forwardRef<
       </Button>
       {loggedIn ? (
         <Button
-          onClick={logout}
+          onClick={()=>{
+            
+            innerRef?.current?.close()
+            logout()
+          }}
         >
           Logout
         </Button>
