@@ -24,7 +24,7 @@ export const GoogleLoginDialog = forwardRef<
     <DialogBox
       title={loggedIn ? "Logout" : "Login"}
       ref={innerRef}
-      className="grid grid-cols-2 gap-7 justify-center md:max-w-3/4 "
+      className="grid grid-cols-1 md:grid-cols-2 gap-x-7 gap-y-4 justify-center md:max-w-3/4 "
     >
       <Button
         onClick={

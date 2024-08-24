@@ -24,7 +24,7 @@ export const DialogBox = forwardRef<HTMLDialogElement, DialogBoxProps>(
         animate={"in"}
         transition={{ duration: 0.4 }}
         ref={dialogRef}
-        className="absolute mt-auto w-full top-96 max-w-7xl max-h-none bg-brown text-white drop-shadow-lg"
+        className="absolute mt-auto w-full top-24 max-w-7xl max-h-none bg-brown text-white drop-shadow-lg"
         onClick={()=>{
           
         }}
