@@ -11,7 +11,7 @@ import { useEditingRecipe } from "./hooks";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { createEmptyRecipe, isRecipe } from "../../types";
 import { useProtectedRoute, useUserContext } from "../auth";
-import { EditingButton } from "../utils/Buttons";
+import { EditingButton } from "./EditingButton";
 
 type RecipePageProps = {
   isNew?: boolean;
@@ -20,20 +20,18 @@ type RecipePageProps = {
 export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
   const data = useLoaderData() as { recipe: unknown };
   const revalidator = useRevalidator();
-  const { user } = useUserContext()
+  const { user } = useUserContext();
   const recipe = useMemo(
     () =>
       isRecipe(data?.recipe) && !isNew ? data.recipe : createEmptyRecipe(),
     [isNew, data],
   );
-  const canSeePage = useMemo(()=>{
-    if(!isNew)
-      return true
-    if(isNew && !!user?.isAdmin)
-      return true
-    return false
-  }, [user, isNew])
-  useProtectedRoute(canSeePage)
+  const canSeePage = useMemo(() => {
+    if (!isNew) return true;
+    if (isNew && !!user?.isAdmin) return true;
+    return false;
+  }, [user, isNew]);
+  useProtectedRoute(canSeePage);
   const navigate = useNavigate();
 
   const {
@@ -48,7 +46,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
     updateEditedRecipe,
     removeItem,
   } = useEditingRecipe({ recipe, isNew });
-  
+
   const onConfirmUpdate = useCallback(() => {
     if (isNew && editedRecipe) {
       addRecipe(editedRecipe).then((slug) => {
@@ -104,7 +102,11 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
             addInstruction={addInstruction}
             removeInstruction={removeInstruction}
           />
-          <RecipeVideo photoUploads={editedRecipe?.photoUploads} photoUrls={recipe?.photoUrls} removeItem={removeItem} />
+          <RecipeVideo
+            photoUploads={editedRecipe?.photoUploads}
+            photoUrls={recipe?.photoUrls}
+            removeItem={removeItem}
+          />
         </main>
       </div>
     </UpdateRecipeContext.Provider>
@@ -116,4 +118,3 @@ const EditingBar = () => {
     <div className='group-data-[editing="true"]:bg-primary group-data-[editing="true"]:h-4 top-0 w-full h-0 left-0  ease-in-out duration-200'></div>
   );
 };
-

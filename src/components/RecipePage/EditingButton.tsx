@@ -1,9 +1,10 @@
-import { useRef } from "react";
-import { useUserContext } from "../../auth";
+import { useCallback, useRef } from "react";
+import { useUserContext } from "../auth";
 import { motion, Variants } from "framer-motion";
-import { SVG } from "../../../assets/SvgElements";
-import { Button } from "./buttons";
-import { DialogBox } from "../DialogBox";
+import { SVG } from "../../assets/SvgElements";
+import { DialogBox } from "../utils/DialogBox";
+import { useDialogContext } from "../../contexts/dialog-context";
+import { Button } from "../utils/Buttons";
 
 type EditingButtonProps = {
   toggleEditing: () => void;
@@ -33,16 +34,23 @@ export const EditingButton = ({
 }: EditingButtonProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const { loggedIn } = useUserContext();
+  const { setDialogOpen } = useDialogContext();
   const editButtonClick = () => {
     if (isNew && !updated) return;
     if (editing && updated) {
       dialogRef.current?.showModal();
+      setDialogOpen(true);
     } else {
       toggleEditing();
     }
   };
-  const onConfirmClick = () => {
+  const closeDialog = useCallback(() => {
+    setDialogOpen(false);
     dialogRef.current?.close();
+  }, [dialogRef.current]);
+  const onConfirmClick = () => {
+    setDialogOpen(false);
+    closeDialog();
     toggleEditing();
     onConfirmUpdate();
   };
@@ -53,7 +61,7 @@ export const EditingButton = ({
         variants={editButtonAnimation}
         initial={"hidden"}
         animate={"show"}
-        transition={{ duration: .4 }}
+        transition={{ duration: 0.4 }}
         className="sticky w-full top-16 right-0 z-10"
         tabIndex={1}
         onClick={editButtonClick}
@@ -99,7 +107,7 @@ export const EditingButton = ({
         <Button
           onClick={() => {
             if (!isNew) toggleEditing();
-            dialogRef.current?.close();
+            closeDialog();
           }}
         >
           Cancel
