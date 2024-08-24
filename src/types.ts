@@ -28,11 +28,18 @@ export type Recipe = {
   notes: string;
 };
 
+export type EditingRecipe = Recipe & { photoUploads?:Array<File> }
+
 export type NewRecipe = Recipe;
 
 export type ModifyListItemFunction = (
   index: number,
   values?: Array<string>,
+) => void;
+
+export type RemoveItemFunction = <T extends keyof EditingRecipe>(
+  property: T,
+  index: number,
 ) => void;
 
 export const createEmptyRecipe: () => NewRecipe = () => {

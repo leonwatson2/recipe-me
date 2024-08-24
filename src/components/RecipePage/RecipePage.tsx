@@ -46,6 +46,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
     removeIngredient,
     removeInstruction,
     updateEditedRecipe,
+    removeItem,
   } = useEditingRecipe({ recipe, isNew });
   
   const onConfirmUpdate = useCallback(() => {
@@ -90,7 +91,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
           editedCookTime={editedRecipe?.cookTime || 0}
           editedPrepTime={editedRecipe?.prepTime || 0}
         />
-        <main className="grid content-start mt-7 sm:min-w-96  md:auto-fill-96 grid-cols-1">
+        <main className="grid content-start items-start mt-7 sm:min-w-96  md:auto-fill-96 grid-cols-1">
           <RecipeIngredients
             ingredients={recipe?.ingredients}
             editedIngredients={editedRecipe?.ingredients}
@@ -103,7 +104,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
             addInstruction={addInstruction}
             removeInstruction={removeInstruction}
           />
-          <RecipeVideo videoUrls={recipe?.videoUrls} />
+          <RecipeVideo photoUploads={editedRecipe?.photoUploads} photoUrls={recipe?.photoUrls} removeItem={removeItem} />
         </main>
       </div>
     </UpdateRecipeContext.Provider>
