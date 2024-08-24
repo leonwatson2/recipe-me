@@ -91,9 +91,9 @@ export const RecipeVideo: FC<RecipeVideoType> = ({
     <section className="media col-span-2 mt-4 lg:mt-0 lg:col-span-1 lg:ml-5">
       {hasPhotos &&
         photoUrls.map((p) => (
-          <label className="image-container border-2 inline-block w-1/2 first:w-full">
-            <img src={p} />
-          </label>
+          <div key={p} className="image-container border-2 inline-block w-1/2 first:w-full">
+          <img src={p} className="w-full" />
+          </div>
         ))}
     </section>
   );

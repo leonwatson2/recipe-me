@@ -7,6 +7,7 @@ import {
   RemoveItemFunction,
 } from "../../types";
 import { deepEqual, isArray } from "../utils";
+import { deleteOldPhotos } from "../../firebase/actions";
 
 export type UpdateRecipeType = <
   T extends keyof EditingRecipe,

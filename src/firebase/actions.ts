@@ -9,7 +9,13 @@ import {
   addDoc,
   getDoc,
 } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { EditingRecipe, isRecipe, Recipe } from "../types";
 import { User } from "../components/auth/types.ts";
 import { v4 as uuid } from "uuid";
@@ -44,16 +50,16 @@ export const updateRecipe = async ({
 }: EditingRecipe): Promise<void> => {
   try {
     const storage = getStorage();
-    const newPhotoUrls = await uploadPhotos(
-      photoUploads,
-      noUploadsRecipe.slug,
-    );
+    const newPhotoUrls = await uploadPhotos(photoUploads, noUploadsRecipe.slug);
     const recipeDoc = doc(db, DB_RECIPE_ROOT, noUploadsRecipe.id);
-
-    const photoUrls = await Promise.all(
-      newPhotoUrls.map((u) => getDownloadURL(ref(storage, u))),
-    );
-
+    let photoUrls: string[] = noUploadsRecipe.photoUrls
+    if (photoUploads && photoUploads?.length > 0){
+      photoUrls = await Promise.all(
+        newPhotoUrls.map((u) => getDownloadURL(ref(storage, u))),
+      );
+      await deleteOldPhotos(noUploadsRecipe.photoUrls);
+    } 
+      
     await setDoc(recipeDoc, { ...noUploadsRecipe, photoUrls });
   } catch (e) {
     console.log(e, noUploadsRecipe);
@@ -121,6 +127,26 @@ export const uploadPhotos = async (files: Array<File> = [], slug: string) => {
     throw Error("Error uploading file");
   }
 };
+
+export const deleteOldPhotos = async (
+  photoUrls: EditingRecipe["photoUrls"],
+) => {
+  const storage = getStorage();
+  try {
+    const photoRefs = photoUrls.map((r) => {
+      const parsedUrl = new URL(r);
+      const fileName = decodeURIComponent(
+        parsedUrl.pathname.split("/").pop() as string,
+      );
+      return deleteObject(ref(storage, `${fileName}`));
+    });
+    await Promise.all(photoRefs);
+  } catch (e) {
+    console.log(e);
+    throw Error("Couldn't delete old photos");
+  }
+};
+
 export const addUser = async (email: string, isAdmin = false) => {
   const newUserNoId = {
     email,
