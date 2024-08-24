@@ -7,7 +7,6 @@ import {
   RemoveItemFunction,
 } from "../../types";
 import { deepEqual, isArray } from "../utils";
-import { deleteOldPhotos } from "../../firebase/actions";
 
 export type UpdateRecipeType = <
   T extends keyof EditingRecipe,
@@ -17,7 +16,6 @@ export type UpdateRecipeType = <
   value: [K] | K,
   index?: number,
 ) => void;
-
 
 export const useEditingRecipe = ({
   recipe,
@@ -42,11 +40,16 @@ export const useEditingRecipe = ({
       setEditedRecipe({ ...recipe, photoUploads: [] });
     }
   }, [editing, setEditedRecipe, recipe]);
-  
+
   const updated = useMemo(() => {
     if (editedRecipe === undefined) return false;
     const { photoUploads, ...edR } = editedRecipe;
-    return !isSameRecipe(recipe, edR) || editedRecipe?.photoUploads?.length > 0;
+    return (
+      !isSameRecipe(recipe, edR) ||
+      (editedRecipe &&
+        editedRecipe.photoUploads &&
+        editedRecipe?.photoUploads?.length > 0)
+    );
   }, [editedRecipe, recipe]);
 
   const updateEditedRecipe: UpdateRecipeType = useCallback(

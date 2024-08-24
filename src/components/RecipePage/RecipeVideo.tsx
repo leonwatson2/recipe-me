@@ -75,7 +75,6 @@ export const RecipeVideo: FC<RecipeVideoType> = ({
                 onKeyDown={(e) => {
                   if (e.key === "Enter") e.currentTarget.click();
                 }}
-                htmlFor="photo-uploads"
                 className="w-32 transition hover:-translate-y-2 focus:-translate-y-2 focus:hover:box-shadow-2"
                 onClick={() => removeItem("photoUploads", index)}
               >

@@ -76,7 +76,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
         <EditingButton
           toggleEditing={toggleEditing}
           editing={editing}
-          updated={updated}
+          updated={updated || false}
           isNew={isNew}
           onConfirmUpdate={onConfirmUpdate}
         />
