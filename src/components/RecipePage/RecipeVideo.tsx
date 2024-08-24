@@ -33,33 +33,38 @@ export const RecipeVideo: FC<RecipeVideoType> = ({
           updateEditedRecipe("photoUploads", [...e.dataTransfer.files]);
         }}
       >
-        <label 
+        <label
           className={`
           media p-5 block w-full h-32 drop-shadow-md flex items-center 
             w-full border-lbrown bg-black transition 
-            hover:bg-lbrown focus-within:bg-lbrown`
-          }
-
+            hover:bg-lbrown focus-within:bg-lbrown`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.currentTarget.click();
+          }}
           htmlFor="photo-uploads"
-          tabIndex={0}>
-        <>
-          <p className="text-3xl font-bold w-full text-center uppercase">Upload from pc</p>
+          tabIndex={0}
+        >
+          <>
+            <p className="text-3xl font-bold w-full text-center uppercase">
+              Upload from pc
+            </p>
 
-          <input
-            id="photo-uploads"
-            name="photo-uploads"
-            hidden
-            multiple
-            ref={inputFileRef}
-            type={"file"}
-            accept="image/png, image/jpg"
-            onChange={(e) => {
-              if (e.target.files && e.target.files.length > 0) {
-                const files = Array.from(e.target.files)
-                updateEditedRecipe("photoUploads", files);
-              }
-            }}
-          /></>
+            <input
+              id="photo-uploads"
+              name="photo-uploads"
+              hidden
+              multiple
+              ref={inputFileRef}
+              type={"file"}
+              accept="image/png, image/jpg"
+              onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                  const files = Array.from(e.target.files);
+                  updateEditedRecipe("photoUploads", files);
+                }
+              }}
+            />
+          </>
         </label>
         <ol className="mt-4 w-full flex gap-4">
           {photoUploads.map((file, index) => {
@@ -67,6 +72,10 @@ export const RecipeVideo: FC<RecipeVideoType> = ({
               <li
                 key={file.name}
                 tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") e.currentTarget.click();
+                }}
+                htmlFor="photo-uploads"
                 className="w-32 transition hover:-translate-y-2 focus:-translate-y-2 focus:hover:box-shadow-2"
                 onClick={() => removeItem("photoUploads", index)}
               >
