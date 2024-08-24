@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { SVG } from "../../assets/SvgElements";
-import { SearchBar } from "./SearchBar";
 import { useEffect, useRef } from "react";
 import { ProfileButton } from "./ProfileButton";
 import { GoogleLoginDialog, useUserContext } from "../auth";
