@@ -20,6 +20,7 @@ export const Editable: FC<EditableProps> = ({
     maxLength,
     placeholder,
     onPaste,
+    inputMode,
     wrap,
   } = props;
   const [innerValue, setInnerValue] = useState<string | number>("Nothing");
@@ -31,6 +32,7 @@ export const Editable: FC<EditableProps> = ({
     return (
       <textarea
         wrap={wrap}
+        inputMode={inputMode}
         value={innerValue}
         onChange={(e) => setInnerValue(e.currentTarget.value.replace("\n", ""))}
         onBlur={onChange}

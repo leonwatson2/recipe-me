@@ -91,7 +91,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
           editedCookTime={editedRecipe?.cookTime || 0}
           editedPrepTime={editedRecipe?.prepTime || 0}
         />
-        <main className="grid content-start items-start mt-7 sm:min-w-96  md:auto-fill-96 grid-cols-1">
+        <main className="md:grid content-start items-start mt-7 sm:min-w-96  md:auto-fill-96 grid-cols-1">
           <RecipeIngredients
             ingredients={recipe?.ingredients}
             editedIngredients={editedRecipe?.ingredients}

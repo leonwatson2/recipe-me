@@ -35,6 +35,7 @@ export const RecipeTime: FC<RecipeTimeProps> = ({
             className={"w-12"}
             editing={editing}
             element="i"
+            inputMode="numeric"
             value={editing ? editedPrepTime : prepTime}
             onChange={(e) => {
               updateEditedRecipe("prepTime", +e.currentTarget.value);
