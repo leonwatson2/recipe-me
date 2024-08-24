@@ -7,7 +7,9 @@ type ProfileButtonProps = {
 };
 export const ProfileButton: FC<ProfileButtonProps> = ({ dialogRef }) => {
   const { googleUser } = useUserContext();
+  //TODO: blur background on open const { setDialogOpen } = useDialogContext()
   return (
+
     <button
       className="my-auto"
       onClick={() => {

@@ -4,6 +4,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { getGoogleUserData } from "./actions";
 import { updateUserLocalStorage, useUserContext } from "./context";
 import { Button } from "../utils/Buttons";
+import { useDialogContext } from "../../contexts/dialog-context";
 
 type GoogleLoginDialog = {
   onSuccess?: () => void;
@@ -14,6 +15,7 @@ export const GoogleLoginDialog = forwardRef<
   GoogleLoginDialog
 >(({ onSuccess }, ref) => {
   const { login, loggedIn, logout } = useUserContext();
+  const { setDialogOpen } = useDialogContext()
   const innerRef = useRef<HTMLDialogElement>(null);
   useImperativeHandle(ref, () => innerRef?.current as HTMLDialogElement, [
     innerRef,
@@ -26,14 +28,16 @@ export const GoogleLoginDialog = forwardRef<
     >
       <Button
         onClick={
-          () => innerRef?.current?.close()
-        }>
+          () =>{ 
+           innerRef?.current?.close()
+            setDialogOpen(false)
+        }}>
         Cancel
       </Button>
       {loggedIn ? (
         <Button
           onClick={()=>{
-            
+            setDialogOpen(false)
             innerRef?.current?.close()
             logout()
           }}
@@ -47,6 +51,7 @@ export const GoogleLoginDialog = forwardRef<
                const googleUser = getGoogleUserData(crendentialResponse?.credential || '') 
                login(googleUser);
                innerRef?.current?.close();
+               setDialogOpen(false)
                updateUserLocalStorage(crendentialResponse.credential || '')
                onSuccess && onSuccess();
             }}
