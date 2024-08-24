@@ -54,7 +54,7 @@ export const EditingButton = ({
         initial={"hidden"}
         animate={"show"}
         transition={{ duration: .4 }}
-        className="absolute top-10 right-0"
+        className="sticky w-full top-16 right-0 z-10"
         tabIndex={1}
         onClick={editButtonClick}
       >
