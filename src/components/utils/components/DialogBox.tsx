@@ -1,5 +1,6 @@
 import { forwardRef, ReactNode } from "react";
 import { motion } from "framer-motion";
+import { createPortal } from "react-dom";
 type DialogBoxProps = {
   children: ReactNode;
   title: string;
@@ -17,7 +18,7 @@ const variants = {
 }
 export const DialogBox = forwardRef<HTMLDialogElement, DialogBoxProps>(
   ({ children, title, className }, dialogRef) => {
-    return (
+    return createPortal(
       <motion.dialog
         variants={variants}
         initial={"out"}
@@ -33,7 +34,7 @@ export const DialogBox = forwardRef<HTMLDialogElement, DialogBoxProps>(
           <h2 className="col-span-full text-3xl py-6 text-center">{title}</h2>
           {children}
         </div>
-      </motion.dialog>
-    );
+      </motion.dialog>, document.body);
   },
 );
+
