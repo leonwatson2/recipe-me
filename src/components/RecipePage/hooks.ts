@@ -5,7 +5,7 @@ import {
   ModifyListItemFunction,
   Recipe,
   RemoveItemFunction,
-} from "../../types";
+} from "./types";
 import { deepEqual, isArray } from "../utils";
 
 export type UpdateRecipeType = <

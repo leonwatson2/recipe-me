@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from "react";
-import { RemoveItemFunction, Recipe } from "../../types";
+import { RemoveItemFunction, Recipe } from "./types";
 import { useUpdateRecipeContext } from "./context";
 
 type RecipeVideoType = {

@@ -1,10 +1,10 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { DialogBox } from "../utils/DialogBox";
+import { DialogBox } from "../utils/components/DialogBox";
 import { GoogleLogin } from "@react-oauth/google";
 import { getGoogleUserData } from "./actions";
 import { updateUserLocalStorage, useUserContext } from "./context";
-import { Button } from "../utils/Buttons";
-import { useDialogContext } from "../../contexts/dialog-context";
+import { Button } from "../utils";
+import { useDialogContext } from "../utils/contexts/dialog-context";
 
 type GoogleLoginDialog = {
   onSuccess?: () => void;

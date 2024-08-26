@@ -1,6 +1,6 @@
 import "react";
 import "../firebase/config.ts";
-import { Recipe } from "../types";
+import { Recipe } from "./RecipePage/types.ts";
 import { Link, useLoaderData } from "react-router-dom";
 import { SVG } from "../assets/SvgElements.tsx";
 

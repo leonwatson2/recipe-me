@@ -16,7 +16,7 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
-import { EditingRecipe, isRecipe, Recipe } from "../types";
+import { EditingRecipe, isRecipe, Recipe } from "../components/RecipePage/types.ts";
 import { User } from "../components/auth/types.ts";
 import { v4 as uuid } from "uuid";
 import "../firebase/config.ts";
@@ -160,6 +160,7 @@ export const addUser = async (email: string, isAdmin = false) => {
   }
   throw Error("Failed making user");
 };
+
 export const loginUser = async (email: string): Promise<User> => {
   const q = query(collection(db, DB_USERS_ROOT), where("email", "==", email));
   const snapshot = await getDocs(q);

@@ -2,9 +2,9 @@ import { useCallback, useRef } from "react";
 import { useUserContext } from "../auth";
 import { motion, Variants } from "framer-motion";
 import { SVG } from "../../assets/SvgElements";
-import { DialogBox } from "../utils/DialogBox";
-import { useDialogContext } from "../../contexts/dialog-context";
-import { Button } from "../utils/Buttons";
+import { DialogBox } from "../utils/components/DialogBox";
+import { useDialogContext } from "../utils/contexts/dialog-context";
+import { Button } from "../utils";
 
 type EditingButtonProps = {
   toggleEditing: () => void;

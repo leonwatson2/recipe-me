@@ -1,7 +1,8 @@
 import { FC } from "react";
-import { ModifyListItemFunction, Recipe } from "../../types";
-import { Editable, PlusMinusButtons } from "../utils";
+import { ModifyListItemFunction, Recipe } from "./types";
 import { useUpdateRecipeContext } from "./context";
+import { PlusMinusButtons } from "../utils";
+import { Editable } from "../utils/components";
 
 type RecipeInstructionsProps = {
   instructions?: Recipe["instructions"];

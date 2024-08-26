@@ -9,9 +9,10 @@ import { UpdateRecipeContext } from "./context";
 import { RecipeVideo } from "./RecipeVideo";
 import { useEditingRecipe } from "./hooks";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
-import { createEmptyRecipe, isRecipe } from "../../types";
-import { useProtectedRoute, useUserContext } from "../auth";
+import { createEmptyRecipe, isRecipe } from "./types";
+import { useUserContext } from "../auth";
 import { EditingButton } from "./EditingButton";
+import { useProtectedRoute, useTitle } from "../utils";
 
 type RecipePageProps = {
   isNew?: boolean;
@@ -26,6 +27,8 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
       isRecipe(data?.recipe) && !isNew ? data.recipe : createEmptyRecipe(),
     [isNew, data],
   );
+  useTitle(isNew ? `New Recipe` :`Recipe: ${recipe.name}`)
+
   const canSeePage = useMemo(() => {
     if (!isNew) return true;
     if (isNew && !!user?.isAdmin) return true;
