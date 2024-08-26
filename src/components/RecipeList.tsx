@@ -9,7 +9,7 @@ export const RecipeList = () => {
 
   return (
     <section className="mx-auto max-w-7xl relative pt-7">
-      <header className="text-7xl font-bold  mb-7">Lastest Recipes</header>
+      <header className="text-7xl font-bold  mb-7"><h2>Lastest Recipes</h2></header>
       <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 auto-fill">
         {recipes.map((r) => (
           <li

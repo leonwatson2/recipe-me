@@ -13,7 +13,7 @@ export function Root() {
       <UserContext.Provider value={userContext}>
         <DialogContext.Provider value={{ setDialogOpen, isDialogOpen }}>
           <div
-            className={`dark transition duration-1000 ${isDialogOpen ? "blur-lg" : ""}`}
+            className={`dark transition duration-400 ${isDialogOpen ? "blur-lg" : ""}`}
           >
             <MainNav />
             <SvgElements />
