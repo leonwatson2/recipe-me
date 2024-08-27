@@ -27,7 +27,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
       isRecipe(data?.recipe) && !isNew ? data.recipe : createEmptyRecipe(),
     [isNew, data],
   );
-  useTitle(isNew ? `New Recipe` :`Recipe: ${recipe.name}`)
+  useTitle(isNew ? `New Recipe` : `Recipe: ${recipe.name}`);
 
   const canSeePage = useMemo(() => {
     if (!isNew) return true;

@@ -70,7 +70,7 @@ export const EditingButton = ({
           <SVG
             title="checkmark"
             className={
-              "transition-opacity duration-300 " +
+              "absolute right-10 transition-opacity duration-300 " +
               (updated ? "opacity-100" : "opacity-0 cursor-default")
             }
             tabIndex={updated ? 0 : -1}

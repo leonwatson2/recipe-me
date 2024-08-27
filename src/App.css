@@ -21,7 +21,7 @@
     12px 12px 12px theme(colors.grey);
 }
 .recipe-page {
-  animation: 4s fadeup;
+  animation: 2s fadeup;
 }
 @keyframes fadeup {
   from {
