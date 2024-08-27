@@ -206,7 +206,6 @@ export const searchForRecipe = async (
     where("name", "<=", searchTerm2),
   );
   const snapshot = await getDocs(q);
-  console.log(snapshot.docs);
   
   if (snapshot.docs.length > 0) {
     const recipes = snapshot.docs.map((doc) => {
