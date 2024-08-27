@@ -8,6 +8,9 @@ import {
   where,
   addDoc,
   getDoc,
+  limit,
+  startAt,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 import {
   deleteObject,
@@ -16,10 +19,15 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
-import { EditingRecipe, isRecipe, Recipe } from "../components/RecipePage/types.ts";
+import {
+  EditingRecipe,
+  isRecipe,
+  Recipe,
+} from "../components/RecipePage/types.ts";
 import { User } from "../components/auth/types.ts";
 import { v4 as uuid } from "uuid";
 import "../firebase/config.ts";
+import { QUERY_DOC_LIMIT } from "../components/utils/contants.ts";
 
 const DB_RECIPE_ROOT = "recipes";
 const DB_USERS_ROOT = "users";
@@ -29,17 +37,33 @@ const db = getFirestore();
 const convertNameToSlug = (name: string): string =>
   name.toLowerCase().trim().replaceAll(" ", "-");
 
-export const getAllRecipes = async (): Promise<Array<Recipe>> => {
+export const getAllRecipes = async (
+  lastRecipeDoc?: QueryDocumentSnapshot,
+): Promise<{
+  recipes: Array<Recipe>;
+  lastRecipeDoc?: QueryDocumentSnapshot;
+}> => {
   try {
-    const recipesRef = getDocs(collection(db, DB_RECIPE_ROOT));
-    const recipes = (await recipesRef).docs.map((doc) => {
+    const recipesRef = getDocs(
+      lastRecipeDoc === undefined
+        ? query(collection(db, DB_RECIPE_ROOT), limit(QUERY_DOC_LIMIT + 1))
+        : query(
+            collection(db, DB_RECIPE_ROOT),
+            startAt(lastRecipeDoc),
+            limit(QUERY_DOC_LIMIT + 1),
+          ),
+    );
+    const docs = (await recipesRef).docs;
+    const lastDoc = docs.length > QUERY_DOC_LIMIT ? docs.pop() : undefined;
+    const recipes = docs.map((doc) => {
       return {
         ...(doc.data() as Omit<Recipe, "id">),
         id: doc.id,
       };
     });
-    return recipes;
-  } catch {
+    return { recipes, lastRecipeDoc: lastDoc };
+  } catch (e) {
+    console.log(e);
     throw Error("Something went wrong getting recipes");
   }
 };
@@ -52,14 +76,14 @@ export const updateRecipe = async ({
     const storage = getStorage();
     const newPhotoUrls = await uploadPhotos(photoUploads, noUploadsRecipe.slug);
     const recipeDoc = doc(db, DB_RECIPE_ROOT, noUploadsRecipe.id);
-    let photoUrls: string[] = noUploadsRecipe.photoUrls
-    if (photoUploads && photoUploads?.length > 0){
+    let photoUrls: string[] = noUploadsRecipe.photoUrls;
+    if (photoUploads && photoUploads?.length > 0) {
       photoUrls = await Promise.all(
         newPhotoUrls.map((u) => getDownloadURL(ref(storage, u))),
       );
       await deleteOldPhotos(noUploadsRecipe.photoUrls);
-    } 
-      
+    }
+
     await setDoc(recipeDoc, { ...noUploadsRecipe, photoUrls });
   } catch (e) {
     console.log(e, noUploadsRecipe);
@@ -169,5 +193,30 @@ export const loginUser = async (email: string): Promise<User> => {
   } else {
     const id = await addUser(email);
     return getUserById(id);
+  }
+};
+export const searchForRecipe = async (
+  searchTerm: string,
+): Promise<Array<Recipe>> => {
+  const searchTerm2 = searchTerm.slice(0, searchTerm.length - 1) + String.fromCharCode(searchTerm.charCodeAt(searchTerm.length - 1) + 1)
+  console.log({searchTerm, searchTerm2})
+  const q = query(
+    collection(db, DB_RECIPE_ROOT),
+      where("name", ">=", searchTerm),
+    where("name", "<=", searchTerm2),
+  );
+  const snapshot = await getDocs(q);
+  console.log(snapshot.docs);
+  
+  if (snapshot.docs.length > 0) {
+    const recipes = snapshot.docs.map((doc) => {
+      return {
+        ...(doc.data() as Omit<Recipe, "id">),
+        id: doc.id,
+      };
+    });
+    return recipes;
+  } else {
+    return [];
   }
 };

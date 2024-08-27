@@ -1,10 +1,12 @@
 import { createBrowserRouter, LoaderFunction } from "react-router-dom";
-import { getAllRecipes, getRecipeBySlug } from "./firebase/actions";
+import { getRecipeBySlug, searchForRecipe } from "./firebase/actions";
 import { RecipePage } from "./components/RecipePage";
 import ErrorPage from "./components/ErrorPage";
 import { Root } from "./components/Root";
-import { RecipeList } from "./components/RecipeList";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
+import { SEARCH_TERM_KEY } from "./components/utils";
+import { RecipeListPage } from "./components/RecipeListPage/RecipeListPage";
+import { SearchPage } from "./components/SearchPage";
 
 export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
   params,
@@ -23,11 +25,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <RecipeList />,
-        loader: async () => {
-          const recipes = await getAllRecipes();
-          return recipes;
-        },
+        element: <RecipeListPage />,
       },
       {
         path: "recipe/:slug",
@@ -39,6 +37,16 @@ export const router = createBrowserRouter([
             return { recipe };
           }
         },
+      },
+      {
+        path: "search",
+        element: <SearchPage />,
+        loader: async ({ request  })=> {
+          const searchParams = new URL(request.url)
+          const searchTerm = searchParams.searchParams.get(SEARCH_TERM_KEY)
+          const recipes = await searchForRecipe(searchTerm || '')
+          return recipes
+        }
       },
       {
         path: "new",

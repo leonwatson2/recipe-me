@@ -1,24 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SVG } from "../../assets/SvgElements";
 import { useEffect, useRef } from "react";
 import { ProfileButton } from "./ProfileButton";
 import { GoogleLoginDialog, useUserContext } from "../auth";
+import { SearchBar } from "./SearchBar";
 
 export function MainNav() {
   const profileDialogRef = useRef<HTMLDialogElement>(null);
   const { hamMenuRef, headerRef, closeMenu } = useMenuClick();
   const { user, loggedIn } = useUserContext();
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <>
       <header className="mx-auto center w-auto bg-primary sticky top-0 z-10">
         <nav className="container mx-auto max-w-7xl h-16">
           <ul className="flex text-xl h-16">
-            <li className="logo-container border-x-grey pt-2">
+            <li className="logo-container min-w-[195px] border-x-grey pt-2">
               <SVG
                 title="the-logo"
                 height={100}
-                width={195}
-                className="absolute"
+                className="absolute max-w-[195px]"
               />
             </li>
             <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
@@ -29,9 +31,18 @@ export function MainNav() {
                 <Link to={"/new"}>New Recipe</Link>
               </li>
             )}
-            {/*<li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
-              <SearchBar />
-            </li>*/}
+              <li className="search px-10 md:flex font-bold justify-self-end text-base ml-auto">
+                <SearchBar
+                  onSearch={(searchTerm) => {
+                    navigate(`/search/?s=${encodeURI(searchTerm)}`);
+                    }}
+                  onEmpty={() => {
+                    if (location.pathname !== "/"){ 
+                      navigate("/");
+                    }
+                  }}
+                />
+              </li>
             <li className="w-16 ml-auto flex justify-center items-center h-full">
               <ProfileButton dialogRef={profileDialogRef} />
               <GoogleLoginDialog ref={profileDialogRef} />

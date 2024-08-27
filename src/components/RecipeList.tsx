@@ -1,15 +1,28 @@
 import "react";
 import "../firebase/config.ts";
-import { Recipe } from "./RecipePage/types.ts";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SVG } from "../assets/SvgElements.tsx";
-
-export const RecipeList = () => {
-  const recipes = useLoaderData() as Array<Recipe>;
+import { Button } from "./utils/index.ts";
+import { FC } from "react";
+import { Recipe } from "./RecipePage/types.ts";
+type RecipeListProps = {
+  recipes: Array<Recipe>;
+  title: string;
+  recievedAll?: boolean;
+  onLoadMore?: () => void;
+};
+export const RecipeList: FC<RecipeListProps> = ({
+  title,
+  recipes,
+  recievedAll = true,
+  onLoadMore = () => {},
+}) => {
 
   return (
-    <section className="mx-auto max-w-7xl relative pt-7">
-      <header className="text-7xl font-bold  mb-7"><h2>Lastest Recipes</h2></header>
+    <section className="mx-auto max-w-7xl min-h-[80vh] flex flex-col relative pt-7">
+      <header className="text-7xl font-bold w-full  mb-7">
+        <h2>{recievedAll && recipes.length === 0 ?  'No Recipes': title}</h2>
+      </header>
       <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 auto-fill">
         {recipes.map((r) => (
           <li
@@ -26,6 +39,14 @@ export const RecipeList = () => {
           </li>
         ))}
       </ul>
+
+      <Button
+        className="mx-auto w-60 max-w-full bg-brown"
+        hidden={recievedAll}
+        onClick={onLoadMore}
+      >
+        Load More
+      </Button>
       {/* {error !== "" && <div>Error:{error}</div>} */}
     </section>
   );
