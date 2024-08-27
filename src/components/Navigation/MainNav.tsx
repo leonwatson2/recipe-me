@@ -11,6 +11,11 @@ export function MainNav() {
   const { user, loggedIn } = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const onEmptySearch = () => {
+    if (location.pathname !== "/" && !location.pathname.includes("recipe/")) {
+      navigate("/");
+    }
+  };
   return (
     <>
       <header className="mx-auto center w-auto bg-primary sticky top-0 z-10">
@@ -36,11 +41,7 @@ export function MainNav() {
                 onSearch={(searchTerm) => {
                   navigate(`/search/?s=${encodeURI(searchTerm)}`);
                 }}
-                onEmpty={() => {
-                  if (location.pathname !== "/") {
-                    navigate("/");
-                  }
-                }}
+                onEmpty={onEmptySearch}
               />
             </li>
             <li className="w-16 ml-auto flex justify-center items-center h-full">
@@ -99,11 +100,7 @@ export function MainNav() {
                       onSearch={(searchTerm) => {
                         navigate(`/search/?s=${encodeURI(searchTerm)}`);
                       }}
-                      onEmpty={() => {
-                        if (location.pathname !== "/") {
-                          navigate("/");
-                        }
-                      }}
+                      onEmpty={onEmptySearch}
                     />
                   </li>
                 </ul>

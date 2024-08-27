@@ -29,7 +29,7 @@ export const RecipeList: FC<RecipeListProps> = ({
             key={r.id}
             className="text-3xl w-full transition-transform hover:translate-x-2 hover:underline mb-10"
           >
-            <Link to={"recipe/" + r.slug} className="w-full h-full ">
+            <Link to={"/recipe/" + r.slug} className="w-full h-full ">
               <div className="bg-brown flex h-54 w-54">
                 <SVG className="fill-black" title="smsMonochrome" />
               </div>
