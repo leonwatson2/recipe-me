@@ -11,6 +11,9 @@ import {
   limit,
   startAt,
   QueryDocumentSnapshot,
+  updateDoc,
+  or,
+  and,
 } from "firebase/firestore";
 import {
   deleteObject,
@@ -91,16 +94,26 @@ export const updateRecipe = async ({
   }
 };
 
-export const addRecipe = async (newRecipe: Recipe): Promise<string> => {
+export const addRecipe = async ({photoUploads, ...noUploadsRecipe }:EditingRecipe): Promise<string> => {
   try {
-    const { id, ...noIdRecipe } = newRecipe;
+    const storage = getStorage();
+    const { id, ...noIdRecipe } = noUploadsRecipe;
+    const newPhotoUrls = await uploadPhotos(photoUploads, noUploadsRecipe.slug);
+    if (photoUploads && photoUploads?.length > 0) {
+      noIdRecipe.photoUrls = await Promise.all(
+        newPhotoUrls.map((u) => getDownloadURL(ref(storage, u))),
+      );
+    }
     const recipeCol = collection(db, DB_RECIPE_ROOT);
     noIdRecipe.slug = convertNameToSlug(noIdRecipe.name);
+    noIdRecipe.searchTerms = getUniqueWordsStringCombos(noIdRecipe.name.replaceAll("-"," ").split(" "))
+    console.log(noIdRecipe)
     await addDoc(recipeCol, noIdRecipe);
 
     return noIdRecipe.slug;
-  } catch {
-    throw Error("Something went adding recipe");
+  } catch (e){
+    console.log(e)
+    throw Error("Something went wrong adding recipe");
   }
 };
 
@@ -195,26 +208,68 @@ export const loginUser = async (email: string): Promise<User> => {
     return getUserById(id);
   }
 };
+
+export const addSearchTerms = async (
+  id: string,
+  terms: Array<string>
+) => {
+  const recipeDoc = doc(db, DB_RECIPE_ROOT, id);
+  const searchTerms = getUniqueWordsStringCombos(terms)
+  console.table(searchTerms)
+  try {
+    await updateDoc(recipeDoc, { searchTerms });
+  } catch (e) {
+    console.log(e);
+    throw Error("Something went wrong updating search terms");
+  }
+};
+
+const fillerWords = ["the", "with", "and", "a", "or", "You", "i"]
+function getAllStringCombos(arr:Array<string>):Array<string>{
+  if(arr.length === 1) {
+    if(fillerWords.includes(arr[0])){
+      return []
+    }
+    return [arr[0]]
+  }
+  const right = getAllStringCombos(arr.slice(1, arr.length))
+  const left = getAllStringCombos(arr.slice(0, arr.length - 1))
+  return [arr.join(' ')].concat(right).concat(left)
+}
+function getUniqueWordsStringCombos(words:Array<string>){
+  return Array.from(new Set(getAllStringCombos(words))).sort((a,b)=>a.length>=b.length ? -1 : 1);
+}
 export const searchForRecipe = async (
   searchTerm: string,
 ): Promise<Array<Recipe>> => {
-  const searchTerm2 = searchTerm.slice(0, searchTerm.length - 1) + String.fromCharCode(searchTerm.charCodeAt(searchTerm.length - 1) + 1)
-  const q = query(
-    collection(db, DB_RECIPE_ROOT),
-      where("name", ">=", searchTerm),
-    where("name", "<=", searchTerm2),
-  );
-  const snapshot = await getDocs(q);
-  
-  if (snapshot.docs.length > 0) {
-    const recipes = snapshot.docs.map((doc) => {
-      return {
-        ...(doc.data() as Omit<Recipe, "id">),
-        id: doc.id,
-      };
-    });
-    return recipes;
-  } else {
-    return [];
+  try {
+    const searchTerm2 =
+      searchTerm.slice(0, searchTerm.length - 1) +
+      String.fromCharCode(searchTerm.charCodeAt(searchTerm.length - 1) + 1);
+    const q = query(
+      collection(db, DB_RECIPE_ROOT),
+      or(
+        and(where("name", ">=", searchTerm), where("name", "<=", searchTerm2)),
+        where("searchTerms", "array-contains", searchTerm.toLowerCase()),
+      ),
+    );
+    const snapshot = await getDocs(q);
+
+    if (snapshot.docs.length > 0) {
+      const recipes = snapshot.docs.map((doc) => {
+        return {
+          ...(doc.data() as Omit<Recipe, "id">),
+          id: doc.id,
+        };
+      });
+      return recipes;
+    } else {
+      return [];
+    }
+  } catch (e) {
+    console.log(e);
+    throw Error(
+      "Something went wrong searching for search term: " + searchTerm,
+    );
   }
 };
