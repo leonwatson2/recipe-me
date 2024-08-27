@@ -6,10 +6,10 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   chidren?: ReactNode;
 };
 
-export const Button: FC<ButtonProps> = ({ children, ...props }) => {
+export const Button: FC<ButtonProps> = ({ children, className,...props }) => {
   return (
     <button
-      className="bg-black h-16 uppercase hover:bg-lbrown transition"
+      className={"bg-black h-16 uppercase hover:bg-lbrown transition " + className }
       {...props}
     >
       {children}
