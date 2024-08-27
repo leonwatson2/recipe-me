@@ -199,7 +199,6 @@ export const searchForRecipe = async (
   searchTerm: string,
 ): Promise<Array<Recipe>> => {
   const searchTerm2 = searchTerm.slice(0, searchTerm.length - 1) + String.fromCharCode(searchTerm.charCodeAt(searchTerm.length - 1) + 1)
-  console.log({searchTerm, searchTerm2})
   const q = query(
     collection(db, DB_RECIPE_ROOT),
       where("name", ">=", searchTerm),
