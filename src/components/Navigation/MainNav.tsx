@@ -94,7 +94,6 @@ export function MainNav() {
                       Recipes
                     </Link>
                   </li>
-            <li className=" border border-b-0 ">Search</li>
                   <li className="h-20 text-3xl border border-t-0">
                     <SearchBar
                       onSearch={(searchTerm) => {

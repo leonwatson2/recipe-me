@@ -33,9 +33,13 @@ export const SearchBar: FC<SearchBarProps> = ({ onSearch, onEmpty }) => {
     };
   }, [searchTerm]);
   return (
-    <div className="search-bar bg-grey flex justify-center items-center gap-x-5 px-8 h-full">
+    <div className={`search-bar bg-grey 
+                    grid col-2 gap-x-5 grid-cols-[1.75rem_1fr] 
+                    md:flex md:justify-center md:px-8 
+                    items-center  h-full
+                    `}>
       <SVG title="search-icon" className="w-7 h-7" />
-      <form>
+      <form className="max-w-full">
         <label htmlFor="search"></label>
         <input
           className="bg-grey rounded focus:border-none h-8 focus-visible:outline-none"
