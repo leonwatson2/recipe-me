@@ -31,18 +31,18 @@ export function MainNav() {
                 <Link to={"/new"}>New Recipe</Link>
               </li>
             )}
-              <li className="search px-10 md:flex font-bold justify-self-end text-base ml-auto">
-                <SearchBar
-                  onSearch={(searchTerm) => {
-                    navigate(`/search/?s=${encodeURI(searchTerm)}`);
-                    }}
-                  onEmpty={() => {
-                    if (location.pathname !== "/"){ 
-                      navigate("/");
-                    }
-                  }}
-                />
-              </li>
+            <li className="hidden md:block search px-10 md:flex font-bold justify-self-end text-base ml-auto">
+              <SearchBar
+                onSearch={(searchTerm) => {
+                  navigate(`/search/?s=${encodeURI(searchTerm)}`);
+                }}
+                onEmpty={() => {
+                  if (location.pathname !== "/") {
+                    navigate("/");
+                  }
+                }}
+              />
+            </li>
             <li className="w-16 ml-auto flex justify-center items-center h-full">
               <ProfileButton dialogRef={profileDialogRef} />
               <GoogleLoginDialog ref={profileDialogRef} />
@@ -93,6 +93,19 @@ export function MainNav() {
                     <Link className="w-full h-full flex items-center" to={"/"}>
                       Recipes
                     </Link>
+                  </li>
+            <li className=" border border-b-0 ">Search</li>
+                  <li className="h-20 text-3xl border border-t-0">
+                    <SearchBar
+                      onSearch={(searchTerm) => {
+                        navigate(`/search/?s=${encodeURI(searchTerm)}`);
+                      }}
+                      onEmpty={() => {
+                        if (location.pathname !== "/") {
+                          navigate("/");
+                        }
+                      }}
+                    />
                   </li>
                 </ul>
               </div>
