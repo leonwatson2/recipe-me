@@ -28,15 +28,27 @@ export function MainNav() {
                 className="absolute max-w-[195px]"
               />
             </li>
-            <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
+            <li className={`hidden recipes
+                            md:flex items-center
+                            md:px-2 md:py-2
+                            lg:px-10 lg:py-5
+                            font-bold h-full hover:underline decoration-2`}>
               <Link to={"/"}>Recipes</Link>
             </li>
             {user?.isAdmin && loggedIn && (
-              <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
+              <li className={`hidden  recipes 
+                            md:flex items-center
+                            md:px-2 md:py-2
+                              lg:px-10 lg:py-5 
+                              font-bold h-full hover:underline decoration-2`}>
                 <Link to={"/new"}>New Recipe</Link>
               </li>
             )}
-            <li className="hidden md:block search px-10 md:flex font-bold justify-self-end text-base ml-auto">
+            <li className={`hidden md:block search 
+                            md:px-2 
+                            lg:px-10 
+                            md:flex font-bold 
+                            justify-self-end text-base ml-auto`}>
               <SearchBar
                 onSearch={(searchTerm) => {
                   navigate(`/search/?s=${encodeURI(searchTerm)}`);
