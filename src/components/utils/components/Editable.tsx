@@ -1,16 +1,17 @@
-import { createElement, FC, useEffect, useState } from "react";
+import { createElement, FC, useEffect, useState, memo } from "react";
 
 type EditableProps = {
   element: keyof React.ReactHTML;
   editing: boolean;
   value: string | number;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
-export const Editable: FC<EditableProps> = ({
+export const Editable: FC<EditableProps> = memo(({
   element,
   editing,
   value,
   ...props
 }) => {
+
   const {
     className,
     onChange,
@@ -25,7 +26,6 @@ export const Editable: FC<EditableProps> = ({
   useEffect(() => {
     setInnerValue(value);
   }, [value, editing]);
-
   if (editing) {
     return (
       <textarea
@@ -41,7 +41,7 @@ export const Editable: FC<EditableProps> = ({
         }
         maxLength={maxLength}
         className={
-          className + " w-full bg-transparent cursor-pointer overflow-hidden"
+          className + " w-full bg-transparent cursor-pointer overflow-hidden transition outline-secondary" 
         }
         onKeyUp={onKeyUp}
         placeholder={placeholder}
@@ -51,6 +51,8 @@ export const Editable: FC<EditableProps> = ({
     );
   }
   return createElement(element, props, value);
-};
+}, (prevProps, nextProps) => {
+  return prevProps.value === nextProps.value && prevProps.editing === nextProps.editing;
+})
 
 

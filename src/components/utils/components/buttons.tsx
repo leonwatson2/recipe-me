@@ -28,7 +28,7 @@ export const PlusMinusButtons: FC<{
     <>
       <SVG
         title="plus"
-        className="w-16 max-w-fit h-10 cursor-pointer"
+        className="w-16 max-w-fit h-10 cursor-pointer outline-secondary"
         svgClassName="fill-primary hover:fill-grey  transition-colors "
         tabIndex={0}
         onClick={(e) => {
@@ -43,7 +43,7 @@ export const PlusMinusButtons: FC<{
       />
       <SVG
         title="minus"
-        className="w-16 max-w-fit h-10 cursor-pointer"
+        className="w-16 max-w-fit h-10 cursor-pointer outline-secondary"
         svgClassName="fill-primary hover:fill-grey  transition-colors"
         tabIndex={0}
         onClick={() => {

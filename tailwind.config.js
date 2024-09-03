@@ -5,22 +5,24 @@ export default {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: 'selector',
   theme: {
-    colors: {
-      primary: "#D1774c",
-      black: "#332B27",
-      grey: "#524A46",
-      brown: "#a77158",
-      lbrown: "#C29986",
-      white: "#fgfgfg",
-      transparent: "transparent",
-    },
     extend: {
       spacing: {
         128: "32rem",
       },
       gridTemplateColumns: {
-        orderedList: "0px 1fr",
-        listEditing: "1fr 40px 40px",
+        "orderedList": "0px 1fr",
+        "listEditing": "1fr 40px 40px",
+      },
+      colors: {
+        "primary": "#D1774c",
+        "secondary": "#4BD1C3",
+        "dark-blue": "#567C78", 
+        "black": "#332B27",
+        "grey": "#524A46",
+        "brown": "#a77158",
+        "lbrown": "#C29986",
+        "white": "#fgfgfg",
+        "transparent": "transparent",
       },
     },
   },
