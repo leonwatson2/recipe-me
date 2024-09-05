@@ -20,3 +20,16 @@
     -3px -3px 3px white,
     12px 12px 12px theme(colors.grey);
 }
+.recipe-page {
+  animation: 2s fadeup;
+}
+@keyframes fadeup {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

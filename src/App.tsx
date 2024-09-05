@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <footer className={"h-128 bg-black mt-60"}></footer>
+      <footer className={"h-128 bg-brown mt-40"}></footer>
     </>
   );
 }

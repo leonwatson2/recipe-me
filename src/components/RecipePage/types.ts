@@ -26,13 +26,21 @@ export type Recipe = {
   prepTime: number;
   servingSize: string;
   notes: string;
+  searchTerms: Array<string>;
 };
+
+export type EditingRecipe = Recipe & { photoUploads?:Array<File> }
 
 export type NewRecipe = Recipe;
 
 export type ModifyListItemFunction = (
   index: number,
   values?: Array<string>,
+) => void;
+
+export type RemoveItemFunction = <T extends keyof EditingRecipe>(
+  property: T,
+  index: number,
 ) => void;
 
 export const createEmptyRecipe: () => NewRecipe = () => {
@@ -52,6 +60,7 @@ export const createEmptyRecipe: () => NewRecipe = () => {
     prepTime: 0,
     servingSize: "",
     notes: "",
+    searchTerms: [],
   };
 };
 

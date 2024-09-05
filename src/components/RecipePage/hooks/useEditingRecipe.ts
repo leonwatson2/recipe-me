@@ -1,9 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useToggle } from "../../utils";
-import { ModifyListItemFunction, Recipe } from "../../types";
-import { deepEqual, isArray } from "../utils";
+import { useCallback, useEffect, useMemo } from "react";
+import {
+  EditingRecipe,
+  ModifyListItemFunction,
+  Recipe,
+  RemoveItemFunction,
+} from "../types";
+import { useToggle } from "../../../utils";
+import { useHistory } from "./useHistory";
+import { deepEqual, isArray } from "../../utils";
 
-export type UpdateRecipeType = <T extends keyof Recipe, K extends Recipe[T]>(
+export type UpdateRecipeType = <
+  T extends keyof EditingRecipe,
+  K extends EditingRecipe[T],
+>(
   property: T,
   value: [K] | K,
   index?: number,
@@ -17,7 +26,7 @@ export const useEditingRecipe = ({
   isNew?: boolean;
 }) => {
   const [editing, toggleEditing] = useToggle(isNew);
-  const [editedRecipe, setEditedRecipe] = useState<Recipe>();
+  const [editedRecipe, setEditedRecipe, resetHistory] = useHistory<EditingRecipe>();
 
   useEffect(() => {
     if (isNew) {
@@ -25,22 +34,44 @@ export const useEditingRecipe = ({
     } else {
       toggleEditing(false);
     }
-  }, [isNew, toggleEditing]);
+  }, [isNew]);
 
   useEffect(() => {
-    if (editing) {
-      setEditedRecipe(recipe);
+    if (editing && recipe) {
+      resetHistory();
+      setEditedRecipe({ ...recipe, photoUploads: [] });
     }
   }, [editing, setEditedRecipe, recipe]);
 
   const updated = useMemo(() => {
-    return !isSameRecipe(recipe, editedRecipe);
+    if (editedRecipe === undefined) return false;
+    const { photoUploads, ...edR } = editedRecipe;
+    return (
+      !isSameRecipe(recipe, edR) ||
+      (editedRecipe &&
+        photoUploads &&
+        photoUploads?.length > 0)
+    );
   }, [editedRecipe, recipe]);
 
   const updateEditedRecipe: UpdateRecipeType = useCallback(
     (property, value, index) => {
       setEditedRecipe((oldR) => {
         if (oldR === undefined) return oldR;
+        const isArrayProperty = isArray(value) && isArray(oldR[property]);
+        if (!isArrayProperty) {
+          return {
+            ...oldR,
+            [property]:
+              typeof value === "string" ? value.replace("\n", "") : value,
+          };
+        }
+        if (property === "photoUploads" && isArray(oldR[property])) {
+          return {
+            ...oldR,
+            [property]: [...oldR[property], ...value],
+          };
+        }
         if (isArray(oldR[property]) && isArray(value)) {
           if (index === undefined)
             throw new Error(
@@ -53,20 +84,26 @@ export const useEditingRecipe = ({
             [property]: newArray,
           };
         }
-        return {
-          ...oldR,
-          [property]:
-            typeof value === "string" ? value.replace("\n", "") : value,
-        };
       });
     },
     [editedRecipe],
   );
-
+  const removeItem: RemoveItemFunction = (property, index) => {
+    setEditedRecipe((oldR) => {
+      if (oldR === undefined) return;
+      if (!isArray(oldR[property])) return;
+      const newItems = Array.from(oldR[property]);
+      newItems.splice(index, 1);
+      return {
+        ...oldR,
+        [property]: newItems,
+      };
+    });
+  };
   const addInstruction: ModifyListItemFunction = (index: number, items) => {
     setEditedRecipe((oldR) => {
       if (oldR === undefined) return undefined;
-      let newInstructions = [...(oldR?.instructions || [])];
+      const newInstructions = [...(oldR?.instructions || [])];
       if (items && items?.length > 0) {
         newInstructions[index] = items[0];
         items.shift();
@@ -92,7 +129,7 @@ export const useEditingRecipe = ({
   const addIngredient: ModifyListItemFunction = (index: number, items = []) => {
     setEditedRecipe((oldR) => {
       if (oldR === undefined) return undefined;
-      let newIngredients = [...(oldR?.ingredients || [])];
+      const newIngredients = [...(oldR?.ingredients || [])];
       if (newIngredients[index + 1] === "") return oldR;
       if (items && items?.length > 0) {
         newIngredients[index] = items[0];
@@ -118,7 +155,7 @@ export const useEditingRecipe = ({
   const removeIngredient = (index: number) => {
     setEditedRecipe((oldR) => {
       if (oldR === undefined) return undefined;
-      let newIngredients = [...(oldR?.ingredients || [])];
+      const newIngredients = [...(oldR?.ingredients || [])];
       newIngredients.splice(index, 1);
       if (newIngredients.length === 0) return oldR;
       return {
@@ -130,7 +167,7 @@ export const useEditingRecipe = ({
   const removeInstruction: ModifyListItemFunction = (index: number) => {
     setEditedRecipe((oldR) => {
       if (oldR === undefined) return undefined;
-      let newInstructions = [...(oldR?.instructions || [])];
+      const newInstructions = [...(oldR?.instructions || [])];
       newInstructions.splice(index, 1);
       if (newInstructions.length === 0) return oldR;
       return {
@@ -143,6 +180,7 @@ export const useEditingRecipe = ({
   return {
     editing,
     updated,
+    removeItem,
     editedRecipe,
     toggleEditing,
     addInstruction,

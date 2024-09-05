@@ -1,48 +1,71 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SVG } from "../../assets/SvgElements";
-import { SearchBar } from "./SearchBar";
 import { useEffect, useRef } from "react";
 import { ProfileButton } from "./ProfileButton";
 import { GoogleLoginDialog, useUserContext } from "../auth";
+import { SearchBar } from "./SearchBar";
 
 export function MainNav() {
   const profileDialogRef = useRef<HTMLDialogElement>(null);
   const { hamMenuRef, headerRef, closeMenu } = useMenuClick();
-  const { user, loggedIn } = useUserContext()
+  const { user, loggedIn } = useUserContext();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const onEmptySearch = () => {
+    if (location.pathname !== "/" && !location.pathname.includes("recipe/")) {
+      navigate("/");
+    }
+  };
   return (
     <>
       <header className="mx-auto center w-auto bg-primary sticky top-0 z-10">
-        <nav className="container mx-auto max-w-7xl max-h-16 min-h-16">
-          <ul className="flex text-xl">
-            <li className="logo-container border-x-grey pt-2">
+        <nav className="container mx-auto max-w-7xl h-16">
+          <ul className="flex text-xl h-16">
+            <li className="logo-container min-w-[195px] border-x-grey pt-2">
               <SVG
                 title="the-logo"
                 height={100}
-                width={195}
-                className="absolute"
+                className="absolute max-w-[195px]"
               />
             </li>
-            <li className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
+            <li className={`hidden recipes
+                            md:flex items-center
+                            md:px-2 md:py-2
+                            lg:px-10 lg:py-5
+                            font-bold h-full hover:underline decoration-2`}>
               <Link to={"/"}>Recipes</Link>
             </li>
-            {user?.isAdmin && loggedIn &&
-              <li
-                className="hidden md:block recipes px-10 py-5 font-bold h-full hover:underline decoration-2 ">
+            {user?.isAdmin && loggedIn && (
+              <li className={`hidden  recipes 
+                            md:flex items-center
+                            md:px-2 md:py-2
+                              lg:px-10 lg:py-5 
+                              font-bold h-full hover:underline decoration-2`}>
                 <Link to={"/new"}>New Recipe</Link>
               </li>
-            }
-            <li className="hidden search px-10 py-3 md:flex font-bold justify-self-end text-base ml-auto">
-              <SearchBar />
-            </li>
-            <li className="w-16 flex justify-center items-center">
-              <ProfileButton dialogRef={profileDialogRef} />
-              <GoogleLoginDialog
-                ref={profileDialogRef}
+            )}
+            <li className={`hidden md:block search 
+                            md:px-2 
+                            lg:px-10 
+                            md:flex font-bold 
+                            justify-self-end text-base ml-auto`}>
+              <SearchBar
+                onSearch={(searchTerm) => {
+                  navigate(`/search/?s=${encodeURI(searchTerm)}`);
+                }}
+                onEmpty={onEmptySearch}
               />
             </li>
-            <label htmlFor="menu" className="right-2 top-2 md:hidden">
+            <li className="w-16 ml-auto flex justify-center items-center h-full">
+              <ProfileButton dialogRef={profileDialogRef} />
+              <GoogleLoginDialog ref={profileDialogRef} />
+            </li>
+            <label
+              htmlFor="menu"
+              className="mr-2 flex justify-center items-center md:hidden"
+            >
               <SVG
-                className="absolute right-2 top-2 md:hidden"
+                className="right-2 top-2 md:hidden"
                 title="hamburger"
                 width={40}
                 height={40}
@@ -63,18 +86,19 @@ export function MainNav() {
                 }}
               >
                 <ul className="w-full" ref={headerRef}>
-                  {user?.isAdmin && loggedIn && <li
-                    className="h-20 text-center text-2xl border"
-                    onClick={closeMenu}
-                  >
-                    <Link
-                      className="w-full h-full flex items-center"
-                      to={"/new"}
+                  {user?.isAdmin && loggedIn && (
+                    <li
+                      className="h-20 text-center text-2xl border"
+                      onClick={closeMenu}
                     >
-                      New Recipe
-                    </Link>
-                  </li>
-                  }
+                      <Link
+                        className="w-full h-full flex items-center"
+                        to={"/new"}
+                      >
+                        New Recipe
+                      </Link>
+                    </li>
+                  )}
                   <li
                     className="h-20 text-center text-2xl border"
                     onClick={closeMenu}
@@ -82,6 +106,14 @@ export function MainNav() {
                     <Link className="w-full h-full flex items-center" to={"/"}>
                       Recipes
                     </Link>
+                  </li>
+                  <li className="h-20 text-3xl border border-t-0">
+                    <SearchBar
+                      onSearch={(searchTerm) => {
+                        navigate(`/search/?s=${encodeURI(searchTerm)}`);
+                      }}
+                      onEmpty={onEmptySearch}
+                    />
                   </li>
                 </ul>
               </div>
