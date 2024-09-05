@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useToggle } from "../../utils";
+import { useCallback, useEffect, useMemo } from "react";
 import {
   EditingRecipe,
   ModifyListItemFunction,
   Recipe,
   RemoveItemFunction,
-} from "./types";
-import { deepEqual, isArray } from "../utils";
+} from "../types";
+import { useToggle } from "../../../utils";
+import { useHistory } from "./useHistory";
+import { deepEqual, isArray } from "../../utils";
 
 export type UpdateRecipeType = <
   T extends keyof EditingRecipe,
@@ -25,7 +26,7 @@ export const useEditingRecipe = ({
   isNew?: boolean;
 }) => {
   const [editing, toggleEditing] = useToggle(isNew);
-  const [editedRecipe, setEditedRecipe] = useState<EditingRecipe>();
+  const [editedRecipe, setEditedRecipe, resetHistory] = useHistory<EditingRecipe>();
 
   useEffect(() => {
     if (isNew) {
@@ -37,6 +38,7 @@ export const useEditingRecipe = ({
 
   useEffect(() => {
     if (editing && recipe) {
+      resetHistory();
       setEditedRecipe({ ...recipe, photoUploads: [] });
     }
   }, [editing, setEditedRecipe, recipe]);
@@ -47,8 +49,8 @@ export const useEditingRecipe = ({
     return (
       !isSameRecipe(recipe, edR) ||
       (editedRecipe &&
-        editedRecipe.photoUploads &&
-        editedRecipe?.photoUploads?.length > 0)
+        photoUploads &&
+        photoUploads?.length > 0)
     );
   }, [editedRecipe, recipe]);
 

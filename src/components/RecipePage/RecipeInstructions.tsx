@@ -39,6 +39,7 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
                 value={ing}
                 className="inline-block"
                 onChange={(e: React.FormEvent<HTMLTextAreaElement>) => {
+                  if(e.currentTarget.value === ing) return;
                   updateEditedRecipe(
                     "instructions",
                     [e.currentTarget.value],
