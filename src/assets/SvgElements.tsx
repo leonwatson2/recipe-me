@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 // prettier-ignore
-type SVGTitles = | "the-logo" | "bf-logo" | "buy-clock-icon" | "play-button" | "pinterest" | "facebook" | "emailSVG" | "instagram" | "link" | "sms" | "twitter" | "youtube" | "whatsapp" | "x" | "search-icon" | "clock-icon" | "right-arrow" | "arrow-down" | "caret-down" | "caret-up" | "caret-left" | "caret-right" | "hamburger" | "pop-out" | "thumbs-up" | "thumbs-up-buy" | "speech" | "audio-on" | "replay" | "plus" | "minus" | "walmart-grocery-logo" | "error-smiley" | "magnifying-glass-no-results" | "swap" | "more" | "grocerybag" | "checkmark" | "shop-merch" | "cart-not-selected" | "cart-selected" | "facebookMonochrome" | "pinterestMonochrome" | "emailMonochrome" | "printMonochrome" | "smsMonochrome" | "twitterMonochrome" | "whatsappMonochrome" | "comment" | "tipsHighlights" | "profile";
+type SVGTitles = "yummm" | "the-logo" | "bf-logo" | "buy-clock-icon" | "play-button" | "pinterest" | "facebook" | "emailSVG" | "instagram" | "link" | "sms" | "twitter" | "youtube" | "whatsapp" | "x" | "search-icon" | "clock-icon" | "right-arrow" | "arrow-down" | "caret-down" | "caret-up" | "caret-left" | "caret-right" | "hamburger" | "pop-out" | "thumbs-up" | "thumbs-up-buy" | "speech" | "audio-on" | "replay" | "plus" | "minus" | "walmart-grocery-logo" | "error-smiley" | "magnifying-glass-no-results" | "swap" | "more" | "grocerybag" | "checkmark" | "shop-merch" | "cart-not-selected" | "cart-selected" | "facebookMonochrome" | "pinterestMonochrome" | "emailMonochrome" | "printMonochrome" | "smsMonochrome" | "twitterMonochrome" | "whatsappMonochrome" | "comment" | "tipsHighlights" | "profile";
 
 export function SvgElements() {
   return (
@@ -10,6 +10,18 @@ export function SvgElements() {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
+      <svg>
+        <symbol id="yummm" viewBox="0 0 200 250">
+          <title>Yumm Logo</title>
+          <rect rx="18" x="0" y="10" width="180" height="215" fill="none" stroke="#000" stroke-width="16" />
+          <line x1="65" x2="115" y1="40" y2="40" stroke-linecap="round" stroke="#000" fill="#000" stroke-width="14" />
+          <path d="M115 40c20 -2.5,20 32.5, 0 30 m 0 2 l 0 25" stroke-linecap="round" fill="none" stroke="#000" stroke-width="14" />
+          <path d="M65 40c-20 -2.5,-20 32.5, 0 30 m 0 2 l 0 25 m 0 2 l 50 0" stroke-linecap="round" fill="none" stroke="#000" stroke-width="14" />
+          <line id="recipe-line" stroke-linecap="round" x1="35" y1="135" x2="145" y2="135" stroke="#000" stroke-width="16" />
+          <use href="#recipe-line" y="30" />
+          <use href="#recipe-line" y="60" />
+        </symbol>
+      </svg>
       <symbol id="profile" viewBox="0 -960 960 960">
         <title>Profile</title>
         <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />

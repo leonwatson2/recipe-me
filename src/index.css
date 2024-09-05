@@ -31,4 +31,10 @@ h1, h2, h3, h4 {
   font-weight: 400;
 
 }
-
+.the-hat {
+background-image: url(https://www.ucraft.com/ai-logo-generator/app/_next/image?url=https%3A%2F%2Fstatic.ucraft.ai%2Ffs%2Flogos%2Fpng%2Fcd65e7d9-1a32-42f2-bbad-3dc361006df9%2Fhorizontal%2F4ed66828-a72a-4f4c-be63-ee3e9ce7bcaf.png%3F1725489488775&w=2048&q=75);
+    background-size: 210px 86px;
+    filter: brightness(0.5);
+    background-position: 54px 1px;
+    background-repeat: no-repeat;
+}

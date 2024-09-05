@@ -23,9 +23,10 @@ export function MainNav() {
           <ul className="flex text-xl h-16">
             <li className="logo-container min-w-[195px] border-x-grey pt-2">
               <SVG
-                title="the-logo"
+                title="yummm"
                 height={100}
                 className="absolute max-w-[195px]"
+                svgClassName="the-hat"
               />
             </li>
             <li className={`hidden recipes
