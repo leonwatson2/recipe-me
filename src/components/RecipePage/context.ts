@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { UpdateRecipeType } from "./hooks";
+import { UpdateRecipeType } from "./hooks/useEditingRecipe";
 
 type UpdateRecipeContextType = {
   updateEditedRecipe: UpdateRecipeType;
