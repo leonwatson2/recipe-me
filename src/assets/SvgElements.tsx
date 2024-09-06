@@ -25,13 +25,13 @@ export function SvgElements() {
             strokeWidth="12"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1.01 }}
-            transition={{ duration: 1.2, delay: 0.5, }}
+            transition={{ duration: 1.2, delay: 0.5 }}
             d="M55 37c-20 -2.5,-20 30.5, 0 25 m 0 2 l 0 25 m 0 2 l 45 0"
           />
-          <motion.g 
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: .8, duration: .25 }}
+          <motion.g
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.8, duration: 0.25 }}
           >
             <line
               x1="58"
