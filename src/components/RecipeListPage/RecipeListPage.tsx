@@ -12,8 +12,8 @@ export const RecipeListPage = () => {
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot | undefined>(
     undefined,
   );
-  const [recievedAll, setRecievedAll] = useState(false);
-  const [_, setLoading] = useState(true);
+  const [recievedAll, setRecievedAll] = useState(true);
+  const [loading, setLoading] = useState(true);
   const fetched = useRef<boolean>(false);
   const getRecipes = () => {
     setLoading(true);
@@ -39,6 +39,6 @@ export const RecipeListPage = () => {
     };
   }, []);
   return (
-    <RecipeList title="Latest Recipes" recipes={recipes} recievedAll={recievedAll} onLoadMore={getRecipes} />
+    <RecipeList title="Latest Recipes" loading={loading} recipes={recipes} recievedAll={recievedAll} onLoadMore={getRecipes} />
   );
 };
