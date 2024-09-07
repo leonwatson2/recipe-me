@@ -2,7 +2,7 @@
   "name": "react-18-updates",
   "private": true,
   "version": "0.0.0",
-  "type": "commonjs",
+  "type": "module",
   "homepage": "./",
   "scripts": {
     "dev": "vite",

@@ -12,7 +12,8 @@
     "lib": ["ES2021"],
     "baseUrl": ".",
     "paths": {
-      "@Utils/*": ["src/utils/*"]
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"]
     }
   }
 }
