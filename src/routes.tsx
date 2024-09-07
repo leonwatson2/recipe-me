@@ -1,13 +1,14 @@
 import { createBrowserRouter, LoaderFunction } from "react-router-dom";
 import { getRecipeBySlug, searchForRecipe } from "./firebase/actions";
-import { RecipePage } from "./components/RecipePage";
 import ErrorPage from "./components/ErrorPage";
 import { Root } from "./components/Root";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
-import { SEARCH_TERM_KEY } from "@Utils";
 import { RecipeListPage } from "./components/RecipeListPage/RecipeListPage";
 import { SearchPage } from "./components/SearchPage";
+import { SEARCH_TERM_KEY } from "@utils";
+import { lazy } from "react";
 
+const RecipePage = lazy(() => import("./components/RecipePage/RecipePage").then((module) => ({ default: module.RecipePage })));
 export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
   params,
 }) => {
@@ -42,11 +43,11 @@ export const router = createBrowserRouter([
         path: "search",
         element: <SearchPage />,
         loader: async ({ request }) => {
-          const searchParams = new URL(request.url)
-          const searchTerm = searchParams.searchParams.get(SEARCH_TERM_KEY)
-          const recipes = await searchForRecipe(searchTerm || '')
-          return recipes
-        }
+          const searchParams = new URL(request.url);
+          const searchTerm = searchParams.searchParams.get(SEARCH_TERM_KEY);
+          const recipes = await searchForRecipe(searchTerm || "");
+          return recipes;
+        },
       },
       {
         path: "new",
