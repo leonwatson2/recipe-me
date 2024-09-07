@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { ModifyListItemFunction, Recipe } from "./types";
 import { useUpdateRecipeContext } from "./context";
-import { PlusMinusButtons } from "../utils";
-import { Editable } from "../utils/components";
+import { PlusMinusButtons } from "@Utils";
+import { Editable } from "../../utils/components";
 
 type RecipeIngredientsProps = {
   editedIngredients?: Recipe["ingredients"];
@@ -19,8 +19,9 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
   const { editing, updateEditedRecipe } = useUpdateRecipeContext();
   return (
     <section className="ingredients">
-      <header className="font-bold text-2xl uppercase"><h2>Ingredients
-      </h2></header>
+      <header className="font-bold text-2xl uppercase">
+        <h2>Ingredients</h2>
+      </header>
       <ul className="mt-6">
         {(editing ? editedIngredients : ingredients).map((ing, index) => (
           <li

@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Recipe } from "./types";
 import { Timestamp } from "firebase/firestore";
 import { useUpdateRecipeContext } from "./context";
-import { Editable } from "../utils/components";
+import { Editable } from "../../utils/components";
 
 type RecipeHeaderProps = Partial<Pick<Recipe, "name" | "intro" | "dateAdded">>;
 

@@ -2,7 +2,7 @@ import "react";
 import "../firebase/config.ts";
 import { Link } from "react-router-dom";
 import { SVG } from "../assets/SvgElements.tsx";
-import { Button } from "./utils/index.ts";
+import { Button } from "@Utils";
 import { FC } from "react";
 import { Recipe } from "./RecipePage/types.ts";
 import { motion } from "framer-motion";

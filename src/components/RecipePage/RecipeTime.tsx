@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useUpdateRecipeContext } from "./context";
-import { Editable } from "../utils/components";
+import { Editable } from "../../utils/components";
 
 type RecipeTimeProps = {
   prepTime: number;

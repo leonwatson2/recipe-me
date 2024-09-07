@@ -12,7 +12,7 @@ import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { createEmptyRecipe, isRecipe } from "./types";
 import { useUserContext } from "../auth";
 import { EditingButton } from "./EditingButton";
-import { useProtectedRoute, useTitle } from "../utils";
+import { useProtectedRoute, useTitle } from "../../utils";
 
 type RecipePageProps = {
   isNew?: boolean;

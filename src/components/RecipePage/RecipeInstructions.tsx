@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { ModifyListItemFunction, Recipe } from "./types";
 import { useUpdateRecipeContext } from "./context";
-import { PlusMinusButtons } from "../utils";
-import { Editable } from "../utils/components";
+import { Editable, PlusMinusButtons } from "@Utils";
 
 type RecipeInstructionsProps = {
   instructions?: Recipe["instructions"];
@@ -19,7 +18,9 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
   const { updateEditedRecipe, editing } = useUpdateRecipeContext();
   return (
     <section className="preparation mt-7  md:ml-4 md:mt-0">
-      <header className="font-bold text-2xl uppercase"><h2>Preparation</h2></header>
+      <header className="font-bold text-2xl uppercase">
+        <h2>Preparation</h2>
+      </header>
       <ol className="instructions mt-6 ml-6">
         {(editing ? editedInstruction : instructions).map((ing, index) => {
           return (
@@ -39,7 +40,7 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
                 value={ing}
                 className="inline-block"
                 onChange={(e: React.FormEvent<HTMLTextAreaElement>) => {
-                  if(e.currentTarget.value === ing) return;
+                  if (e.currentTarget.value === ing) return;
                   updateEditedRecipe(
                     "instructions",
                     [e.currentTarget.value],

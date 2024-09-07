@@ -4,7 +4,7 @@ import { RecipePage } from "./components/RecipePage";
 import ErrorPage from "./components/ErrorPage";
 import { Root } from "./components/Root";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
-import { SEARCH_TERM_KEY } from "./components/utils";
+import { SEARCH_TERM_KEY } from "@Utils";
 import { RecipeListPage } from "./components/RecipeListPage/RecipeListPage";
 import { SearchPage } from "./components/SearchPage";
 
@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
       {
         path: "search",
         element: <SearchPage />,
-        loader: async ({ request  })=> {
+        loader: async ({ request }) => {
           const searchParams = new URL(request.url)
           const searchTerm = searchParams.searchParams.get(SEARCH_TERM_KEY)
           const recipes = await searchForRecipe(searchTerm || '')

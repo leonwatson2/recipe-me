@@ -4,7 +4,10 @@ import { SvgElements } from "../assets/SvgElements";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GOOGLE_AUTH_CLIENT_ID } from "../firebase/config";
 import { UserContext, UserContextType, useUser } from "./auth";
-import { DialogContext, useDialogState } from "./utils/contexts/dialog-context";
+import {
+  DialogContext,
+  useDialogState,
+} from "../utils/contexts/dialog-context";
 export function Root() {
   const userContext: UserContextType = useUser();
   const { setDialogOpen, isDialogOpen } = useDialogState();
