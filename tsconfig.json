@@ -9,6 +9,10 @@
     }
   ],
   "compilerOptions": {
-    "lib": ["ES2021"]
+    "lib": ["ES2021"],
+    "baseUrl": ".",
+    "paths": {
+      "@Utils/*": ["src/utils/*"]
+    }
   }
 }
