@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import tailwind from "tailwindcss";
 import path from "path";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -14,7 +15,7 @@ export default defineConfig({
     alias: {
       "@utils": path.resolve(__dirname, "./src/utils"),
       "@utils/*": path.resolve(__dirname, "./src/utils/*"),
-    }
+    },
   },
   build: {
     rollupOptions: {
@@ -24,8 +25,8 @@ export default defineConfig({
           "react-dom": ["react-dom"],
           "react-router-dom": ["react-router-dom"],
           "firebase/firestore": ["firebase/firestore"],
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 });

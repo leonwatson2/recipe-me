@@ -21,7 +21,7 @@ export default {
         "grey": "#524A46",
         "brown": "#a77158",
         "lbrown": "#C29986",
-        "white": "#fgfgfg",
+        "white": "#fefefe",
         "transparent": "transparent",
       },
     },
