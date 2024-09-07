@@ -1,14 +1,14 @@
 import { useNavigate, useRouteError } from "react-router-dom";
 import { SVG } from "../assets/SvgElements";
 import { useState, useEffect } from "react";
-const COUNT_DOWN_LENGTH = 7
+const COUNT_DOWN_LENGTH = 7;
 export default function ErrorPage() {
   const error = useRouteError() as { statusText?: string; message: string };
   const navigate = useNavigate();
   const [countDown, setCountdown] = useState<number>(COUNT_DOWN_LENGTH);
   useEffect(() => {
     if (countDown === 0) {
-      navigate("/", { replace : false }  );
+      navigate("/", { replace: false });
       return;
     }
     const t = setTimeout(() => {
