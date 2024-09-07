@@ -24,12 +24,14 @@ export function MainNav() {
     <>
       <MainNavWrapper>
         <li className="logo-container min-w-[195px] border-x-grey pt-2">
-          <SVG
-            title="yummm"
-            height={100}
-            className="absolute max-w-[195px]"
-            svgClassName="the-hat"
-          />
+          <Link to="/">
+            <SVG
+              title="yummm"
+              height={100}
+              className="absolute max-w-[195px]"
+              svgClassName="the-hat stroke-white" 
+            />
+          </Link>
         </li>
         <li
           className={`hidden recipes
