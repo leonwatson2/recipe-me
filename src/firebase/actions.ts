@@ -30,7 +30,7 @@ import {
 import { User } from "../components/auth/types.ts";
 import { v4 as uuid } from "uuid";
 import "../firebase/config.ts";
-import { QUERY_DOC_LIMIT } from "@Utils";
+import { QUERY_DOC_LIMIT } from "@utils";
 
 const DB_RECIPE_ROOT = "recipes";
 const DB_USERS_ROOT = "users";

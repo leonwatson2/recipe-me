@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { ModifyListItemFunction, Recipe } from "./types";
 import { useUpdateRecipeContext } from "./context";
-import { PlusMinusButtons } from "@Utils";
+import { PlusMinusButtons } from "@utils";
 import { Editable } from "../../utils/components";
 
 type RecipeIngredientsProps = {
@@ -50,7 +50,10 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
               }}
               onPaste={(e) => {
                 e.preventDefault();
-                const ingredients = e.clipboardData.getData("text").split("\n");
+                const ingredients = e.clipboardData
+                  .getData("text")
+                  .split("\n")
+                  .filter((i: string) => i.length > 0 && i !== "\r");
                 addIngredient(index, ingredients);
               }}
               placeholder={"Some more cowbell"}

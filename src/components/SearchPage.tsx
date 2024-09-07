@@ -3,7 +3,7 @@ import { RecipeList } from "./RecipeList";
 import { createSearchParams, useLocation } from "react-router-dom";
 import { searchForRecipe } from "../firebase/actions";
 import { Recipe } from "./RecipePage/types";
-import { SEARCH_TERM_KEY } from "@Utils";
+import { SEARCH_TERM_KEY } from "@utils";
 export const SearchPage: FC = () => {
   const [recipes, setRecipes] = useState<Array<Recipe>>([]);
   const location = useLocation();

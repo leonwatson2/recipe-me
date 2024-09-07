@@ -2,7 +2,7 @@ import "react";
 import "../firebase/config.ts";
 import { Link } from "react-router-dom";
 import { SVG } from "../assets/SvgElements.tsx";
-import { Button } from "@Utils";
+import { Button } from "@utils";
 import { FC } from "react";
 import { Recipe } from "./RecipePage/types.ts";
 import { motion } from "framer-motion";
@@ -32,7 +32,7 @@ export const RecipeList: FC<RecipeListProps> = ({
   recipes,
   recievedAll = true,
   loading = false,
-  onLoadMore = () => { },
+  onLoadMore = () => {},
 }) => {
   return (
     <section className="mx-auto max-w-7xl min-h-[80vh] flex flex-col relative pt-7">
@@ -77,9 +77,7 @@ export const RecipeList: FC<RecipeListProps> = ({
           Load More
         </Button>
       )}
-      {loading && (
-        <SVG title="replay" className="animate-spin fill-primary" />
-      )}
+      {loading && <SVG title="replay" className="animate-spin fill-primary" />}
       {/* {error !== "" && <div>Error:{error}</div>} */}
     </section>
   );

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { ModifyListItemFunction, Recipe } from "./types";
 import { useUpdateRecipeContext } from "./context";
-import { Editable, PlusMinusButtons } from "@Utils";
+import { Editable, PlusMinusButtons } from "@utils";
 
 type RecipeInstructionsProps = {
   instructions?: Recipe["instructions"];
@@ -51,7 +51,8 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
                   e.preventDefault();
                   const instructions = e.clipboardData
                     .getData("text")
-                    .split("\n");
+                    .split("\n")
+                    .filter((i: string) => i.length > 0 && i !== "\r");
                   addInstruction(index, instructions);
                 }}
                 placeholder="Then you put the lime in the coconut"

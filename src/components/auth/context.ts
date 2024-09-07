@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { GoogleUser, User } from "./types";
-import { EXPIRE_DURATION_DAYS, LS_CREDS, LS_EXPIRE } from "@Utils";
+import { EXPIRE_DURATION_DAYS, LS_CREDS, LS_EXPIRE } from "@utils";
 
 export type UserContextType = {
   googleUser?: GoogleUser;

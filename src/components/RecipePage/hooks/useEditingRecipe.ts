@@ -5,7 +5,7 @@ import {
   Recipe,
   RemoveItemFunction,
 } from "../types";
-import { useToggle, deepEqual, isArray } from "../../../utils";
+import { useToggle, deepEqual, isArray } from "@utils";
 import { useHistory } from "./useHistory";
 
 export type UpdateRecipeType = <
@@ -25,7 +25,8 @@ export const useEditingRecipe = ({
   isNew?: boolean;
 }) => {
   const [editing, toggleEditing] = useToggle(isNew);
-  const [editedRecipe, setEditedRecipe, resetHistory] = useHistory<EditingRecipe>();
+  const [editedRecipe, setEditedRecipe, resetHistory] =
+    useHistory<EditingRecipe>();
 
   useEffect(() => {
     if (isNew) {
@@ -47,9 +48,7 @@ export const useEditingRecipe = ({
     const { photoUploads, ...edR } = editedRecipe;
     return (
       !isSameRecipe(recipe, edR) ||
-      (editedRecipe &&
-        photoUploads &&
-        photoUploads?.length > 0)
+      (editedRecipe && photoUploads && photoUploads?.length > 0)
     );
   }, [editedRecipe, recipe]);
 

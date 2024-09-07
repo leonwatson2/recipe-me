@@ -9,7 +9,6 @@ export const ProfileButton: FC<ProfileButtonProps> = ({ dialogRef }) => {
   const { googleUser } = useUserContext();
   //TODO: blur background on open const { setDialogOpen } = useDialogContext()
   return (
-
     <button
       className="my-auto"
       onClick={() => {
@@ -19,9 +18,9 @@ export const ProfileButton: FC<ProfileButtonProps> = ({ dialogRef }) => {
       }}
     >
       {googleUser?.picture ? (
-      <div className="rounded-full overflow-hidden" >
-      <img src={googleUser.picture} className="scale-75"/>
-      </div>
+        <div className="rounded-full overflow-hidden">
+          <img src={googleUser.picture} className="scale-75" />
+        </div>
       ) : (
         <SVG
           title="profile"

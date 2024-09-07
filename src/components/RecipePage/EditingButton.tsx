@@ -4,7 +4,7 @@ import { motion, Variants } from "framer-motion";
 import { SVG } from "../../assets/SvgElements";
 import { DialogBox } from "../../utils/components/DialogBox";
 import { useDialogContext } from "../../utils/contexts/dialog-context";
-import { Button } from "@Utils";
+import { Button } from "@utils";
 
 type EditingButtonProps = {
   toggleEditing: () => void;

@@ -8,7 +8,7 @@ import {
 import { getGoogleUserData } from "../actions";
 import { loginUser } from "../../../firebase/actions";
 import { GoogleUser, User } from "../types";
-import { LS_CREDS } from "@Utils";
+import { LS_CREDS } from "@utils";
 
 export const useUser: () => UserContextType = () => {
   const [user, setUser] = useState<User>();

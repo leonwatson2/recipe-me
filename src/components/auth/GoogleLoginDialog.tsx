@@ -3,7 +3,7 @@ import { DialogBox } from "../../utils/components/DialogBox";
 import { GoogleLogin } from "@react-oauth/google";
 import { getGoogleUserData } from "./actions";
 import { updateUserLocalStorage, useUserContext } from "./context";
-import { Button } from "@Utils";
+import { Button } from "@utils";
 import { useDialogContext } from "../../utils/contexts/dialog-context";
 
 type GoogleLoginDialog = {
