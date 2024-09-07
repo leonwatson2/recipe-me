@@ -2,9 +2,9 @@ import { useCallback, useRef } from "react";
 import { useUserContext } from "../auth";
 import { motion, Variants } from "framer-motion";
 import { SVG } from "../../assets/SvgElements";
-import { DialogBox } from "../utils/components/DialogBox";
-import { useDialogContext } from "../utils/contexts/dialog-context";
-import { Button } from "../utils";
+import { DialogBox } from "../../utils/components/DialogBox";
+import { useDialogContext } from "../../utils/contexts/dialog-context";
+import { Button } from "@Utils";
 
 type EditingButtonProps = {
   toggleEditing: () => void;
@@ -17,12 +17,10 @@ const editButtonAnimation: Variants = {
   hidden: {
     x: 100,
     opacity: 0,
-    rotateZ: "90deg",
   },
   show: {
     x: 0,
     opacity: 1,
-    rotateZ: "0",
   },
 };
 export const EditingButton = ({
@@ -110,7 +108,7 @@ export const EditingButton = ({
             closeDialog();
           }}
         >
-          Cancel
+          Discard Changes
         </Button>
         <Button onClick={onConfirmClick}>Confirm</Button>
       </DialogBox>

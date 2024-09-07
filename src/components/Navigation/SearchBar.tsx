@@ -1,7 +1,7 @@
 import { FC, FormEventHandler, useCallback, useEffect, useState } from "react";
 import { SVG } from "../../assets/SvgElements";
 import { createSearchParams, useLocation } from "react-router-dom";
-import { SEARCH_TERM_KEY } from "../utils";
+import { SEARCH_TERM_KEY } from "@Utils";
 
 type SearchBarProps = {
   onSearch: (searchTerm: string) => void;

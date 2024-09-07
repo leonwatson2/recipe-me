@@ -30,7 +30,7 @@ import {
 import { User } from "../components/auth/types.ts";
 import { v4 as uuid } from "uuid";
 import "../firebase/config.ts";
-import { QUERY_DOC_LIMIT } from "../components/utils/contants.ts";
+import { QUERY_DOC_LIMIT } from "@Utils";
 
 const DB_RECIPE_ROOT = "recipes";
 const DB_USERS_ROOT = "users";
@@ -94,7 +94,10 @@ export const updateRecipe = async ({
   }
 };
 
-export const addRecipe = async ({photoUploads, ...noUploadsRecipe }:EditingRecipe): Promise<string> => {
+export const addRecipe = async ({
+  photoUploads,
+  ...noUploadsRecipe
+}: EditingRecipe): Promise<string> => {
   try {
     const storage = getStorage();
     const { id, ...noIdRecipe } = noUploadsRecipe;
@@ -106,13 +109,15 @@ export const addRecipe = async ({photoUploads, ...noUploadsRecipe }:EditingRecip
     }
     const recipeCol = collection(db, DB_RECIPE_ROOT);
     noIdRecipe.slug = convertNameToSlug(noIdRecipe.name);
-    noIdRecipe.searchTerms = getUniqueWordsStringCombos(noIdRecipe.name.replaceAll("-"," ").split(" "))
-    console.log(noIdRecipe)
+    noIdRecipe.searchTerms = getUniqueWordsStringCombos(
+      noIdRecipe.name.replaceAll("-", " ").split(" "),
+    );
+    console.log(noIdRecipe);
     await addDoc(recipeCol, noIdRecipe);
 
     return noIdRecipe.slug;
-  } catch (e){
-    console.log(e)
+  } catch (e) {
+    console.log(e);
     throw Error("Something went wrong adding recipe");
   }
 };
@@ -209,13 +214,10 @@ export const loginUser = async (email: string): Promise<User> => {
   }
 };
 
-export const addSearchTerms = async (
-  id: string,
-  terms: Array<string>
-) => {
+export const addSearchTerms = async (id: string, terms: Array<string>) => {
   const recipeDoc = doc(db, DB_RECIPE_ROOT, id);
-  const searchTerms = getUniqueWordsStringCombos(terms)
-  console.table(searchTerms)
+  const searchTerms = getUniqueWordsStringCombos(terms);
+  console.table(searchTerms);
   try {
     await updateDoc(recipeDoc, { searchTerms });
   } catch (e) {
@@ -224,20 +226,22 @@ export const addSearchTerms = async (
   }
 };
 
-const fillerWords = ["the", "with", "and", "a", "or", "You", "i"]
-function getAllStringCombos(arr:Array<string>):Array<string>{
-  if(arr.length === 1) {
-    if(fillerWords.includes(arr[0])){
-      return []
+const fillerWords = ["the", "with", "and", "a", "or", "You", "i"];
+function getAllStringCombos(arr: Array<string>): Array<string> {
+  if (arr.length === 1) {
+    if (fillerWords.includes(arr[0])) {
+      return [];
     }
-    return [arr[0]]
+    return [arr[0]];
   }
-  const right = getAllStringCombos(arr.slice(1, arr.length))
-  const left = getAllStringCombos(arr.slice(0, arr.length - 1))
-  return [arr.join(' ')].concat(right).concat(left)
+  const right = getAllStringCombos(arr.slice(1, arr.length));
+  const left = getAllStringCombos(arr.slice(0, arr.length - 1));
+  return [arr.join(" ")].concat(right).concat(left);
 }
-function getUniqueWordsStringCombos(words:Array<string>){
-  return Array.from(new Set(getAllStringCombos(words))).sort((a,b)=>a.length>=b.length ? -1 : 1);
+function getUniqueWordsStringCombos(words: Array<string>) {
+  return Array.from(new Set(getAllStringCombos(words))).sort((a, b) =>
+    a.length >= b.length ? -1 : 1,
+  );
 }
 export const searchForRecipe = async (
   searchTerm: string,

@@ -4,11 +4,11 @@ import {
   hasValidUserStorage,
   updateUserLocalStorage,
   UserContextType,
-} from "./context";
-import { getGoogleUserData } from "./actions";
-import { loginUser } from "../../firebase/actions";
-import { GoogleUser, User } from "./types";
-import { LS_CREDS } from "../utils";
+} from "../context";
+import { getGoogleUserData } from "../actions";
+import { loginUser } from "../../../firebase/actions";
+import { GoogleUser, User } from "../types";
+import { LS_CREDS } from "@Utils";
 
 export const useUser: () => UserContextType = () => {
   const [user, setUser] = useState<User>();

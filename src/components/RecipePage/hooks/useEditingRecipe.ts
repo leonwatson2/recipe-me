@@ -5,9 +5,8 @@ import {
   Recipe,
   RemoveItemFunction,
 } from "../types";
-import { useToggle } from "../../../utils";
+import { useToggle, deepEqual, isArray } from "../../../utils";
 import { useHistory } from "./useHistory";
-import { deepEqual, isArray } from "../../utils";
 
 export type UpdateRecipeType = <
   T extends keyof EditingRecipe,
