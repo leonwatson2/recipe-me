@@ -1,7 +1,8 @@
 import { FC } from "react";
 import { motion } from "framer-motion";
 // prettier-ignore
-type SVGTitles = "yummm" | "the-logo" | "bf-logo" | "search-icon" | "arrow-down" | "hamburger" | "plus" | "minus" | "checkmark" | "profile" | "smsMonochrome" | "pop-out";
+type SVGTitles = "yummm" | "the-logo" | "bf-logo" | "search-icon" | "arrow-down" | "hamburger" | "plus" | "minus" | "checkmark" | "profile" | "smsMonochrome" | "pop-out" | "replay";
+;
 
 export function SvgElements() {
   return (
