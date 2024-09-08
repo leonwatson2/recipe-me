@@ -61,7 +61,9 @@ export const useEditingRecipe = ({
           return {
             ...oldR,
             [property]:
-              typeof value === "string" ? value.replace("\n", "") : value,
+              typeof value === "string"
+                ? value.replace("\n", "").replace(/\s+/g, " ").trim()
+                : value,
           };
         }
         if (property === "photoUploads" && isArray(oldR[property])) {

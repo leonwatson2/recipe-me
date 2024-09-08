@@ -61,10 +61,10 @@ export const getAllRecipes: GetAllRecipes = async ({
       lastRecipeDoc === undefined
         ? query(collection(db, path), limit(QUERY_DOC_LIMIT + 1))
         : query(
-          collection(db, path),
-          startAt(lastRecipeDoc),
-          limit(QUERY_DOC_LIMIT + 1),
-        ),
+            collection(db, path),
+            startAt(lastRecipeDoc),
+            limit(QUERY_DOC_LIMIT + 1),
+          ),
     );
     const docs = (await recipesRef).docs;
     const lastDoc = docs.length > QUERY_DOC_LIMIT ? docs.pop() : undefined;
@@ -120,7 +120,7 @@ export const addRecipe = async ({
     const recipeCol = collection(db, DB_RECIPE_ROOT);
     noIdRecipe.slug = convertNameToSlug(noIdRecipe.name);
     noIdRecipe.searchTerms = getUniqueWordsStringCombos(
-      noIdRecipe.name.replaceAll("-", " ").split(" "),
+      noIdRecipe.name.toLowerCase().replaceAll("-", " ").split(" ").filter(Boolean),
     );
     await addDoc(recipeCol, noIdRecipe);
 
@@ -134,6 +134,7 @@ export const archiveRecipe = async (id: string) => {
   try {
     const recipeDoc = doc(db, DB_RECIPE_ROOT, id);
     const recipe = (await getDoc(recipeDoc)).data() as Recipe;
+    recipe.photoUrls = []
     await setDoc(doc(db, DB_ARCHIVE_ROOT, id), recipe);
     await deleteOldPhotos(recipe.photoUrls);
     await deleteDoc(recipeDoc);
@@ -265,7 +266,6 @@ export const loginUser = async (email: string): Promise<User> => {
 export const addSearchTerms = async (id: string, terms: Array<string>) => {
   const recipeDoc = doc(db, DB_RECIPE_ROOT, id);
   const searchTerms = getUniqueWordsStringCombos(terms);
-  console.table(searchTerms);
   try {
     await updateDoc(recipeDoc, { searchTerms });
   } catch (e) {
@@ -280,7 +280,7 @@ function getAllStringCombos(arr: Array<string>): Array<string> {
     if (fillerWords.includes(arr[0])) {
       return [];
     }
-    return [arr[0]];
+    return [arr[0].trim()];
   }
   const right = getAllStringCombos(arr.slice(1, arr.length));
   const left = getAllStringCombos(arr.slice(0, arr.length - 1));

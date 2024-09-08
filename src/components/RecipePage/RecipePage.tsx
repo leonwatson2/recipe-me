@@ -1,6 +1,9 @@
 import { FC, useCallback, useMemo } from "react";
 import "../../firebase/config";
-import { addRecipe, updateRecipe } from "../../firebase/actions";
+import {
+  addRecipe,
+  updateRecipe,
+} from "../../firebase/actions";
 import { RecipeTime } from "./RecipeTime";
 import { RecipeHeader } from "./RecipeHeader";
 import { RecipeIngredients } from "./RecipeIngredients";
@@ -20,7 +23,10 @@ type RecipePageProps = {
   archived?: boolean;
 };
 
-export const RecipePage: FC<RecipePageProps> = ({ isNew = false, archived = false }) => {
+export const RecipePage: FC<RecipePageProps> = ({
+  isNew = false,
+  archived = false,
+}) => {
   const data = useLoaderData() as { recipe: unknown };
   const revalidator = useRevalidator();
   const { user } = useUserContext();
@@ -76,13 +82,15 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false, archived = fals
         className="group recipe-page mx-auto max-w-7xl relative min-h-[calc(100vh-4rem)]"
       >
         <EditingBar />
-        {!archived && <EditingButton
-          toggleEditing={toggleEditing}
-          editing={editing}
-          updated={updated || false}
-          isNew={isNew}
-          onConfirmUpdate={onConfirmUpdate}
-        />}
+        {user?.isAdmin && !archived && (
+          <EditingButton
+            toggleEditing={toggleEditing}
+            editing={editing}
+            updated={updated || false}
+            isNew={isNew}
+            onConfirmUpdate={onConfirmUpdate}
+          />
+        )}
         <RecipeHeader
           dateAdded={recipe?.dateAdded}
           intro={recipe?.intro}
@@ -112,7 +120,14 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false, archived = fals
             photoUrls={recipe?.photoUrls}
             removeItem={removeItem}
           />
-          {user?.isAdmin ? <RecipeDelete archived={archived} editing={editing} recipe={recipe} navigate={navigate} /> : null}
+          {user?.isAdmin ? (
+            <RecipeDelete
+              archived={archived}
+              editing={editing}
+              recipe={recipe}
+              navigate={navigate}
+            />
+          ) : null}
         </main>
       </div>
     </UpdateRecipeContext.Provider>

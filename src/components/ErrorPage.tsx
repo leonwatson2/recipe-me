@@ -27,7 +27,7 @@ export default function ErrorPage() {
       </p>
       <h2 className="text-9xl text-center transparent">{countDown}</h2>
       <code className="text-center">{error.statusText || error.message}</code>
-      <SVG title="emailSVG" />
+      <SVG title="search-icon" className="animate-bounce" />
     </div>
   );
 }
