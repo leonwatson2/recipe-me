@@ -6,6 +6,7 @@ import { GoogleLoginDialog, useUserContext } from "../auth";
 import { SearchBar } from "./SearchBar";
 import { HamburgerMenu } from "./HamburgerMenu";
 import { MainNavWrapper } from "./MainNavWrapper";
+import { ARCHIVE_PATH, RECIPE_PATH } from "../../routes";
 
 export function MainNav() {
   const profileDialogRef = useRef<HTMLDialogElement>(null);
@@ -13,7 +14,11 @@ export function MainNav() {
   const navigate = useNavigate();
   const location = useLocation();
   const onEmptySearch = () => {
-    if (location.pathname !== "/" && !location.pathname.includes("recipe/")) {
+
+    if (location.pathname !== "/" 
+        && !location.pathname.includes(RECIPE_PATH) 
+        && !location.pathname.includes(ARCHIVE_PATH)) {
+
       navigate("/");
     }
   };
@@ -29,7 +34,7 @@ export function MainNav() {
               title="yummm"
               height={100}
               className="absolute max-w-[195px]"
-              svgClassName="the-hat stroke-white" 
+              svgClassName="the-hat stroke-white"
             />
           </Link>
         </li>
@@ -42,7 +47,14 @@ export function MainNav() {
         >
           <Link to={"/"}>Recipes</Link>
         </li>
-        {user?.isAdmin && loggedIn && (
+        {user?.isAdmin && loggedIn && (<>
+          <li className={`hidden  recipes 
+                            md:flex items-center
+                            md:px-2 md:py-2
+                              lg:px-10 lg:py-5 
+                              font-bold h-full hover:underline decoration-2`}>
+            <Link to={"/archive"}>Archives</Link>
+          </li>
           <li
             className={`hidden  recipes 
                             md:flex items-center
@@ -52,7 +64,7 @@ export function MainNav() {
           >
             <Link to={"/new"}>New Recipe</Link>
           </li>
-        )}
+        </>)}
         <li
           className={`hidden search 
                             md:px-2 

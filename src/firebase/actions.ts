@@ -14,6 +14,7 @@ import {
   updateDoc,
   or,
   and,
+  deleteDoc,
 } from "firebase/firestore";
 import {
   deleteObject,
@@ -34,24 +35,33 @@ import { QUERY_DOC_LIMIT } from "@utils";
 
 const DB_RECIPE_ROOT = "recipes";
 const DB_USERS_ROOT = "users";
-
+const DB_ARCHIVE_ROOT = "archive";
 const db = getFirestore();
 
 const convertNameToSlug = (name: string): string =>
   name.toLowerCase().trim().replaceAll(" ", "-");
-
-export const getAllRecipes = async (
-  lastRecipeDoc?: QueryDocumentSnapshot,
-): Promise<{
+type GetAllRecipes = ({
+  lastRecipeDoc,
+  archived,
+}: {
+  lastRecipeDoc?: QueryDocumentSnapshot;
+  archived?: boolean;
+}) => Promise<{
   recipes: Array<Recipe>;
   lastRecipeDoc?: QueryDocumentSnapshot;
-}> => {
+}>;
+
+export const getAllRecipes: GetAllRecipes = async ({
+  lastRecipeDoc,
+  archived = false,
+}) => {
   try {
+    const path = archived ? DB_ARCHIVE_ROOT : DB_RECIPE_ROOT;
     const recipesRef = getDocs(
       lastRecipeDoc === undefined
-        ? query(collection(db, DB_RECIPE_ROOT), limit(QUERY_DOC_LIMIT + 1))
+        ? query(collection(db, path), limit(QUERY_DOC_LIMIT + 1))
         : query(
-            collection(db, DB_RECIPE_ROOT),
+            collection(db, path),
             startAt(lastRecipeDoc),
             limit(QUERY_DOC_LIMIT + 1),
           ),
@@ -112,7 +122,6 @@ export const addRecipe = async ({
     noIdRecipe.searchTerms = getUniqueWordsStringCombos(
       noIdRecipe.name.replaceAll("-", " ").split(" "),
     );
-    console.log(noIdRecipe);
     await addDoc(recipeCol, noIdRecipe);
 
     return noIdRecipe.slug;
@@ -121,10 +130,36 @@ export const addRecipe = async ({
     throw Error("Something went wrong adding recipe");
   }
 };
-
-export const getRecipeBySlug = async (slug: string): Promise<Recipe> => {
+export const archiveRecipe = async (id: string) => {
   try {
-    const q = query(collection(db, DB_RECIPE_ROOT), where("slug", "==", slug));
+    const recipeDoc = doc(db, DB_RECIPE_ROOT, id);
+    const recipe = (await getDoc(recipeDoc)).data() as Recipe;
+    await setDoc(doc(db, DB_ARCHIVE_ROOT, id), recipe);
+    await deleteOldPhotos(recipe.photoUrls);
+    await deleteDoc(recipeDoc);
+  } catch (e) {
+    console.log(e);
+    throw Error("Something went wrong deleting recipe");
+  }
+};
+export const getArchivedRecipeBySlug = async (
+  slug: string,
+): Promise<Recipe> => {
+  try {
+    return getRecipeBySlug(slug, true);
+  } catch (e) {
+    console.log(e);
+    throw Error("Something went wrong getting archived recipe");
+  }
+};
+
+export const getRecipeBySlug = async (
+  slug: string,
+  archived: boolean = false,
+): Promise<Recipe> => {
+  try {
+    const path = archived ? DB_ARCHIVE_ROOT : DB_RECIPE_ROOT;
+    const q = query(collection(db, path), where("slug", "==", slug));
     const snapshot = await getDocs(q);
     if (snapshot.docs[0]) {
       const potentialRecipe = {

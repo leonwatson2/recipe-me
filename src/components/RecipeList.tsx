@@ -6,12 +6,14 @@ import { Button } from "@utils";
 import { FC } from "react";
 import { Recipe } from "./RecipePage/types.ts";
 import { motion } from "framer-motion";
+import { ARCHIVE_PATH, RECIPE_PATH } from "../routes.tsx";
 type RecipeListProps = {
   recipes: Array<Recipe>;
   title: string;
   recievedAll?: boolean;
   onLoadMore?: () => void;
   loading?: boolean;
+  archived?: boolean;
 };
 const container = {
   hidden: { opacity: 0 },
@@ -27,12 +29,14 @@ const listItem = {
   hidden: { opacity: 0 },
   show: { opacity: 1 },
 };
+
 export const RecipeList: FC<RecipeListProps> = ({
   title,
   recipes,
   recievedAll = true,
   loading = false,
-  onLoadMore = () => {},
+  onLoadMore = () => { },
+  archived = false,
 }) => {
   return (
     <section className="mx-auto max-w-7xl min-h-[80vh] flex flex-col relative pt-7">
@@ -56,7 +60,7 @@ export const RecipeList: FC<RecipeListProps> = ({
               key={r.id}
               className="text-3xl w-full transition-transform hover:translate-x-2 hover:underline mb-10"
             >
-              <Link to={"/recipe/" + r.slug} className="w-full h-full ">
+              <Link to={`/${archived ? ARCHIVE_PATH+'/recipe' : RECIPE_PATH}/${r.slug}`} className="w-full h-full ">
                 <div className="bg-brown flex h-54 w-54">
                   <SVG className="fill-black" title="smsMonochrome" />
                 </div>

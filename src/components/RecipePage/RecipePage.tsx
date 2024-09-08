@@ -13,12 +13,14 @@ import { createEmptyRecipe, isRecipe } from "./types";
 import { useUserContext } from "../auth";
 import { EditingButton } from "./EditingButton";
 import { useProtectedRoute, useTitle } from "../../utils";
+import { RecipeDelete } from "./RecipeDelete";
 
 type RecipePageProps = {
   isNew?: boolean;
+  archived?: boolean;
 };
 
-export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
+export const RecipePage: FC<RecipePageProps> = ({ isNew = false, archived = false }) => {
   const data = useLoaderData() as { recipe: unknown };
   const revalidator = useRevalidator();
   const { user } = useUserContext();
@@ -74,13 +76,13 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
         className="group recipe-page mx-auto max-w-7xl relative min-h-[calc(100vh-4rem)]"
       >
         <EditingBar />
-        <EditingButton
+        {!archived && <EditingButton
           toggleEditing={toggleEditing}
           editing={editing}
           updated={updated || false}
           isNew={isNew}
           onConfirmUpdate={onConfirmUpdate}
-        />
+        />}
         <RecipeHeader
           dateAdded={recipe?.dateAdded}
           intro={recipe?.intro}
@@ -110,6 +112,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false }) => {
             photoUrls={recipe?.photoUrls}
             removeItem={removeItem}
           />
+          {user?.isAdmin && !archived ? <RecipeDelete editing={editing} recipe={recipe} navigate={navigate} /> : null}
         </main>
       </div>
     </UpdateRecipeContext.Provider>

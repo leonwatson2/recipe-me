@@ -2,6 +2,7 @@ import { FC, useEffect, useRef } from "react";
 import { SVG } from "../../assets/SvgElements";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
+import { ARCHIVE_PATH } from "../../routes";
 
 type HamburgerMenuProps = {
   isAdmin: boolean;
@@ -45,6 +46,15 @@ export const HamburgerMenu: FC<HamburgerMenuProps> = ({
       >
         <ul className="w-full" ref={headerRef}>
           {isAdmin && loggedIn && (
+            <>
+            <li
+              className="h-20 text-center text-2xl border"
+              onClick={closeMenu}
+            >
+              <Link className="w-full h-full flex items-center" to={`/${ARCHIVE_PATH}`}>
+                Archives
+              </Link>
+            </li>
             <li
               className="h-20 text-center text-2xl border"
               onClick={closeMenu}
@@ -53,6 +63,7 @@ export const HamburgerMenu: FC<HamburgerMenuProps> = ({
                 New Recipe
               </Link>
             </li>
+            </>
           )}
           <li className="h-20 text-center text-2xl border" onClick={closeMenu}>
             <Link className="w-full h-full flex items-center" to={"/"}>

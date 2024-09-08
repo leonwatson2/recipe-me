@@ -1,5 +1,5 @@
 import { createBrowserRouter, LoaderFunction } from "react-router-dom";
-import { getRecipeBySlug, searchForRecipe } from "./firebase/actions";
+import { getArchivedRecipeBySlug, getRecipeBySlug, searchForRecipe } from "./firebase/actions";
 import ErrorPage from "./components/ErrorPage";
 import { Root } from "./components/Root";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
@@ -9,6 +9,9 @@ import { SEARCH_TERM_KEY } from "@utils";
 import { lazy } from "react";
 
 const RecipePage = lazy(() => import("./components/RecipePage/RecipePage").then((module) => ({ default: module.RecipePage })));
+
+export const RECIPE_PATH = "recipe";
+export const ARCHIVE_PATH = "archive";
 export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
   params,
 }) => {
@@ -29,7 +32,7 @@ export const router = createBrowserRouter([
         element: <RecipeListPage />,
       },
       {
-        path: "recipe/:slug",
+        path: `${RECIPE_PATH}/:slug`,
         element: <RecipePage />,
         loader: async ({ params }) => {
           if (params.slug) {
@@ -59,4 +62,26 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: `/${ARCHIVE_PATH}`,
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "",
+        element: <RecipeListPage archived={true} />,
+      },
+      {
+        path: `recipe/:slug`,
+        element: <RecipePage archived={true} />,
+        loader: async ({ params }) => {
+          if (params.slug) {
+            const recipe = await getArchivedRecipeBySlug(params.slug);
+
+            return { recipe };
+          }
+        },
+      }
+    ]
+  }
 ]);
