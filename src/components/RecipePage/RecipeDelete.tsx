@@ -1,21 +1,40 @@
 import { Button, DialogBox, Editable } from "@utils";
 import { useRef, useState } from "react";
 import { FC } from "react";
-import { archiveRecipe } from "../../firebase/actions";
+import { archiveRecipe, unarchiveRecipe } from "../../firebase/actions";
 import { Recipe } from "./types";
 import { useDialogContext } from "@utils/contexts/dialog-context";
 
 type RecipeDeleteProps = {
   recipe: Recipe;
   editing: boolean;
+  archived: boolean;
   navigate: (path: string) => void;
 };
-export const RecipeDelete: FC<RecipeDeleteProps> = ({ editing, recipe, navigate }) => {
+export const RecipeDelete: FC<RecipeDeleteProps> = ({ archived, editing, recipe, navigate }) => {
 
   const dialoagRef = useRef<HTMLDialogElement>(null);
   const [recipeText, setRecipeText] = useState<string>("");
   const { setDialogOpen } = useDialogContext()
-  if (!editing) return null;
+  const onClick = () => {
+    if (recipe) {
+      if (archived) {
+        unarchiveRecipe(recipe.id).then(() => {
+          dialoagRef.current?.close();
+          setDialogOpen(false);
+          navigate("/archive");
+        })
+      } else {
+        archiveRecipe(recipe.id).then(() => {
+          dialoagRef.current?.close();
+          setDialogOpen(false);
+          navigate("/");
+        });
+      }
+    }
+  }
+
+  if (!editing && !archived) return null;
   return (
     <section className="delete-section">
       <Button
@@ -26,11 +45,11 @@ export const RecipeDelete: FC<RecipeDeleteProps> = ({ editing, recipe, navigate 
         }
         className="text-red-500"
       >
-        Delete Recipe
+        {archived ? 'Unarchive' : 'Delete'} Recipe
       </Button>
       <DialogBox title="Delete Recipe" className="grid grid-cols-2 gap-2" ref={dialoagRef}>
-        <p className="col-span-2 text-center">Type name to delete</p>
-        <label htmlFor="recipeName" >Recipe Name: <i>{recipe.name}</i></label>
+        <p className="col-span-2 text-center">Type name to {archived ? 'unarchive' : 'delete'}</p>
+        <label htmlFor="recipeName" className="select-none" >Recipe Name: <i>{recipe.name}</i></label>
         <Editable element="p"
           id="recipeName"
           className="p-2 h-full col-span-2"
@@ -42,18 +61,9 @@ export const RecipeDelete: FC<RecipeDeleteProps> = ({ editing, recipe, navigate 
         <Button
           className="bg-red-500 text-white disabled:bg-lbrown"
           disabled={recipeText !== recipe.name}
-          onClick={() => {
-            if (recipe) {
-              archiveRecipe(recipe.id).then(() => {
-                dialoagRef.current?.close();
-                setDialogOpen(false);
-                navigate("/");
-              });
-            }
-          }}
+          onClick={onClick}
         >
           Confirm
-
         </Button>
         <Button
           onClick={() => {

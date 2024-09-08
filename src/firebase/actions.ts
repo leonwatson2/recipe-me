@@ -61,10 +61,10 @@ export const getAllRecipes: GetAllRecipes = async ({
       lastRecipeDoc === undefined
         ? query(collection(db, path), limit(QUERY_DOC_LIMIT + 1))
         : query(
-            collection(db, path),
-            startAt(lastRecipeDoc),
-            limit(QUERY_DOC_LIMIT + 1),
-          ),
+          collection(db, path),
+          startAt(lastRecipeDoc),
+          limit(QUERY_DOC_LIMIT + 1),
+        ),
     );
     const docs = (await recipesRef).docs;
     const lastDoc = docs.length > QUERY_DOC_LIMIT ? docs.pop() : undefined;
@@ -142,6 +142,19 @@ export const archiveRecipe = async (id: string) => {
     throw Error("Something went wrong deleting recipe");
   }
 };
+
+export const unarchiveRecipe = async (id: string) => {
+  try {
+    const archivedDoc = doc(db, DB_ARCHIVE_ROOT, id);
+    const recipe = (await getDoc(archivedDoc)).data() as Recipe;
+    await setDoc(doc(db, DB_RECIPE_ROOT, id), recipe);
+    await deleteDoc(archivedDoc);
+  } catch (e) {
+    console.log(e);
+    throw Error("Something went wrong unarchiving recipe");
+  }
+};
+
 export const getArchivedRecipeBySlug = async (
   slug: string,
 ): Promise<Recipe> => {

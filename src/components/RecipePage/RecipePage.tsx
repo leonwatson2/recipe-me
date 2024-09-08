@@ -112,7 +112,7 @@ export const RecipePage: FC<RecipePageProps> = ({ isNew = false, archived = fals
             photoUrls={recipe?.photoUrls}
             removeItem={removeItem}
           />
-          {user?.isAdmin && !archived ? <RecipeDelete editing={editing} recipe={recipe} navigate={navigate} /> : null}
+          {user?.isAdmin ? <RecipeDelete archived={archived} editing={editing} recipe={recipe} navigate={navigate} /> : null}
         </main>
       </div>
     </UpdateRecipeContext.Provider>
