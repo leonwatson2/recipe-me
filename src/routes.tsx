@@ -21,6 +21,13 @@ export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
   }
 };
 
+export const adminLinks: { title: string, path: string }[] = [
+  { title: "Archives", path: `/${ARCHIVE_PATH}` },
+  { title: "New Recipe", path: "/new" },
+];
+export const publicLinks = [
+  { title: "Recipes", path: "/" },
+];
 export const router = createBrowserRouter([
   {
     path: "/",

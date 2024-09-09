@@ -2,7 +2,7 @@ import { FC, useEffect, useRef } from "react";
 import { SVG } from "../../assets/SvgElements";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
-import { ARCHIVE_PATH } from "../../routes";
+import { adminLinks, publicLinks, } from "../../routes";
 
 type HamburgerMenuProps = {
   isAdmin: boolean;
@@ -10,7 +10,6 @@ type HamburgerMenuProps = {
   onEmptySearch: () => void;
   onSearch: (searchTerm: string) => void;
 };
-
 export const HamburgerMenu: FC<HamburgerMenuProps> = ({
   isAdmin,
   loggedIn,
@@ -38,7 +37,7 @@ export const HamburgerMenu: FC<HamburgerMenuProps> = ({
         className="peer hidden"
       />
       <div
-        className="absolute top-0 right-0 -translate-y-full bg-grey w-full md:hidden peer-checked:translate-y-0 transition overflow-hidden"
+        className="absolute top-0 right-0 -translate-y-full bg-brown w-full md:hidden peer-checked:translate-y-0 transition overflow-hidden"
         autoFocus
         onBlur={() => {
           if (hamMenuRef.current) hamMenuRef.current.checked = false;
@@ -46,30 +45,13 @@ export const HamburgerMenu: FC<HamburgerMenuProps> = ({
       >
         <ul className="w-full" ref={headerRef}>
           {isAdmin && loggedIn && (
-            <>
-            <li
-              className="h-20 text-center text-2xl border"
-              onClick={closeMenu}
-            >
-              <Link className="w-full h-full flex items-center" to={`/${ARCHIVE_PATH}`}>
-                Archives
-              </Link>
-            </li>
-            <li
-              className="h-20 text-center text-2xl border"
-              onClick={closeMenu}
-            >
-              <Link className="w-full h-full flex items-center" to={"/new"}>
-                New Recipe
-              </Link>
-            </li>
-            </>
+            adminLinks.map((link) => (
+              <HamburgerLink active={location.pathname === link.path } key={link.title} title={link.title} path={link.path} onClick={closeMenu} />
+            ))
           )}
-          <li className="h-20 text-center text-2xl border" onClick={closeMenu}>
-            <Link className="w-full h-full flex items-center" to={"/"}>
-              Recipes
-            </Link>
-          </li>
+          {publicLinks.map((link) => (
+            <HamburgerLink active={location.pathname === link.path } key={link.title} title={link.title} path={link.path} onClick={closeMenu} />
+          ))}
           <li className="h-20 text-3xl border border-t-0">
             <SearchBar onSearch={onSearch} onEmpty={onEmptySearch} />
           </li>
@@ -78,6 +60,17 @@ export const HamburgerMenu: FC<HamburgerMenuProps> = ({
     </label>
   );
 };
+
+function HamburgerLink(props: { active:boolean, title: string, path: string, onClick: () => void }) {
+  return (
+    <li className={`h-20 text-center text-2xl border ${props.active && ' bg-primary'}` } onClick={props.onClick}>
+      <Link className="w-full h-full flex items-center" to={props.path}>
+        {props.title}
+      </Link>
+    </li>
+  );
+}
+
 export function useMenuClick() {
   const headerRef = useRef<HTMLUListElement>(null);
   const hamMenuRef = useRef<HTMLInputElement>(null);

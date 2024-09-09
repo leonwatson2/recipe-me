@@ -6,7 +6,7 @@ import { GoogleLoginDialog, useUserContext } from "../auth";
 import { SearchBar } from "./SearchBar";
 import { HamburgerMenu } from "./HamburgerMenu";
 import { MainNavWrapper } from "./MainNavWrapper";
-import { ARCHIVE_PATH, RECIPE_PATH } from "../../routes";
+import { adminLinks, ARCHIVE_PATH, RECIPE_PATH } from "../../routes";
 
 export function MainNav() {
   const profileDialogRef = useRef<HTMLDialogElement>(null);
@@ -15,9 +15,9 @@ export function MainNav() {
   const location = useLocation();
   const onEmptySearch = () => {
 
-    if (location.pathname !== "/" 
-        && !location.pathname.includes(RECIPE_PATH) 
-        && !location.pathname.includes(ARCHIVE_PATH)) {
+    if (location.pathname !== "/"
+      && !location.pathname.includes(RECIPE_PATH)
+      && !location.pathname.includes(ARCHIVE_PATH)) {
 
       navigate("/");
     }
@@ -38,33 +38,15 @@ export function MainNav() {
             />
           </Link>
         </li>
-        <li
-          className={`hidden recipes
-                            md:flex items-center
-                            md:px-2 md:py-2
-                            lg:px-10 lg:py-5
-                            font-bold h-full hover:underline decoration-2`}
-        >
-          <Link to={"/"}>Recipes</Link>
-        </li>
-        {user?.isAdmin && loggedIn && (<>
-          <li className={`hidden  recipes 
-                            md:flex items-center
-                            md:px-2 md:py-2
-                              lg:px-10 lg:py-5 
-                              font-bold h-full hover:underline decoration-2`}>
-            <Link to={"/archive"}>Archives</Link>
-          </li>
-          <li
-            className={`hidden  recipes 
-                            md:flex items-center
-                            md:px-2 md:py-2
-                              lg:px-10 lg:py-5 
-                              font-bold h-full hover:underline decoration-2`}
-          >
-            <Link to={"/new"}>New Recipe</Link>
-          </li>
-        </>)}
+        <NavLink title="Recipes" path="/" active={location.pathname === "/"} />
+
+        {user?.isAdmin && loggedIn && (adminLinks.map((link) => (
+          <NavLink
+            key={link.title}
+            title={link.title}
+            path={link.path}
+            active={location.pathname === link.path} />
+        )))}
         <li
           className={`hidden search 
                             md:px-2 
@@ -92,5 +74,24 @@ export function MainNav() {
       </MainNavWrapper>
       <nav className="h-12 bg-lbrown"></nav>
     </>
+  );
+}
+function NavLink(props: { title: string, path: string, active: boolean }) {
+  return (
+    <li
+      className={`hidden recipes
+                  md:flex items-center
+                  md:px-2 md:py-2
+                  transition
+                  duration-300
+                  lg:px-10 lg:py-5
+                  bg-black
+                  hover:bg-black
+                  ${!props.active && 'bg-primary'}
+                  `}>
+      <Link className="w-full h-full flex items-center" to={props.path}>
+        {props.title}
+      </Link>
+    </li>
   );
 }
