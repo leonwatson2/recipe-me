@@ -42,10 +42,10 @@ export const SearchBar: FC<SearchBarProps> = ({ onSearch, onEmpty }) => {
                     `}
     >
       <SVG title="search-icon" className="w-7 h-7" />
-      <form className="max-w-full">
+      <form className="w-10/12">
         <label htmlFor="search"></label>
         <input
-          className="bg-grey rounded focus:border-none h-8 focus-visible:outline-none"
+          className="bg-grey rounded focus:border-none h-8 focus-visible:outline-none max-w-full"
           type="text"
           name="search"
           id="search"
