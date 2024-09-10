@@ -1,0 +1,38 @@
+<svg width="200" height="200" viewBox="0 0 24 24">
+   <circle r="1" cx="5" cy="12" stroke-width="1" stroke="currentColor" fill="none">
+     <animate 
+         id="c"
+         dur=".6s"
+         begin="0;l.end+.45s"
+         attributeName="cy"
+         values="12;6;12"
+         calcMode="spline"         
+         keySplines=".33,.66,.66,1;.33,1,.66,.33"
+              />
+     
+  </circle>
+  <circle r="1" cx="10" cy="12" stroke-width="1" stroke="currentColor" fill="none">
+     <animate 
+         id="c"
+         dur=".6s"
+         begin="c.begin+.4s"
+         attributeName="cy"
+         values="12;6;12"
+         calcMode="spline"         
+         keySplines=".33,.66,.66,1;.33,1,.66,.33"
+              />
+     
+  </circle>
+  <circle r="1" cx="15" cy="12" stroke-width="1" stroke="currentColor" fill="none">
+     <animate 
+         id="l"
+          begin="c.begin+.6s"
+         dur=".6s"
+         attributeName="cy"
+         values="12;6;12"
+         calcMode="spline"         
+         keySplines=".33,.66,.66,1;.33,1,.66,.33"
+              />
+     
+  </circle>
+</svg>
