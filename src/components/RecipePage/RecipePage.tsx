@@ -78,6 +78,7 @@ export const RecipePage: FC<RecipePageProps> = ({
       }}
     >
       <div
+        data-testid="recipe-page"
         data-editing={editing}
         className="group recipe-page mx-auto max-w-7xl relative min-h-[calc(100vh-4rem)]"
       >

@@ -4,11 +4,13 @@ type EditableProps = {
   element: keyof React.ReactHTML;
   editing: boolean;
   value: string | number;
+  testId?: string;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 export const Editable: FC<EditableProps> = memo(({
   element,
   editing,
   value,
+  testId,
   ...props
 }) => {
 
@@ -29,6 +31,7 @@ export const Editable: FC<EditableProps> = memo(({
   if (editing) {
     return (
       <textarea
+        data-testid={"input-"+testId}
         wrap={wrap}
         inputMode={inputMode}
         value={innerValue}
@@ -41,7 +44,7 @@ export const Editable: FC<EditableProps> = memo(({
         }
         maxLength={maxLength}
         className={
-          className + " w-full bg-transparent cursor-pointer overflow-hidden transition outline-secondary" 
+          className + " w-full bg-transparent cursor-pointer overflow-hidden transition outline-secondary"
         }
         onKeyUp={onKeyUp}
         placeholder={placeholder}

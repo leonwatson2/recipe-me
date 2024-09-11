@@ -43,7 +43,7 @@ export type RemoveItemFunction = <T extends keyof EditingRecipe>(
   index: number,
 ) => void;
 
-export const createEmptyRecipe: () => NewRecipe = () => {
+export const createEmptyRecipe: (recipe:Partial<Recipe>) => NewRecipe = (recipe = {}) => {
   return {
     id: "",
     slug: "",
@@ -61,6 +61,7 @@ export const createEmptyRecipe: () => NewRecipe = () => {
     servingSize: "",
     notes: "",
     searchTerms: [],
+    ...recipe,
   };
 };
 

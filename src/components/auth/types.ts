@@ -35,3 +35,23 @@ export function isGoogleUser(user:GoogleUser): user is GoogleUser {
   return false
   
 }
+
+export function createFakeUser(user: Partial<User> = {}): User {
+  return {
+    email: "",
+    isAdmin: false,
+    favorites: [],
+    ...user
+  }
+}
+
+export function createFakeGoogleUser(user: Partial<GoogleUser>): GoogleUser {
+  return {
+    email: "",
+    family_name: "",
+    given_name: "",
+    name: "",
+    picture: "",
+    ...user
+  }
+}

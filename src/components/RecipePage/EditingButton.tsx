@@ -63,6 +63,7 @@ export const EditingButton = ({
         className="sticky w-full top-16 right-0"
         tabIndex={1}
         onClick={editButtonClick}
+        data-testid="edit-button"
       >
         {isNew && (
           <SVG
