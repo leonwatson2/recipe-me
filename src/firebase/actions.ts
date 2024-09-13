@@ -33,9 +33,9 @@ import { v4 as uuid } from "uuid";
 import "../firebase/config.ts";
 import { QUERY_DOC_LIMIT } from "@utils";
 
-const DB_RECIPE_ROOT = "recipes";
-const DB_USERS_ROOT = "users";
-const DB_ARCHIVE_ROOT = "archive";
+export const DB_RECIPE_ROOT = "recipes";
+export const DB_USERS_ROOT = "users";
+export const DB_ARCHIVE_ROOT = "archive";
 const db = getFirestore();
 
 const convertNameToSlug = (name: string): string =>
@@ -196,6 +196,7 @@ export const getUserById = async (id: string): Promise<User> => {
   if (docSnap.exists()) {
     return docSnap.data() as User;
   } else {
+    console.log(docSnap);
     throw Error("Couldn't find user with id");
   }
 };

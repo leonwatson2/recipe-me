@@ -12,7 +12,7 @@ const renderWithProviders = (
   const userContext: UserContextType = {
     user: createFakeUser(),
     googleUser: undefined,
-    loggedIn: true,
+    loggedIn: false,
     loadingUser: false,
     login: () => {},
     logout: () => {},
@@ -71,7 +71,7 @@ test("renders edit button if user is logged in", async () => {
   });
   const user: User = createFakeUser({ isAdmin: true });
   renderWithProviders(<RouterProvider router={router} />, {
-    context: { user },
+    context: { user, loggedIn: true },
   });
   expect(await screen.findByTestId("edit-button")).toBeInTheDocument();
 });
@@ -83,12 +83,16 @@ test("admin user can edit recipe", async () => {
   });
   const user: User = createFakeUser({ isAdmin: true });
   renderWithProviders(<RouterProvider router={router} />, {
-    context: { user },
+    context: { user, loggedIn: true},
   });
   await screen.findByTestId(testIds.recipePage);
+  expect(screen.getByText(recipe.name)).toBeInTheDocument();
+  
   const editButton = screen.getByTestId(testIds.editButton);
   expect(editButton).toBeInTheDocument();
+  
   editButton.click();
+
   await waitFor(() => {
     expect(screen.getByTestId(testIds.name)).toBeInTheDocument();
   });
