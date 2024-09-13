@@ -24,8 +24,8 @@ const renderWithProviders = (
 };
 const recipe: Recipe = createEmptyRecipe({
   name: "Test Recipe Name",
-  ingredients: ["Test Ingredient"],
-  instructions: ["Test Instruction"],
+  ingredients: ["Test Ingredient", "Test Ingredient 2", "Test Ingredient 3"],
+  instructions: ["Test Instruction", "Test Instruction 2"],
   intro: "Test Intro",
   cookTime: 10,
   prepTime: 33,
@@ -61,8 +61,12 @@ test("renders recipe page", async () => {
 
   await screen.findByTestId(testIds.recipePage);
   expect(screen.getByText(recipe.name)).toBeInTheDocument();
-  expect(screen.getByText(recipe.ingredients[0])).toBeInTheDocument();
-  expect(screen.getByText(recipe.instructions[0])).toBeInTheDocument();
+  for (const ingredient of recipe.ingredients) {
+    expect(screen.getByText(ingredient)).toBeInTheDocument();
+  }
+  for (const instruction of recipe.instructions) {
+    expect(screen.getByText(instruction)).toBeInTheDocument();
+  }
   expect(screen.getByText(recipe.intro)).toBeInTheDocument();
   // Edit button should not be present if user is not logged in
   expect(screen.queryByTestId("edit-button")).not.toBeInTheDocument();
