@@ -28,3 +28,9 @@ export function isArray(value: any): value is Array<any> {
   if (Array.isArray(value)) return true;
   return false;
 }
+
+export function formatMinutes(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  return `${hours > 0 ? `${hours} hours ` : ""}${remainingMinutes} minutes`;
+}

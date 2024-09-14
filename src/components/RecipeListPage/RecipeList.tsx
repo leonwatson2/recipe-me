@@ -1,12 +1,12 @@
 import "react";
-import "../firebase/config.ts";
+import "../../firebase/config.ts";
 import { Link } from "react-router-dom";
-import { SVG } from "../assets/SvgElements.tsx";
-import { Button } from "@utils";
+import { SVG } from "../../assets/SvgElements.tsx";
+import { Button, formatMinutes } from "@utils";
 import { FC } from "react";
-import { Recipe } from "./RecipePage/types.ts";
+import { Recipe } from "../RecipePage/types.ts";
 import { motion } from "framer-motion";
-import { ARCHIVE_PATH, RECIPE_PATH } from "../routes.tsx";
+import { ARCHIVE_PATH, RECIPE_PATH } from "@utils";
 type RecipeListProps = {
   recipes: Array<Recipe>;
   title: string;
@@ -35,7 +35,7 @@ export const RecipeList: FC<RecipeListProps> = ({
   recipes,
   recievedAll = true,
   loading = false,
-  onLoadMore = () => { },
+  onLoadMore = () => {},
   archived = false,
 }) => {
   return (
@@ -60,12 +60,15 @@ export const RecipeList: FC<RecipeListProps> = ({
               key={r.id}
               className="text-3xl w-full transition-transform hover:translate-x-2 hover:underline mb-10"
             >
-              <Link to={`/${archived ? ARCHIVE_PATH+'/recipe' : RECIPE_PATH}/${r.slug}`} className="w-full h-full ">
+              <Link
+                to={`/${archived ? ARCHIVE_PATH + "/recipe" : RECIPE_PATH}/${r.slug}`}
+                className="w-full h-full "
+              >
                 <div className="bg-brown flex h-54 w-54">
                   <SVG className="fill-black" title="smsMonochrome" />
                 </div>
                 <p>{r.name}</p>
-                <p className="text-base">{r.cookTime} minutes</p>
+                <p className="text-sm">{formatMinutes(r.cookTime + r.prepTime)}</p>
               </Link>
             </motion.li>
           ))}

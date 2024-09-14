@@ -4,3 +4,5 @@ export const LS_EXPIRE = 'rs-expire'
 export const EXPIRE_DURATION_DAYS = 2
 export const SEARCH_TERM_KEY = 's'
 export const QUERY_DOC_LIMIT = 15
+export const RECIPE_PATH = "recipe";
+export const ARCHIVE_PATH = "archive";

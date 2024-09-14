@@ -6,19 +6,19 @@ import { GoogleLoginDialog, useUserContext } from "../auth";
 import { SearchBar } from "./SearchBar";
 import { HamburgerMenu } from "./HamburgerMenu";
 import { MainNavWrapper } from "./MainNavWrapper";
-import { adminLinks, ARCHIVE_PATH, RECIPE_PATH } from "../../routes";
-
+import { adminLinks } from "../../routes";
+import { ARCHIVE_PATH, RECIPE_PATH } from "@utils";
 export function MainNav() {
   const profileDialogRef = useRef<HTMLDialogElement>(null);
   const { user, loggedIn } = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
   const onEmptySearch = () => {
-
-    if (location.pathname !== "/"
-      && !location.pathname.includes(RECIPE_PATH)
-      && !location.pathname.includes(ARCHIVE_PATH)) {
-
+    if (
+      location.pathname !== "/" &&
+      !location.pathname.includes(RECIPE_PATH) &&
+      !location.pathname.includes(ARCHIVE_PATH)
+    ) {
       navigate("/");
     }
   };
@@ -40,13 +40,16 @@ export function MainNav() {
         </li>
         <NavLink title="Recipes" path="/" active={location.pathname === "/"} />
 
-        {user?.isAdmin && loggedIn && (adminLinks.map((link) => (
-          <NavLink
-            key={link.title}
-            title={link.title}
-            path={link.path}
-            active={location.pathname === link.path} />
-        )))}
+        {user?.isAdmin &&
+          loggedIn &&
+          adminLinks.map((link) => (
+            <NavLink
+              key={link.title}
+              title={link.title}
+              path={link.path}
+              active={location.pathname === link.path}
+            />
+          ))}
         <li
           className={`hidden search 
                             md:px-2 
@@ -76,7 +79,7 @@ export function MainNav() {
     </>
   );
 }
-function NavLink(props: { title: string, path: string, active: boolean }) {
+function NavLink(props: { title: string; path: string; active: boolean }) {
   return (
     <li
       className={`hidden recipes
@@ -87,8 +90,9 @@ function NavLink(props: { title: string, path: string, active: boolean }) {
                   lg:px-10 lg:py-5
                   bg-black
                   hover:bg-black
-                  ${!props.active && 'bg-primary'}
-                  `}>
+                  ${!props.active && "bg-primary"}
+                  `}
+    >
       <Link className="w-full h-full flex items-center" to={props.path}>
         {props.title}
       </Link>

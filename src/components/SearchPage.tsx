@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { RecipeList } from "./RecipeList";
+import { RecipeList } from "./RecipeListPage/RecipeList";
 import { createSearchParams, useLocation } from "react-router-dom";
 import { searchForRecipe } from "../firebase/actions";
 import { Recipe } from "./RecipePage/types";

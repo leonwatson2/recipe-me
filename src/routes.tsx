@@ -1,17 +1,15 @@
+import { lazy } from "react";
 import { createBrowserRouter, LoaderFunction } from "react-router-dom";
 import { getArchivedRecipeBySlug, getRecipeBySlug, searchForRecipe } from "./firebase/actions";
 import ErrorPage from "./components/ErrorPage";
 import { Root } from "./components/Root";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
-import { RecipeListPage } from "./components/RecipeListPage/RecipeListPage";
+import { RecipeListPage } from "./components/RecipeListPage";
 import { SearchPage } from "./components/SearchPage";
-import { SEARCH_TERM_KEY } from "@utils";
-import { lazy } from "react";
+import { SEARCH_TERM_KEY, RECIPE_PATH, ARCHIVE_PATH } from "@utils";
 
 const RecipePage = lazy(() => import("./components/RecipePage/RecipePage").then((module) => ({ default: module.RecipePage })));
 
-export const RECIPE_PATH = "recipe";
-export const ARCHIVE_PATH = "archive";
 export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
   params,
 }) => {

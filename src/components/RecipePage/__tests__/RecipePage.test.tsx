@@ -1,10 +1,10 @@
 import { test, expect } from "vitest";
-import { RecipePage } from "./RecipePage";
+import { RecipePage } from "../RecipePage";
 import { render, screen, waitFor } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { createEmptyRecipe, Recipe } from "./types";
-import { UserContext, UserContextType } from "../auth";
-import { createFakeUser, User } from "../auth/types";
+import { createEmptyRecipe, Recipe } from "../types";
+import { UserContext, UserContextType } from "../../auth";
+import { createFakeUser, User } from "../../auth/types";
 const renderWithProviders = (
   element: JSX.Element,
   { context }: { context: Partial<UserContextType> } = { context: {} },
@@ -14,8 +14,8 @@ const renderWithProviders = (
     googleUser: undefined,
     loggedIn: false,
     loadingUser: false,
-    login: () => { },
-    logout: () => { },
+    login: () => {},
+    logout: () => {},
     ...context,
   };
   return render(
@@ -43,7 +43,7 @@ const routes = [
   {
     path: "/new",
     element: <RecipePage isNew={true} />,
-  }
+  },
 ];
 
 const testIds = {
@@ -109,7 +109,6 @@ test("admin user can edit recipe", async () => {
   expect(nameInput.value).toBe(recipe.name);
 });
 
-
 test("non-admin user create a new recipe and is redirected to home page", async () => {
   const router = createMemoryRouter(routes, {
     initialEntries: ["/new"],
@@ -135,6 +134,7 @@ test("admin user can create new recipe", async () => {
   expect(router.state.location.pathname).toBe("/new");
   await screen.findByTestId(testIds.recipePage);
   expect(screen.getByTestId(testIds.name)).toBeInTheDocument();
-  expect((screen.getByTestId(testIds.name) as HTMLTextAreaElement).value).toBe("");
-})
-
+  expect((screen.getByTestId(testIds.name) as HTMLTextAreaElement).value).toBe(
+    "",
+  );
+});
