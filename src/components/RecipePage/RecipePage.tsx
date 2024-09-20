@@ -9,7 +9,7 @@ import { RecipeHeader } from "./RecipeHeader";
 import { RecipeIngredients } from "./RecipeIngredients";
 import { RecipeInstructions } from "./RecipeInstructions";
 import { UpdateRecipeContext } from "./context";
-import { RecipeVideo } from "./RecipeVideo";
+import { RecipeImage } from "./RecipeImage";
 import { useEditingRecipe } from "./hooks";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { createEmptyRecipe, isRecipe } from "./types";
@@ -80,7 +80,7 @@ export const RecipePage: FC<RecipePageProps> = ({
       <div
         data-testid="recipe-page"
         data-editing={editing}
-        className="group recipe-page mx-auto max-w-7xl relative min-h-[calc(100vh-4rem)]"
+        className={"group recipe-page mx-auto max-w-7xl relative min-h-[calc(100vh-4rem)] " + (revalidator.state == "idle" ? "opacity-100" : "opacity-55")}
       >
         <EditingBar />
         {user?.isAdmin && !archived && (
@@ -116,7 +116,7 @@ export const RecipePage: FC<RecipePageProps> = ({
             addInstruction={addInstruction}
             removeInstruction={removeInstruction}
           />
-          <RecipeVideo
+          <RecipeImage
             photoUploads={editedRecipe?.photoUploads}
             photoUrls={recipe?.photoUrls}
             removeItem={removeItem}

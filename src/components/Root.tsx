@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { MainNav } from "./Navigation";
-import { SvgElements } from "../assets/SvgElements";
+import { SVG, SvgElements } from "../assets/SvgElements";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GOOGLE_AUTH_CLIENT_ID } from "../firebase/config";
 import { UserContext, UserContextType, useUser } from "./auth";
@@ -8,6 +8,7 @@ import {
   DialogContext,
   useDialogState,
 } from "../utils/contexts/dialog-context";
+import { Suspense } from "react";
 export function Root() {
   const userContext: UserContextType = useUser();
   const { setDialogOpen, isDialogOpen } = useDialogState();
@@ -20,7 +21,9 @@ export function Root() {
           >
             <MainNav />
             <SvgElements />
-            <Outlet />
+            <Suspense fallback={<SVG title="yummm" />}>
+              <Outlet />
+            </Suspense>
           </div>
         </DialogContext.Provider>
       </UserContext.Provider>

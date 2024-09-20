@@ -17,7 +17,7 @@ export const RecipeInstructions: FC<RecipeInstructionsProps> = ({
 }) => {
   const { updateEditedRecipe, editing } = useUpdateRecipeContext();
   return (
-    <section className="preparation mt-7  md:ml-4 md:mt-0">
+    <section className="preparation mt-7 md:ml-4 md:mt-0">
       <header className="font-bold text-2xl uppercase">
         <h2>Preparation</h2>
       </header>
