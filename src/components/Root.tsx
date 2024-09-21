@@ -9,10 +9,12 @@ import {
   useDialogState,
 } from "../utils/contexts/dialog-context";
 import { Suspense } from "react";
+
 export function Root() {
   const userContext: UserContextType = useUser();
   const { setDialogOpen, isDialogOpen } = useDialogState();
   return (
+
     <GoogleOAuthProvider clientId={GOOGLE_AUTH_CLIENT_ID}>
       <UserContext.Provider value={userContext}>
         <DialogContext.Provider value={{ setDialogOpen, isDialogOpen }}>
@@ -22,9 +24,9 @@ export function Root() {
             <MainNav />
             <SvgElements />
             <Suspense fallback={<SVG title="yummm" />}>
-              <Outlet />
+            { userContext.loadingUser ? <SVG title="smsMonochrome" className="fill-primary m-auto animate-pulse"  height={100} width={100}/> : <Outlet />} 
             </Suspense>
-          </div>
+         </div>
         </DialogContext.Provider>
       </UserContext.Provider>
     </GoogleOAuthProvider>

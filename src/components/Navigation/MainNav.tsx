@@ -6,18 +6,20 @@ import { GoogleLoginDialog, useUserContext } from "../auth";
 import { SearchBar } from "./SearchBar";
 import { HamburgerMenu } from "./HamburgerMenu";
 import { MainNavWrapper } from "./MainNavWrapper";
-import { adminLinks } from "../../routes";
+import { navLinks } from "../../routes";
 import { ARCHIVE_PATH, RECIPE_PATH } from "@utils";
+
 export function MainNav() {
   const profileDialogRef = useRef<HTMLDialogElement>(null);
-  const { user, loggedIn } = useUserContext();
+  const { user, loggedIn, loadingUser } = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
   const onEmptySearch = () => {
     if (
       location.pathname !== "/" &&
       !location.pathname.includes(RECIPE_PATH) &&
-      !location.pathname.includes(ARCHIVE_PATH)
+      !location.pathname.includes(ARCHIVE_PATH) && 
+      !loadingUser
     ) {
       navigate("/");
     }
@@ -38,18 +40,16 @@ export function MainNav() {
             />
           </Link>
         </li>
-        <NavLink title="Recipes" path="/" active={location.pathname === "/"} />
+        {navLinks.map((link) => {
+          if(link.isAdmin && !user?.isAdmin) return null;
+          return (  <NavLink
+            key={link.title}
+            title={link.title}
+            path={link.path}
+            active={location.pathname === link.path}
+          /> )
+        })}
 
-        {user?.isAdmin &&
-          loggedIn &&
-          adminLinks.map((link) => (
-            <NavLink
-              key={link.title}
-              title={link.title}
-              path={link.path}
-              active={location.pathname === link.path}
-            />
-          ))}
         <li
           className={`hidden search 
                             md:px-2 
@@ -58,9 +58,7 @@ export function MainNav() {
                             justify-self-end text-base ml-auto`}
         >
           <SearchBar
-            onSearch={(searchTerm) => {
-              navigate(`/search/?s=${encodeURI(searchTerm)}`);
-            }}
+            onSearch={onSearch}
             onEmpty={onEmptySearch}
           />
         </li>

@@ -1,10 +1,16 @@
 import { test, expect } from "vitest";
 import { RecipePage } from "../RecipePage";
 import { render, screen, waitFor } from "@testing-library/react";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import {
+  createMemoryRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 import { createEmptyRecipe, Recipe } from "../types";
 import { UserContext, UserContextType } from "../../auth";
 import { createFakeUser, User } from "../../auth/types";
+import { ProtectedRoutes } from "../../../routes";
 const renderWithProviders = (
   element: JSX.Element,
   { context }: { context: Partial<UserContextType> } = { context: {} },
@@ -32,19 +38,14 @@ const recipe: Recipe = createEmptyRecipe({
 
   slug: "test-recipe",
 });
-const routes = [
-  {
-    path: "/",
-    element: <RecipePage />,
-    loader: async () => {
-      return { recipe };
-    },
-  },
-  {
-    path: "/new",
-    element: <RecipePage isNew={true} />,
-  },
-];
+const routes = createRoutesFromElements(
+  <>
+    <Route path="/" element={<RecipePage />} />
+    <Route element={<ProtectedRoutes />}>
+      <Route path="/new" element={<RecipePage isNew={true} />} />
+    </Route>
+  </>,
+);
 
 const testIds = {
   recipePage: "recipe-page",
