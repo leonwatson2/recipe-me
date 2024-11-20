@@ -32,8 +32,8 @@ export const useEditingRecipe = ({
     if (isNew) {
       toggleEditing(true);
     } else if (editing) {
-        toggleEditing(false);
-      }
+      toggleEditing(false);
+    }
   }, [isNew]);
 
   useEffect(() => {
