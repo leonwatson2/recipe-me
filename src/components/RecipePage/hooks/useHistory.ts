@@ -4,6 +4,7 @@ export function useHistory<T>(initialState?: T) {
   const [position, setPosition] = useState(0);
   const [value, setValue] = useState<T | undefined>(initialState);
   const [history, setHistory] = useState<T[]>();
+
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (history === undefined) return;
@@ -23,6 +24,7 @@ export function useHistory<T>(initialState?: T) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [history, position]);
+
   useEffect(() => {
     if (value === undefined) return;
     if (history === undefined) {
@@ -39,10 +41,12 @@ export function useHistory<T>(initialState?: T) {
       return [...old, value];
     });
   }, [value])
+
   const resetHistory = useCallback(() => {
     if (value === undefined) return;
     setHistory(undefined);
     setPosition(0);
   }, [value]);
+
   return [value, setValue, resetHistory] as const;
 }
