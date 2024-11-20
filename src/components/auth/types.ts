@@ -41,8 +41,8 @@ export function createFakeUser(user: Partial<User> = {}): User {
     email: "",
     isAdmin: false,
     favorites: [],
-    ...user
-  }
+    ...user,
+  } as User;
 }
 
 export function createFakeGoogleUser(user: Partial<GoogleUser>): GoogleUser {
