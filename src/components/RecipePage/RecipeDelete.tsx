@@ -4,22 +4,22 @@ import { FC } from "react";
 import { archiveRecipe, unarchiveRecipe } from "../../firebase/actions";
 import { Recipe } from "./types";
 import { useDialogContext } from "@utils/contexts/dialog-context";
+import { useNavigate } from "react-router-dom";
 
 type RecipeDeleteProps = {
   recipe: Recipe;
   editing: boolean;
   archived: boolean;
-  navigate: (path: string) => void;
 };
 export const RecipeDelete: FC<RecipeDeleteProps> = ({
   archived,
   editing,
   recipe,
-  navigate,
 }) => {
   const dialoagRef = useRef<HTMLDialogElement>(null);
   const [recipeText, setRecipeText] = useState<string>("");
   const { setDialogOpen } = useDialogContext();
+  const navigate = useNavigate();
   const onClick = () => {
     if (recipe) {
       if (archived) {

@@ -16,14 +16,25 @@ export type UpdateRecipeType = <
   value: [K] | K,
   index?: number,
 ) => void;
-
+export type useEditingRecipeType = {
+  editing: boolean;
+  updated: boolean;
+  removeItem: RemoveItemFunction;
+  editedRecipe: EditingRecipe | undefined;
+  toggleEditing: () => void;
+  addInstruction: ModifyListItemFunction;
+  addIngredient: ModifyListItemFunction;
+  updateEditedRecipe: UpdateRecipeType;
+  removeIngredient: (index: number) => void;
+  removeInstruction: ModifyListItemFunction;
+};
 export const useEditingRecipe = ({
   recipe,
   isNew = false,
 }: {
   recipe?: Recipe;
   isNew?: boolean;
-}) => {
+}):useEditingRecipeType => {
   const [editing, toggleEditing] = useToggle(isNew);
   const [editedRecipe, setEditedRecipe, resetHistory] =
     useHistory<EditingRecipe>();
@@ -48,7 +59,7 @@ export const useEditingRecipe = ({
     const { photoUploads, ...edR } = editedRecipe;
     return (
       !isSameRecipe(recipe, edR) ||
-      (editedRecipe && photoUploads && photoUploads?.length > 0)
+      (!!editedRecipe && !!photoUploads && photoUploads?.length > 0)
     );
   }, [editedRecipe, recipe]);
 

@@ -1,5 +1,6 @@
 import { test, expect } from "vitest";
 import { RecipePage } from "../RecipePage";
+import { NewRecipePage } from "../NewRecipePage";
 import { render, screen, waitFor } from "@testing-library/react";
 import {
   createMemoryRouter,
@@ -11,6 +12,7 @@ import { createEmptyRecipe, Recipe } from "../types";
 import { UserContext, UserContextType } from "../../auth";
 import { createFakeUser, User } from "../../auth/types";
 import { ProtectedRoutes } from "../../../routes";
+
 const renderWithProviders = (
   element: JSX.Element,
   { context }: { context: Partial<UserContextType> } = { context: {} },
@@ -40,9 +42,9 @@ const recipe: Recipe = createEmptyRecipe({
 });
 const routes = createRoutesFromElements(
   <>
-    <Route path="/" element={<RecipePage />} />
+    <Route path="/" element={<RecipePage />} loader={ () => ({ recipe })  } />
     <Route element={<ProtectedRoutes />}>
-      <Route path="/new" element={<RecipePage isNew={true} />} />
+      <Route path="/new" element={<NewRecipePage />} />
     </Route>
   </>,
 );
