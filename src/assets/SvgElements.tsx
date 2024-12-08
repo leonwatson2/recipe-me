@@ -1,8 +1,48 @@
 import { FC } from "react";
 import { motion } from "framer-motion";
-// prettier-ignore
-type SVGTitles = "yummm" | "the-logo" | "bf-logo" | "search-icon" | "arrow-down" | "hamburger" | "plus" | "minus" | "checkmark" | "profile" | "smsMonochrome" | "pop-out" | "replay";
-;
+
+type SVGTitles = "yummm" | "the-logo" | "bf-logo"
+  | "search-icon" | "arrow-down" | "hamburger"
+  | "plus" | "minus" | "checkmark" | "profile" | "smsMonochrome"
+  | "pop-out" | "replay";
+
+
+export const PlusSign = () => (
+  <SVG title="plus" />
+)
+
+type SVGProps = {
+  title: SVGTitles;
+  height?: number;
+  width?: number;
+  svgClassName?: string;
+} & React.HTMLAttributes<HTMLElement>;
+
+export const SVG: FC<SVGProps> = ({
+  title,
+  height,
+  width,
+  svgClassName,
+  ...props
+}) => {
+  return (
+    <div style={{ height, width }} {...props}>
+      <svg
+        aria-hidden="true"
+        height="100%"
+        width="100%"
+        className={svgClassName}
+      >
+        <use
+          xmlnsXlink="https://www.w3.org/1999/xlink"
+          xlinkHref={`#${title}`}
+        ></use>
+      </svg>
+    </div>
+  );
+};
+
+
 
 export function SvgElements() {
   return (
@@ -258,33 +298,3 @@ export function SvgElements() {
   );
 }
 
-type SVGProps = {
-  title: SVGTitles;
-  height?: number;
-  width?: number;
-  svgClassName?: string;
-} & React.HTMLAttributes<HTMLElement>;
-
-export const SVG: FC<SVGProps> = ({
-  title,
-  height,
-  width,
-  svgClassName,
-  ...props
-}) => {
-  return (
-    <div style={{ height, width }} {...props}>
-      <svg
-        aria-hidden="true"
-        height="100%"
-        width="100%"
-        className={svgClassName}
-      >
-        <use
-          xmlnsXlink="https://www.w3.org/1999/xlink"
-          xlinkHref={`#${title}`}
-        ></use>
-      </svg>
-    </div>
-  );
-};

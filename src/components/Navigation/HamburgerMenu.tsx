@@ -2,7 +2,7 @@ import { FC, useEffect, useRef } from "react";
 import { SVG } from "../../assets/SvgElements";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
-import { adminLinks, publicLinks, } from "../../routes";
+import { navLinks } from "../../routes";
 
 type HamburgerMenuProps = {
   isAdmin: boolean;
@@ -12,7 +12,6 @@ type HamburgerMenuProps = {
 };
 export const HamburgerMenu: FC<HamburgerMenuProps> = ({
   isAdmin,
-  loggedIn,
   onEmptySearch,
   onSearch,
 }) => {
@@ -44,14 +43,20 @@ export const HamburgerMenu: FC<HamburgerMenuProps> = ({
         }}
       >
         <ul className="w-full" ref={headerRef}>
-          {isAdmin && loggedIn && (
-            adminLinks.map((link) => (
-              <HamburgerLink active={location.pathname === link.path } key={link.title} title={link.title} path={link.path} onClick={closeMenu} />
-            ))
-          )}
-          {publicLinks.map((link) => (
-            <HamburgerLink active={location.pathname === link.path } key={link.title} title={link.title} path={link.path} onClick={closeMenu} />
-          ))}
+          {
+            navLinks.map((link) => {
+              if (link.isAdmin && !isAdmin) return null;
+              return (
+                <HamburgerLink
+                  active={location.pathname === link.path}
+                  key={link.title}
+                  title={link.title}
+                  path={link.path}
+                  onClick={closeMenu}
+                />
+              );
+            })
+          }
           <li className="h-20 text-3xl border border-t-0">
             <SearchBar onSearch={onSearch} onEmpty={onEmptySearch} />
           </li>

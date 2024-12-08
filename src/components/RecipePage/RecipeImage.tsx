@@ -1,13 +1,14 @@
 import { FC, useRef, useState } from "react";
 import { RemoveItemFunction, Recipe } from "./types";
 import { useUpdateRecipeContext } from "./context";
+import { Image } from "@utils";
 
-type RecipeVideoType = {
+type RecipeImageType = {
   photoUrls?: Recipe["photoUrls"];
   photoUploads?: Array<File>;
   removeItem: RemoveItemFunction;
 };
-export const RecipeVideo: FC<RecipeVideoType> = ({
+export const RecipeImage: FC<RecipeImageType> = ({
   photoUrls = [],
   photoUploads = [],
   removeItem,
@@ -56,7 +57,7 @@ export const RecipeVideo: FC<RecipeVideoType> = ({
               multiple
               ref={inputFileRef}
               type={"file"}
-              accept="image/png, image/jpg"
+              accept="image/*"
               onChange={(e) => {
                 if (e.target.files && e.target.files.length > 0) {
                   const files = Array.from(e.target.files);
@@ -78,7 +79,7 @@ export const RecipeVideo: FC<RecipeVideoType> = ({
                 className="w-32 transition hover:-translate-y-2 focus:-translate-y-2 focus:hover:box-shadow-2"
                 onClick={() => removeItem("photoUploads", index)}
               >
-                <img src={URL.createObjectURL(file)} />
+                <img src={URL.createObjectURL(file)}  />
               </li>
             );
           })}
@@ -91,7 +92,7 @@ export const RecipeVideo: FC<RecipeVideoType> = ({
       {hasPhotos &&
         photoUrls.map((p) => (
           <div key={p} className="image-container border-2 inline-block w-1/2 first:w-full">
-          <img src={p} className="w-full" />
+          <Image src={p} className="w-full" />
           </div>
         ))}
     </section>

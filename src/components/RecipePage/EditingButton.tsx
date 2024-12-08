@@ -33,7 +33,7 @@ export const EditingButton = ({
   const dialogRef = useRef<HTMLDialogElement>(null);
   const { loggedIn } = useUserContext();
   const { setDialogOpen } = useDialogContext();
-  const editButtonClick = () => {
+  const editButtonClick = useCallback(() => {
     if (isNew && !updated) return;
     if (editing && updated) {
       dialogRef.current?.showModal();
@@ -41,7 +41,7 @@ export const EditingButton = ({
     } else {
       toggleEditing();
     }
-  };
+  },[editing, updated, isNew]);
   const closeDialog = useCallback(() => {
     setDialogOpen(false);
     dialogRef.current?.close();
@@ -52,6 +52,7 @@ export const EditingButton = ({
     toggleEditing();
     onConfirmUpdate();
   };
+  
   if (!loggedIn) return <></>;
   return (
     <>
@@ -63,6 +64,7 @@ export const EditingButton = ({
         className="sticky w-full top-16 right-0"
         tabIndex={1}
         onClick={editButtonClick}
+        data-testid="edit-button"
       >
         {isNew && (
           <SVG

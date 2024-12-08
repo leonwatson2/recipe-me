@@ -5,7 +5,7 @@ import { Recipe } from "../RecipePage/types.ts";
 import { FC, useEffect, useRef, useState } from "react";
 import { getAllRecipes } from "../../firebase/actions.ts";
 import { QueryDocumentSnapshot } from "firebase/firestore";
-import { RecipeList } from "../RecipeList.tsx";
+import { RecipeList } from "./RecipeList.tsx";
 
 export const RecipeListPage: FC<{ archived?: boolean }> = ({ archived }) => {
   const [recipes, setRecipes] = useState<Array<Recipe>>([]);

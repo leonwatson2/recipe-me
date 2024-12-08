@@ -13,7 +13,7 @@ export type UserContextType = {
 
 const defaultUserContext: UserContextType = {
   loggedIn: false,
-  loadingUser: false,
+  loadingUser: true,
   login: () => {},
   logout: () => {},
 };

@@ -33,9 +33,9 @@ import { v4 as uuid } from "uuid";
 import "../firebase/config.ts";
 import { QUERY_DOC_LIMIT } from "@utils";
 
-const DB_RECIPE_ROOT = "recipes";
-const DB_USERS_ROOT = "users";
-const DB_ARCHIVE_ROOT = "archive";
+export const DB_RECIPE_ROOT = "recipes";
+export const DB_USERS_ROOT = "users";
+export const DB_ARCHIVE_ROOT = "archive";
 const db = getFirestore();
 
 const convertNameToSlug = (name: string): string =>
@@ -61,10 +61,10 @@ export const getAllRecipes: GetAllRecipes = async ({
       lastRecipeDoc === undefined
         ? query(collection(db, path), limit(QUERY_DOC_LIMIT + 1))
         : query(
-            collection(db, path),
-            startAt(lastRecipeDoc),
-            limit(QUERY_DOC_LIMIT + 1),
-          ),
+          collection(db, path),
+          startAt(lastRecipeDoc),
+          limit(QUERY_DOC_LIMIT + 1),
+        ),
     );
     const docs = (await recipesRef).docs;
     const lastDoc = docs.length > QUERY_DOC_LIMIT ? docs.pop() : undefined;
@@ -89,7 +89,7 @@ export const updateRecipe = async ({
     const storage = getStorage();
     const newPhotoUrls = await uploadPhotos(photoUploads, noUploadsRecipe.slug);
     const recipeDoc = doc(db, DB_RECIPE_ROOT, noUploadsRecipe.id);
-    let photoUrls: string[] = noUploadsRecipe.photoUrls;
+    let photoUrls = noUploadsRecipe.photoUrls;
     if (photoUploads && photoUploads?.length > 0) {
       photoUrls = await Promise.all(
         newPhotoUrls.map((u) => getDownloadURL(ref(storage, u))),
@@ -120,7 +120,11 @@ export const addRecipe = async ({
     const recipeCol = collection(db, DB_RECIPE_ROOT);
     noIdRecipe.slug = convertNameToSlug(noIdRecipe.name);
     noIdRecipe.searchTerms = getUniqueWordsStringCombos(
-      noIdRecipe.name.toLowerCase().replaceAll("-", " ").split(" ").filter(Boolean),
+      noIdRecipe.name
+        .toLowerCase()
+        .replaceAll("-", " ")
+        .split(" ")
+        .filter(Boolean),
     );
     await addDoc(recipeCol, noIdRecipe);
 
@@ -134,7 +138,7 @@ export const archiveRecipe = async (id: string) => {
   try {
     const recipeDoc = doc(db, DB_RECIPE_ROOT, id);
     const recipe = (await getDoc(recipeDoc)).data() as Recipe;
-    recipe.photoUrls = []
+    recipe.photoUrls = [];
     await setDoc(doc(db, DB_ARCHIVE_ROOT, id), recipe);
     await deleteOldPhotos(recipe.photoUrls);
     await deleteDoc(recipeDoc);
@@ -196,6 +200,7 @@ export const getUserById = async (id: string): Promise<User> => {
   if (docSnap.exists()) {
     return docSnap.data() as User;
   } else {
+    console.log(docSnap);
     throw Error("Couldn't find user with id");
   }
 };
@@ -205,8 +210,10 @@ export const uploadPhotos = async (files: Array<File> = [], slug: string) => {
   const storage = getStorage();
   try {
     const fileUploads = files.map((file) => {
-      const fileName = `${DB_RECIPE_ROOT}/${slug}/${file.name.split(".").shift()}-${uuid()}.${file.name.split(".").pop()}`;
-      const recipeStorageRef = ref(storage, fileName);
+      const fileName = file.name.split(".").at(0);
+      const fileExtension = file.name.split(".").at(-1);
+      const fileStorageName = `${DB_RECIPE_ROOT}/${slug}/${fileName}-${uuid()}.${fileExtension}`;
+      const recipeStorageRef = ref(storage, fileStorageName);
       return uploadBytes(recipeStorageRef, file);
     });
     const uploadResults = await Promise.all(fileUploads);
