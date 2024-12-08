@@ -1,7 +1,6 @@
 export type GoogleLoginRes = {
-  access_token: string
-
-}
+  access_token: string;
+};
 
 export type GoogleUser = {
   given_name: string;
@@ -9,7 +8,7 @@ export type GoogleUser = {
   name: string;
   picture: string;
   email: string;
-}
+};
 
 export type User = {
   favorites: Array<string>;
@@ -17,23 +16,21 @@ export type User = {
   email: string;
 }
 
-export function isUser(user:User): user is User {
-  if(user.favorites !== undefined 
-      && user.isAdmin !== undefined)
-    return true
-  return false
+export function isUser(user: User): user is User {
+  if (user.favorites !== undefined && user.isAdmin !== undefined) return true;
+  return false;
 }
 
-export function isGoogleUser(user:GoogleUser): user is GoogleUser {
-  if(
-    typeof user === 'object' && 
-  typeof user.given_name == "string" &&
-  typeof user.family_name == "string" &&
-  typeof user.given_name == "string" &&
-  typeof user.picture == "string")
-    return true
-  return false
-  
+export function isGoogleUser(user: GoogleUser): user is GoogleUser {
+  if (
+    typeof user === "object" &&
+    typeof user.given_name == "string" &&
+    typeof user.family_name == "string" &&
+    typeof user.given_name == "string" &&
+    typeof user.picture == "string"
+  )
+    return true;
+  return false;
 }
 
 export function createFakeUser(user: Partial<User> = {}): User {
@@ -52,6 +49,6 @@ export function createFakeGoogleUser(user: Partial<GoogleUser>): GoogleUser {
     given_name: "",
     name: "",
     picture: "",
-    ...user
-  }
+    ...user,
+  };
 }
