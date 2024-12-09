@@ -25,7 +25,11 @@ const RecipePage = lazy(() =>
     default: module.RecipePage,
   })),
 );
-
+const NewRecipePage = lazy(() =>
+  import("./components/RecipePage/NewRecipePage").then((module) => ({
+    default: module.NewRecipePage,
+  })),
+);
 export const recipeLoader: LoaderFunction<{ slug: string }> = async ({
   params,
 }) => {
@@ -77,7 +81,7 @@ export const router = createBrowserRouter(
       <Route path="search" loader={searchLoader} element={<SearchPage />} />
       <Route path="privacy" element={<PrivacyPolicy />} />
       <Route element={<ProtectedRoutes />}>
-        <Route path="new" element={<RecipePage isNew />} />
+        <Route path="new" element={<NewRecipePage />} />
         <Route path={ARCHIVE_PATH} element={<RecipeListPage archived />} />
         <Route
           path={`${ARCHIVE_PATH}/recipe/:slug`}

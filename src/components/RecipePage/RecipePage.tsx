@@ -1,41 +1,28 @@
 import { FC, useCallback, useMemo } from "react";
 import "../../firebase/config";
-import {
-  addRecipe,
-  updateRecipe,
-} from "../../firebase/actions";
-import { RecipeTime } from "./RecipeTime";
-import { RecipeHeader } from "./RecipeHeader";
-import { RecipeIngredients } from "./RecipeIngredients";
-import { RecipeInstructions } from "./RecipeInstructions";
+import { updateRecipe } from "../../firebase/actions";
 import { UpdateRecipeContext } from "./context";
-import { RecipeImage } from "./RecipeImage";
 import { useEditingRecipe } from "./hooks";
 import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
-import { createEmptyRecipe, isRecipe } from "./types";
-import { useUserContext } from "../auth";
-import { EditingButton } from "./EditingButton";
+import { Recipe } from "./types";
 import { useTitle } from "../../utils";
-import { RecipeDelete } from "./RecipeDelete";
+import { RecipeBody } from "./RecipeBody";
 
 type RecipePageProps = {
-  isNew?: boolean;
   archived?: boolean;
 };
 
 export const RecipePage: FC<RecipePageProps> = ({
-  isNew = false,
   archived = false,
 }) => {
-  const data = useLoaderData() as { recipe: unknown };
+  const data = useLoaderData() as { recipe: Recipe };
   const revalidator = useRevalidator();
-  const { user } = useUserContext();
   const recipe = useMemo(
     () =>
-      isRecipe(data?.recipe) && !isNew ? data.recipe : createEmptyRecipe(),
-    [isNew, data],
+      data.recipe,
+    [data],
   );
-  useTitle(isNew ? `New Recipe` : `Recipe: ${recipe.name}`);
+  useTitle(recipe ? `Recipe: ${recipe.name}`: "Recipe");
 
   const navigate = useNavigate();
 
@@ -50,19 +37,15 @@ export const RecipePage: FC<RecipePageProps> = ({
     removeInstruction,
     updateEditedRecipe,
     removeItem,
-  } = useEditingRecipe({ recipe, isNew });
+  } = useEditingRecipe({ recipe, isNew:false });
 
   const onConfirmUpdate = useCallback(() => {
-    if (isNew && editedRecipe) {
-      addRecipe(editedRecipe).then((slug) => {
-        navigate(`/recipe/${slug}`);
-      });
-    } else if (editedRecipe && recipe) {
+    if (editedRecipe && recipe) {
       updateRecipe(editedRecipe).then(() => {
         revalidator.revalidate();
       });
     }
-  }, [editedRecipe, recipe, isNew, navigate, revalidator]);
+  }, [editedRecipe, recipe, navigate, revalidator]);
 
   return (
     <UpdateRecipeContext.Provider
@@ -71,66 +54,24 @@ export const RecipePage: FC<RecipePageProps> = ({
         updateEditedRecipe,
       }}
     >
-      <div
-        data-testid="recipe-page"
-        data-editing={editing}
-        className={"group recipe-page mx-auto max-w-7xl relative min-h-[calc(100vh-4rem)] transition " + (revalidator.state == "idle" ? "opacity-100" : "opacity-55")}
-      >
-        <EditingBar />
-        {user?.isAdmin && !archived && (
-          <EditingButton
-            toggleEditing={toggleEditing}
-            editing={editing}
-            updated={updated || false}
-            isNew={isNew}
-            onConfirmUpdate={onConfirmUpdate}
-          />
-        )}
-        <RecipeHeader
-          dateAdded={recipe?.dateAdded}
-          intro={recipe?.intro}
-          name={recipe?.name}
-        />
-        <RecipeTime
-          cookTime={recipe?.cookTime || 0}
-          prepTime={recipe?.prepTime || 0}
-          editedCookTime={editedRecipe?.cookTime || 0}
-          editedPrepTime={editedRecipe?.prepTime || 0}
-        />
-        <main className="md:grid content-start items-start mt-7 sm:min-w-96  md:auto-fill-96 grid-cols-1">
-          <RecipeIngredients
-            ingredients={recipe?.ingredients}
-            editedIngredients={editedRecipe?.ingredients}
-            addIngredient={addIngredient}
-            removeIngredient={removeIngredient}
-          />
-          <RecipeInstructions
-            instructions={recipe?.instructions}
-            editedInstruction={editedRecipe?.instructions}
-            addInstruction={addInstruction}
-            removeInstruction={removeInstruction}
-          />
-          <RecipeImage
-            photoUploads={editedRecipe?.photoUploads}
-            photoUrls={recipe?.photoUrls}
-            removeItem={removeItem}
-          />
-          {user?.isAdmin ? (
-            <RecipeDelete
-              archived={archived}
-              editing={editing}
-              recipe={recipe}
-              navigate={navigate}
-            />
-          ) : null}
-        </main>
-      </div>
+    <RecipeBody 
+      recipe={recipe}
+      revalidating={revalidator.state === "loading"}
+      editing={editing}
+      updated={updated}
+      editedRecipe={editedRecipe}
+      toggleEditing={toggleEditing}
+      addInstruction={addInstruction}
+      addIngredient={addIngredient}
+      removeIngredient={removeIngredient}
+      removeInstruction={removeInstruction}
+      removeItem={removeItem}
+      onConfirmUpdate={onConfirmUpdate}
+      archived={archived}
+    />
     </UpdateRecipeContext.Provider>
   );
 };
 
-const EditingBar = () => {
-  return (
-    <div className='group-data-[editing="true"]:bg-primary group-data-[editing="true"]:h-4 top-0 w-full h-0 left-0  ease-in-out duration-200'></div>
-  );
-};
+
+
