@@ -210,8 +210,8 @@ export const uploadPhotos = async (files: Array<File> = [], slug: string) => {
   const storage = getStorage();
   try {
     const fileUploads = files.map((file) => {
-      const fileName = file.name.split(".").at(0);
-      const fileExtension = file.name.split(".").at(-1);
+      const fileName = file.name.split(".")[0];
+      const fileExtension = file.name.split(".")[file.name.length - 1];
       const fileStorageName = `${DB_RECIPE_ROOT}/${slug}/${fileName}-${uuid()}.${fileExtension}`;
       const recipeStorageRef = ref(storage, fileStorageName);
       return uploadBytes(recipeStorageRef, file);
